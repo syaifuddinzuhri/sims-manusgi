@@ -1,3 +1,3 @@
   <div class="simple-footer">
-      Copyright &copy; Optik Siloam 2023<br>Version 2.0.0
+      Copyright &copy; SIMS MA NU Sunan Giri<br>Version 1.0.0
   </div>

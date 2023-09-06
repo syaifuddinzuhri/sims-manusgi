@@ -10,17 +10,16 @@
     </form>
     <ul class="navbar-nav navbar-right">
         <li class="dropdown">
-            {{-- <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-                <img alt="image"
-                    src="{{ getUserLogin()->foto ? getUserLogin()->foto : asset('img/avatar/avatar-1.png') }}"
+            <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+                <img alt="image" src="{{ authUser()->photo ? authUser()->photo : asset('img/avatar/avatar-1.png') }}"
                     class="rounded-circle mr-1" width="30" height="30">
-                <div class="d-sm-none d-lg-inline-block">Hi, {{ getUserLogin()->name }}</div>
-            </a> --}}
+                <div class="d-sm-none d-lg-inline-block">Hi, {{ authUser()->name }}</div>
+            </a>
             <div class="dropdown-menu dropdown-menu-right">
                 {{-- <div class="dropdown-title">Logged in 5 min ago</div> --}}
-                {{-- <a href="{{ route('profile.show') }}" class="dropdown-item has-icon">
+                <a href="{{ route('profile.show') }}" class="dropdown-item has-icon">
                     <i class="far fa-user"></i> Profile
-                </a> --}}
+                </a>
                 <a href="#" class="dropdown-item has-icon text-danger" data-toggle="modal"
                     data-target="#modal-logout" data-backdrop="static" data-keyboard="false">
                     <i class="fas fa-sign-out-alt"></i> Logout

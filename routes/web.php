@@ -17,20 +17,25 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-// Route::middleware('guest.web')->group(function () {
-Route::prefix('auth')->group(function () {
-    Route::get('/login', [AuthController::class, 'loginPage'])->name('login.show');
-    // Route::post('/login', [AuthController::class, 'loginSubmit'])->name('login.submit');
-});
-// });
-
-// Route::middleware('auth.web')->group(function () {
-Route::get('/', function () {
-    return redirect()->route('dashboard.index');
+Route::middleware('guest.web')->group(function () {
+    Route::prefix('auth')->group(function () {
+        Route::get('/login', [AuthController::class, 'loginPage'])->name('login.show');
+        Route::post('/login', [AuthController::class, 'loginSubmit'])->name('login.submit');
+    });
 });
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
-// });
+Route::middleware('auth.web')->group(function () {
+    Route::get('/', function () {
+        return redirect()->route('dashboard.index');
+    });
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+
+    Route::prefix('auth')->group(function () {
+        Route::get('/profile', [AuthController::class, 'profilePage'])->name('profile.show');
+        Route::post('/logout', [AuthController::class, 'logoutSubmit'])->name('logout.submit');
+    });
+});
 
 Route::get('/{any}', function ($any) {
     Artisan::call('optimize:clear');

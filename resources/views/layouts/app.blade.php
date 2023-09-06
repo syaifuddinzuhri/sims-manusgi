@@ -6,19 +6,13 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <title>@yield('title') &mdash; POS MA NU Sunan Giri Prigen</title>
     <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
-
-    <!-- CSRF Token -->
     <meta name="_token" content="{{ csrf_token() }}">
-
-    <!-- General CSS Files -->
     <link rel="stylesheet" href="{{ asset('library/bootstrap/dist/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('library/fontawesome/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('library/select2/dist/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('library/selectric/public/selectric.css') }}">
     <link rel="stylesheet" href="{{ asset('library/flatpickr/flatpickr.min.css') }}">
     <link rel="stylesheet" href="{{ asset('library/dropfiy/dropify.min.css') }}">
-
-    <!-- Template CSS -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/components.css') }}">
     @yield('styles')
@@ -33,16 +27,9 @@
 
     <div id="app">
         <div class="main-wrapper">
-            <!-- Header -->
             @include('components.header')
-
-            <!-- Sidebar -->
             @include('components.sidebar')
-
-            <!-- Content -->
             @yield('main')
-
-            <!-- Footer -->
             @include('components.footer')
         </div>
     </div>
@@ -64,20 +51,17 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-dark" data-dismiss="modal">
-                        <i class="fas fa-arrow-circle-left">Kembali</i>
+                        <i class="fas fa-arrow-circle-left"></i> Kembali
                     </button>
-                    {{-- <form action="{{ route('logout.submit') }}" method="POST">
+                    <form action="{{ route('logout.submit') }}" method="POST">
                         @csrf
-                        <button class="btn btn-danger">Logout</button>
-                    </form> --}}
+                        <button class="btn btn-danger"><i class="fas fa-sign-out"></i> Logout</button>
+                    </form>
                 </div>
             </div>
-            <!-- /.modal-content -->
         </div>
-        <!-- /.modal-dialog -->
     </div>
 
-    <!-- General JS Scripts -->
     <script src="{{ asset('library/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('library/popper.js/dist/umd/popper.js') }}"></script>
     <script src="{{ asset('library/tooltip.js/dist/umd/tooltip.js') }}"></script>
@@ -90,8 +74,6 @@
     <script src="{{ asset('library/flatpickr/flatpickr.js') }}"></script>
     <script src="{{ asset('library/dropfiy/dropify.min.js') }}"></script>
     <script src="{{ asset('js/stisla.js') }}"></script>
-
-    <!-- Template JS File -->
     <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
     <script src="{{ asset('js/scripts.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
