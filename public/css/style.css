@@ -79,6 +79,7 @@
 
 #loading-image {
     z-index: 999999999999;
+    width: 50px;
 }
 
 .wrapper {

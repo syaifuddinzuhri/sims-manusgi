@@ -21,7 +21,7 @@
 
 <body>
     <div id="loading">
-        <img id="loading-image" src="{{ asset('img/loading.gif') }}" alt="Loading..." />
+        <img id="loading-image" src="{{ asset('img/spinner.gif') }}" alt="Loading..." />
     </div>
     @include('sweetalert::alert')
 
