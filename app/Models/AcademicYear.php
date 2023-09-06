@@ -9,4 +9,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class AcademicYear extends Model
 {
     use HasFactory, SoftDeletes;
+
+    protected $fillable = [
+        'first_year',
+        'last_year',
+        'semester'
+    ];
 }
