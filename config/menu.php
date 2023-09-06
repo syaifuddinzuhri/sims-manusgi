@@ -2,38 +2,38 @@
 
 $masterMenu =  [
     'name' => 'Data Master',
-    'permission' => 'master',
+    'permission' => 'read-master',
     'route_prefix' => 'master',
     'route_name' => '',
     'icon' => 'fas fa-list-check',
     'sub_menus' => [
         [
             'name' => 'Data Group',
-            'permission' => '',
+            'permission' => 'read-master-group',
             'route_prefix' => '',
             'route_name' => '',
         ],
         [
             'name' => 'Data Staff',
-            'permission' => '',
+            'permission' => 'read-master-staff',
             'route_prefix' => '',
             'route_name' => '',
         ],
         [
             'name' => 'Data Siswa',
-            'permission' => '',
+            'permission' => 'read-master-siswa',
             'route_prefix' => '',
             'route_name' => '',
         ],
         [
             'name' => 'Tahun Ajaran',
-            'permission' => '',
+            'permission' => 'read-master-tahun-ajaran',
             'route_prefix' => '',
             'route_name' => '',
         ],
         [
             'name' => 'Kelas',
-            'permission' => '',
+            'permission' => 'read-master-kelas',
             'route_prefix' => '',
             'route_name' => '',
         ],
@@ -42,26 +42,26 @@ $masterMenu =  [
 
 $manajemenSiswaMenu =  [
     'name' => 'Manajemen Siswa',
-    'permission' => '',
+    'permission' => 'read-siswa',
     'route_prefix' => '',
     'route_name' => '',
     'icon' => 'fas fa-users',
     'sub_menus' => [
         [
             'name' => 'Kenaikan Kelas',
-            'permission' => '',
+            'permission' => 'read-siswa-kenaikan',
             'route_prefix' => '',
             'route_name' => '',
         ],
         [
             'name' => 'Kelulusan',
-            'permission' => '',
+            'permission' => 'read-siswa-kelulusan',
             'route_prefix' => '',
             'route_name' => '',
         ],
         [
             'name' => 'Alumni',
-            'permission' => '',
+            'permission' => 'read-siswa-alumni',
             'route_prefix' => '',
             'route_name' => '',
         ],
@@ -98,32 +98,32 @@ $journalMenu =  [
 
 $reportMenu =  [
     'name' => 'Laporan',
-    'permission' => '',
+    'permission' => 'read-laporan',
     'route_prefix' => '',
     'route_name' => '',
     'icon' => 'fas fa-chart-simple',
     'sub_menus' => [
         [
             'name' => 'Laporan Transaksi',
-            'permission' => '',
+            'permission' => 'read-laporan-transaksi',
             'route_prefix' => '',
             'route_name' => '',
         ],
         [
             'name' => 'Laporan Keuangan',
-            'permission' => '',
+            'permission' => 'read-laporan-keuangan',
             'route_prefix' => '',
             'route_name' => '',
         ],
         [
             'name' => 'Pembayaran Bulanan',
-            'permission' => '',
+            'permission' => 'read-laporan-bulanan',
             'route_prefix' => '',
             'route_name' => '',
         ],
         [
             'name' => 'Pembayaran Non-Bulanan',
-            'permission' => '',
+            'permission' => 'read-laporan-nonbulanan',
             'route_prefix' => '',
             'route_name' => '',
         ],
@@ -132,20 +132,20 @@ $reportMenu =  [
 
 $manajemenPembayaranMenu =  [
     'name' => 'Manajemen Pembayaran',
-    'permission' => '',
+    'permission' => 'read-pembayaran',
     'route_prefix' => '',
     'route_name' => '',
     'icon' => 'fas fa-wallet',
     'sub_menus' => [
         [
             'name' => 'POS Pembayaran',
-            'permission' => '',
+            'permission' => 'read-pembayaran-pos',
             'route_prefix' => '',
             'route_name' => '',
         ],
         [
             'name' => 'Jenis Pembayaran',
-            'permission' => '',
+            'permission' => 'read-pembayaran-jenis',
             'route_prefix' => '',
             'route_name' => '',
         ],
@@ -154,20 +154,20 @@ $manajemenPembayaranMenu =  [
 
 $transaksiMenu = [
     'name' => 'Transaksi Pembayaran',
-    'permission' => '',
+    'permission' => 'read-transaksi',
     'route_prefix' => '',
     'route_name' => '',
     'icon' => 'fas fa-money-bill-transfer',
     'sub_menus' => [
         [
             'name' => 'Data Pembayaran',
-            'permission' => '',
+            'permission' => 'read-transaksi-pembayaran',
             'route_prefix' => '',
             'route_name' => '',
         ],
         [
             'name' => 'Tunggakan Pembayaran',
-            'permission' => '',
+            'permission' => 'read-transaksi-tunggakan',
             'route_prefix' => '',
             'route_name' => '',
         ],
@@ -176,20 +176,20 @@ $transaksiMenu = [
 
 $settingMenu = [
     'name' => 'Pengaturan',
-    'permission' => '',
+    'permission' => 'read-pengaturan',
     'route_prefix' => '',
     'route_name' => '',
     'icon' => 'fas fa-gear',
     'sub_menus' => [
         [
             'name' => 'Umum',
-            'permission' => '',
+            'permission' => 'read-pengaturan-umum',
             'route_prefix' => '',
             'route_name' => '',
         ],
         [
             'name' => 'Aplikasi & Backup',
-            'permission' => '',
+            'permission' => 'read-pengaturan-aplikasi',
             'route_prefix' => '',
             'route_name' => '',
         ],
