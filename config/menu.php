@@ -8,34 +8,34 @@ $masterMenu =  [
     'icon' => 'fas fa-list-check',
     'sub_menus' => [
         [
-            'name' => 'Data Group',
+            'name' => 'Data Grup',
             'permission' => 'read-master-group',
-            'route_prefix' => '',
-            'route_name' => '',
+            'route_prefix' => 'grup',
+            'route_name' => 'grup.index',
         ],
         [
             'name' => 'Data Staff',
             'permission' => 'read-master-staff',
-            'route_prefix' => '',
-            'route_name' => '',
+            'route_prefix' => 'staff',
+            'route_name' => 'staff.index',
         ],
         [
             'name' => 'Data Siswa',
             'permission' => 'read-master-siswa',
-            'route_prefix' => '',
-            'route_name' => '',
+            'route_prefix' => 'siswa',
+            'route_name' => 'siswa.index',
         ],
         [
             'name' => 'Tahun Ajaran',
             'permission' => 'read-master-tahun-ajaran',
-            'route_prefix' => '',
-            'route_name' => '',
+            'route_prefix' => 'tahun-ajaran',
+            'route_name' => 'tahun-ajaran.index',
         ],
         [
             'name' => 'Kelas',
             'permission' => 'read-master-kelas',
-            'route_prefix' => '',
-            'route_name' => '',
+            'route_prefix' => 'kelas',
+            'route_name' => 'kelas.index',
         ],
     ]
 ];

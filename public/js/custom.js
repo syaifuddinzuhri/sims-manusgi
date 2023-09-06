@@ -62,8 +62,8 @@ $(function () {
     "use strict";
     $.ajaxSetup({
         headers: {
-            'X-CSRF-TOKEN': "{{ csrf_token() }}"
-        }
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
     });
     $.fn.serializeObject = function () {
         return this.serializeArray().reduce(function (m, o) {

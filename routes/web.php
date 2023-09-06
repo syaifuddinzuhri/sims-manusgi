@@ -1,7 +1,12 @@
 <?php
 
+use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ClassController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\GroupController;
+use App\Http\Controllers\StaffController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -32,8 +37,16 @@ Route::middleware('auth.web')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
     Route::prefix('auth')->group(function () {
-        Route::get('/profile', [AuthController::class, 'profilePage'])->name('profile.show');
+        Route::get('/profil', [AuthController::class, 'profilePage'])->name('profile.show');
         Route::post('/logout', [AuthController::class, 'logoutSubmit'])->name('logout.submit');
+    });
+
+    Route::prefix('master')->group(function () {
+        Route::resource('grup', GroupController::class);
+        Route::resource('kelas', ClassController::class);
+        Route::resource('tahun-ajaran', AcademicYearController::class);
+        Route::resource('staff', StaffController::class);
+        Route::resource('siswa', StudentController::class);
     });
 });
 

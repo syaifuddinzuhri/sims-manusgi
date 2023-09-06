@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Str;
+
 
 class GroupController extends Controller
 {
@@ -11,9 +15,32 @@ class GroupController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $data = cache()->remember('roles', 5, function () {
+                return Role::get();
+            });
+            return DataTables::of($data)
+                ->setRowAttr([
+                    'id' => function ($data) {
+                        return encryptData($data->id);
+                    },
+                ])
+                ->addIndexColumn()
+                ->addColumn('action', function ($data) {
+                    $button = '<div class="btn-group" role="group">';
+                    $button .= '<a href="/admin/berita/' . $data->id . '/edit" class="btn btn-sm btn-info">
+                        <i class="fa fa-edit" aria-hidden="true"></i> </a>';
+                    $button .= '<a href="javascript:void(0)" data-toggle="modal" data-target="#deleteBeritaModal"class="btn btn-sm btn-danger delete">
+                                                <i class="fa fa-trash" aria-hidden="true"></i></a>';
+                    $button .= '</div>';
+                    return $button;
+                })
+                ->rawColumns([])
+                ->make(true);
+        }
+        return view('pages.master.group.index');
     }
 
     /**
