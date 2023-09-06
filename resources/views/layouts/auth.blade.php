@@ -13,64 +13,36 @@
     <!-- General CSS Files -->
     <link rel="stylesheet" href="{{ asset('library/bootstrap/dist/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('library/fontawesome/css/all.min.css') }}">
-    <!-- CSS Libraries -->
     <link rel="stylesheet" href="{{ asset('library/select2/dist/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('library/selectric/public/selectric.css') }}">
+
+    @yield('styles')
 
     <!-- Template CSS -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/components.css') }}">
-    @yield('styles')
-</head>
 </head>
 
 <body>
     @include('sweetalert::alert')
-
     <div id="app">
-        <div class="main-wrapper">
-            <!-- Header -->
-            @include('components.header')
+        <section class="section">
+            <div class="container mt-5">
+                <div class="row">
+                    <div
+                        class="{{ Request::is('auth-register') ? 'col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2' : 'col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4' }}">
+                        <!-- Footer -->
+                        @include('components.auth-header')
 
-            <!-- Sidebar -->
-            @include('components.sidebar')
+                        <!-- Content -->
+                        @yield('main')
 
-            <!-- Content -->
-            @yield('main')
-
-            <!-- Footer -->
-            @include('components.footer')
-        </div>
-    </div>
-
-    @yield('modal')
-
-    <input type="hidden" class="currency-mask">
-    <div class="modal fade" id="modal-logout">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Konfirmasi Logout?</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Apakah anda yakin ingin keluar dari sistem?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-dark" data-dismiss="modal">
-                        <i class="fas fa-arrow-circle-left">Kembali</i>
-                    </button>
-                    {{-- <form action="{{ route('logout.submit') }}" method="POST">
-                        @csrf
-                        <button class="btn btn-danger">Logout</button>
-                    </form> --}}
+                        <!-- Footer -->
+                        @include('components.auth-footer')
+                    </div>
                 </div>
             </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
+        </section>
     </div>
 
     <!-- General JS Scripts -->
@@ -85,11 +57,11 @@
     <script src="{{ asset('library/selectric/public/jquery.selectric.min.js') }}"></script>
     <script src="{{ asset('js/stisla.js') }}"></script>
 
+    @yield('scripts')
+
     <!-- Template JS File -->
-    <script src="{{ asset('library/sweetalert/dist/sweetalert.min.js') }}"></script>
     <script src="{{ asset('js/scripts.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
-    @yield('scripts')
 </body>
 
 </html>

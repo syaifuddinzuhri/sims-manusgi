@@ -45,7 +45,7 @@ $manajemenSiswaMenu =  [
     'permission' => '',
     'route_prefix' => '',
     'route_name' => '',
-    'icon' => 'fas fa-list-check',
+    'icon' => 'fas fa-users',
     'sub_menus' => [
         [
             'name' => 'Kenaikan Kelas',
@@ -73,7 +73,7 @@ $journalMenu =  [
     'permission' => '',
     'route_prefix' => '',
     'route_name' => '',
-    'icon' => 'fas fa-list-check',
+    'icon' => 'fas fa-book',
     'sub_menus' => [
         [
             'name' => 'Kategori',
@@ -101,7 +101,7 @@ $reportMenu =  [
     'permission' => '',
     'route_prefix' => '',
     'route_name' => '',
-    'icon' => 'fas fa-list-check',
+    'icon' => 'fas fa-chart-simple',
     'sub_menus' => [
         [
             'name' => 'Laporan Transaksi',
@@ -135,7 +135,7 @@ $manajemenPembayaranMenu =  [
     'permission' => '',
     'route_prefix' => '',
     'route_name' => '',
-    'icon' => 'fas fa-list-check',
+    'icon' => 'fas fa-wallet',
     'sub_menus' => [
         [
             'name' => 'POS Pembayaran',
@@ -157,7 +157,7 @@ $transaksiMenu = [
     'permission' => '',
     'route_prefix' => '',
     'route_name' => '',
-    'icon' => 'fas fa-list-check',
+    'icon' => 'fas fa-money-bill-transfer',
     'sub_menus' => [
         [
             'name' => 'Data Pembayaran',
@@ -179,7 +179,7 @@ $settingMenu = [
     'permission' => '',
     'route_prefix' => '',
     'route_name' => '',
-    'icon' => 'fas fa-list-check',
+    'icon' => 'fas fa-gear',
     'sub_menus' => [
         [
             'name' => 'Umum',
