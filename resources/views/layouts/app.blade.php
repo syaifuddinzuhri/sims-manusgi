@@ -13,9 +13,10 @@
     <!-- General CSS Files -->
     <link rel="stylesheet" href="{{ asset('library/bootstrap/dist/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('library/fontawesome/css/all.min.css') }}">
-    <!-- CSS Libraries -->
     <link rel="stylesheet" href="{{ asset('library/select2/dist/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('library/selectric/public/selectric.css') }}">
+    <link rel="stylesheet" href="{{ asset('library/flatpickr/flatpickr.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('library/dropfiy/dropify.min.css') }}">
 
     <!-- Template CSS -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
@@ -25,6 +26,9 @@
 </head>
 
 <body>
+    <div id="loading">
+        <img id="loading-image" src="{{ asset('img/loading.gif') }}" alt="Loading..." />
+    </div>
     @include('sweetalert::alert')
 
     <div id="app">
@@ -83,6 +87,8 @@
     <script src="{{ asset('library/fontawesome/js/all.min.js') }}"></script>
     <script src="{{ asset('library/select2/dist/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('library/selectric/public/jquery.selectric.min.js') }}"></script>
+    <script src="{{ asset('library/flatpickr/flatpickr.js') }}"></script>
+    <script src="{{ asset('library/dropfiy/dropify.min.js') }}"></script>
     <script src="{{ asset('js/stisla.js') }}"></script>
 
     <!-- Template JS File -->
