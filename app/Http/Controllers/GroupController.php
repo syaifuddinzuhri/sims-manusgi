@@ -23,17 +23,16 @@ class GroupController extends Controller
             });
             return DataTables::of($data)
                 ->setRowAttr([
-                    'id' => function ($data) {
-                        return encryptData($data->id);
+                    'url' => function ($data) {
+                        return route('grup.destroy', encryptData($data->id));
                     },
                 ])
                 ->addIndexColumn()
                 ->addColumn('action', function ($data) {
                     $button = '<div class="btn-group" role="group">';
-                    $button .= '<a href="/admin/berita/' . $data->id . '/edit" class="btn btn-sm btn-info">
+                    $button .= '<a href="' . route('grup.edit', encryptData($data->id)) . '" class="btn btn-sm btn-info">
                         <i class="fa fa-edit" aria-hidden="true"></i> </a>';
-                    $button .= '<a href="javascript:void(0)" data-toggle="modal" data-target="#deleteBeritaModal"class="btn btn-sm btn-danger delete">
-                                                <i class="fa fa-trash" aria-hidden="true"></i></a>';
+                    $button .= '<button type="button" data-toggle="modal" data-target="#modal-delete" data-backdrop="static" data-keyboard="false" class="btn btn-sm btn-danger delete"><i class="fa fa-trash" aria-hidden="true"></i></button>';
                     $button .= '</div>';
                     return $button;
                 })

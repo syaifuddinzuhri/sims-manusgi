@@ -24,19 +24,23 @@
                                 class="fas fa-plus-circle"></i> Tambah
                         </a>
                     @endcan
+                    <button type="button" class="btn btn-sm btn-success mb-3" id="sync-table-group"><i
+                            class="fas fa-sync"></i> Reload</button>
                     <div class="card">
                         <div class="card-body">
-                            <table id="table-group" class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Nama</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table id="table-group" class="table table-bordered table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Nama</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -53,7 +57,10 @@
     <script src="{{ asset('library/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
 
     <script>
-        $("#table-group").DataTable({
+        let table = $("#table-group");
+        let btnSyncTable = $("#sync-table-group");
+
+        table.DataTable({
             responsive: true,
             autoWidth: false,
             processing: true,
@@ -79,6 +86,16 @@
                     searchable: false,
                 },
             ],
+        });
+
+        btnSyncTable.on("click", function() {
+            table.DataTable().ajax.reload();
+        });
+
+        table.on("click", ".delete", function(e) {
+            var delete_url = $(this).closest("tr").attr("url");
+            var form_delete = $('#form-delete');
+            form_delete.attr('action', delete_url);
         });
     </script>
 @endsection
