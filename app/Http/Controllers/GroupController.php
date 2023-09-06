@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GroupRequest;
+use App\Services\GroupService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
@@ -10,6 +13,14 @@ use Illuminate\Support\Str;
 
 class GroupController extends Controller
 {
+
+    private $groupService;
+
+    public function __construct()
+    {
+        $this->groupService = new GroupService();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -18,9 +29,7 @@ class GroupController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = cache()->remember('roles', 5, function () {
-                return Role::get();
-            });
+            $data = Role::latest()->get();
             return DataTables::of($data)
                 ->setRowAttr([
                     'url' => function ($data) {
@@ -49,7 +58,7 @@ class GroupController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.master.group.form');
     }
 
     /**
@@ -58,9 +67,21 @@ class GroupController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(GroupRequest $request)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $payload = $request->all();
+
+            Role::create($payload);
+            DB::commit();
+            showSuccessToast('Data berhasil ditambahkan');
+            return redirect()->route('grup.index');
+        } catch (\Throwable $th) {
+            DB::rollback();
+            showErrorToast($th->getMessage());
+            return redirect()->back();
+        }
     }
 
     /**
@@ -82,7 +103,9 @@ class GroupController extends Controller
      */
     public function edit($id)
     {
-        //
+        $is_editing = true;
+        $data = $this->groupService->getDetail($id);
+        return view('pages.master.group.form', compact('is_editing', 'data'));
     }
 
     /**
@@ -92,9 +115,22 @@ class GroupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(GroupRequest $request, $id)
     {
-        //
+
+        DB::beginTransaction();
+        try {
+            $payload = $request->all();
+            $data = $this->groupService->getDetail($id);
+            $data->update($payload);
+            DB::commit();
+            showSuccessToast('Data berhasil dibuah');
+            return redirect()->route('grup.index');
+        } catch (\Throwable $th) {
+            DB::rollback();
+            showErrorToast($th->getMessage());
+            return redirect()->back();
+        }
     }
 
     /**
@@ -105,6 +141,17 @@ class GroupController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $data = $this->groupService->getDetail($id);
+            $data->delete();
+            DB::commit();
+            showSuccessToast('Data berhasil dihapus');
+            return redirect()->back();
+        } catch (\Throwable $th) {
+            DB::rollback();
+            showErrorToast($th->getMessage());
+            return redirect()->back();
+        }
     }
 }

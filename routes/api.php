@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\GroupController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::middleware('api.auth')->group(function () {
+    Route::get('get-group', [GroupController::class, 'getGroup'])->name('api.group.index');
 });

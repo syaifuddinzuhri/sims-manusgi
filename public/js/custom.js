@@ -14,6 +14,7 @@ $(window).on('load', function () {
 })
 
 var APP_URL = "{!! url('/') !!}";
+var API_TOKEN = "2y10OzIb3GbtEXSB5dSgsspmulLK0Y5dpmhTDT97VeBAY94GgEAO";
 var csrf = $('meta[name="csrf-token"]').attr('content');
 
 function formatDate(date) {
