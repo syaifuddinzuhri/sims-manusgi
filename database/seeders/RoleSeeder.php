@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Schema;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class RoleSeeder extends Seeder
@@ -19,9 +20,17 @@ class RoleSeeder extends Seeder
         Schema::disableForeignKeyConstraints();
         Role::truncate();
 
-        Role::create([
+        $permission = Permission::get();
+        $arrPermission = [];
+        foreach ($permission as $key => $value) {
+            array_push($arrPermission, $value->name);
+        }
+
+        $admin = Role::create([
             'name' => 'Super Admin'
         ]);
+        $admin->syncPermissions($arrPermission);
+
         Role::create([
             'name' => 'Kepala Sekolah'
         ]);
