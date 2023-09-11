@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\GroupRequest;
 use App\Services\GroupService;
+use App\Traits\GlobalTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
@@ -13,6 +14,7 @@ use Illuminate\Support\Str;
 
 class GroupController extends Controller
 {
+    use GlobalTrait;
 
     private $service;
 
@@ -29,24 +31,7 @@ class GroupController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Role::latest()->get();
-            return DataTables::of($data)
-                ->setRowAttr([
-                    'url' => function ($data) {
-                        return route('grup.destroy', encryptData($data->id));
-                    },
-                ])
-                ->addIndexColumn()
-                ->addColumn('action', function ($data) {
-                    $button = '<div class="btn-group" role="group">';
-                    $button .= '<a href="' . route('grup.edit', encryptData($data->id)) . '" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                        <i class="fa fa-edit" aria-hidden="true"></i> </a>';
-                    $button .= '<button type="button" data-toggle="modal" data-target="#modal-delete" data-backdrop="static" data-keyboard="false" class="btn btn-sm btn-danger delete" data-toggle="tooltip" data-placement="bottom" title="Hapus"><i class="fa fa-trash-alt" aria-hidden="true"></i></button>';
-                    $button .= '</div>';
-                    return $button;
-                })
-                ->rawColumns([])
-                ->make(true);
+            return $this->service->datatables($request->all());
         }
         return view('pages.master.group.index');
     }
@@ -69,18 +54,13 @@ class GroupController extends Controller
      */
     public function store(GroupRequest $request)
     {
-        DB::beginTransaction();
+        $this->startTransaction();
         try {
             $payload = $request->all();
-
-            Role::create($payload);
-            DB::commit();
-            showSuccessToast('Data berhasil ditambahkan');
-            return redirect()->route('grup.index');
+            $this->service->store($payload);
+            return $this->commitTransaction('Data berhasil ditambahkan', 'grup.index');
         } catch (\Throwable $th) {
-            DB::rollback();
-            showErrorToast($th->getMessage());
-            return redirect()->back();
+            return $this->rollbackTransaction($th->getMessage());
         }
     }
 
@@ -117,19 +97,16 @@ class GroupController extends Controller
      */
     public function update(GroupRequest $request, $id)
     {
-
-        DB::beginTransaction();
+        $this->startTransaction();
         try {
             $payload = $request->all();
-            $data = $this->service->getDetail($id);
+            $data = $this->groupService->getDetail($id);
             $data->update($payload);
             DB::commit();
             showSuccessToast('Data berhasil dibuah');
             return redirect()->route('grup.index');
         } catch (\Throwable $th) {
-            DB::rollback();
-            showErrorToast($th->getMessage());
-            return redirect()->back();
+            return $this->rollbackTransaction($th->getMessage());
         }
     }
 
@@ -141,17 +118,15 @@ class GroupController extends Controller
      */
     public function destroy($id)
     {
-        DB::beginTransaction();
+        $this->startTransaction();
         try {
-            $data = $this->service->getDetail($id);
+            $data = $this->groupService->getDetail($id);
             $data->delete();
             DB::commit();
             showSuccessToast('Data berhasil dihapus');
             return redirect()->back();
         } catch (\Throwable $th) {
-            DB::rollback();
-            showErrorToast($th->getMessage());
-            return redirect()->back();
+            return $this->rollbackTransaction($th->getMessage());
         }
     }
 }

@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use DateTime;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 trait GlobalTrait
@@ -146,5 +147,27 @@ trait GlobalTrait
         }
 
         return $sanitized;
+    }
+
+    public static function startTransaction()
+    {
+        DB::beginTransaction();
+    }
+
+    public static function rollbackTransaction($messages)
+    {
+        DB::rollback();
+        showErrorToast($messages);
+        return redirect()->back();
+    }
+
+    public static function commitTransaction($message, $route = null)
+    {
+        DB::commit();
+        showSuccessToast($message);
+        if ($route) {
+            return redirect()->route($route);
+        }
+        return redirect()->back();
     }
 }
