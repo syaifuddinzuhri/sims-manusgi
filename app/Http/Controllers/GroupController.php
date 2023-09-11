@@ -6,11 +6,12 @@ use App\Http\Requests\GroupRequest;
 use App\Services\GroupService;
 use App\Traits\GlobalTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
-
+use Spatie\Permission\Models\Permission;
 
 class GroupController extends Controller
 {
@@ -119,6 +120,53 @@ class GroupController extends Controller
         try {
             $this->service->delete($id);
             return $this->commitTransaction('Data berhasil dihapus');
+        } catch (\Throwable $th) {
+            return $this->rollbackTransaction($th->getMessage());
+        }
+    }
+
+    /**
+     * permissionPage
+     *
+     * @param  mixed $id
+     * @return void
+     */
+    public function permissionPage($id)
+    {
+        $data = $this->service->getDetail($id);
+        $permissions = $this->service->getPermissions($id);
+        return view('pages.master.group.permission', compact('data', 'permissions', 'id'));
+    }
+
+    /**
+     * submitPermission
+     *
+     * @param  mixed $request
+     * @param  mixed $id
+     * @return void
+     */
+    public function submitPermission(Request $request, $id)
+    {
+        $this->startTransaction();
+        try {
+            $payloadPermissions = $request->permission;
+            $newPermissions = [];
+            foreach ($payloadPermissions as $key => $value) {
+                $name = array_keys($value)[0];
+                if (!in_array($name, $newPermissions)) {
+                    $exp = explode('-', $name);
+                    if ($exp[0] == 'read') {
+                        $parent = $exp[0] . '-' . $exp[1];
+                        if (!in_array($parent, $newPermissions)) {
+                            array_push($newPermissions, $parent);
+                        }
+                    }
+                    array_push($newPermissions, $name);
+                }
+            }
+            $role = $this->service->getDetail($id);
+            $role->syncPermissions($newPermissions);
+            return $this->commitTransaction('Data berhasil disimpan', 'grup.index');
         } catch (\Throwable $th) {
             return $this->rollbackTransaction($th->getMessage());
         }

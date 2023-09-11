@@ -43,6 +43,8 @@ Route::middleware('auth.web')->group(function () {
     });
 
     Route::prefix('master')->group(function () {
+        Route::get('/grup/permission/{id}', [GroupController::class, 'permissionPage'])->name('permission.index');
+        Route::put('/grup/permission/{id}', [GroupController::class, 'submitPermission'])->name('permission.submit');
         Route::resource('grup', GroupController::class);
         Route::resource('kelas', ClassController::class);
         Route::resource('tahun-ajaran', AcademicYearController::class);

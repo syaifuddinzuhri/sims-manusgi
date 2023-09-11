@@ -76,26 +76,26 @@ $manajemenSiswaMenu =  [
 
 $journalMenu =  [
     'name' => 'Jurnal Umum',
-    'permission' => '',
+    'permission' => 'read-journal',
     'route_prefix' => '',
     'route_name' => '',
     'icon' => 'fas fa-book',
     'sub_menus' => [
         [
             'name' => 'Kategori',
-            'permission' => '',
+            'permission' => 'read-journal-kategori',
             'route_prefix' => '',
             'route_name' => '',
         ],
         [
             'name' => 'Pemasukan',
-            'permission' => '',
+            'permission' => 'read-journal-pemasukan',
             'route_prefix' => '',
             'route_name' => '',
         ],
         [
             'name' => 'Pengeluaran',
-            'permission' => '',
+            'permission' => 'read-journal-pengeluaran',
             'route_prefix' => '',
             'route_name' => '',
         ],
