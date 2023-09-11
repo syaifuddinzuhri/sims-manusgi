@@ -27,7 +27,7 @@ class RoleSeeder extends Seeder
         }
 
         $admin = Role::create([
-            'name' => 'Super Admin'
+            'name' => 'Administrator'
         ]);
         $admin->syncPermissions($arrPermission);
 
@@ -36,6 +36,9 @@ class RoleSeeder extends Seeder
         ]);
         Role::create([
             'name' => 'Bendahara'
+        ]);
+        Role::create([
+            'name' => 'Wali Kelas'
         ]);
         Role::create([
             'name' => 'Guru'

@@ -17,13 +17,13 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        User::where('username', 'superadmin')->forceDelete();
-        $role = Role::where('name', 'Super Admin')->first();
+        User::where('username', 'administrator')->forceDelete();
+        $role = Role::where('name', 'Administrator')->first();
         $user = User::create([
-            'username' => 'superadmin',
-            'name' => 'Super Administrator',
-            'password' => Hash::make('superadmin'),
-            'email' => 'superadmin@gmail.com'
+            'username' => 'administrator',
+            'name' => 'Administrator',
+            'password' => Hash::make('admin1234'),
+            'email' => 'administrator@gmail.com'
         ]);
         $user->assignRole($role);
     }
