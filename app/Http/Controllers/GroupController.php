@@ -14,11 +14,11 @@ use Illuminate\Support\Str;
 class GroupController extends Controller
 {
 
-    private $groupService;
+    private $service;
 
     public function __construct()
     {
-        $this->groupService = new GroupService();
+        $this->service = new GroupService();
     }
 
     /**
@@ -104,7 +104,7 @@ class GroupController extends Controller
     public function edit($id)
     {
         $is_editing = true;
-        $data = $this->groupService->getDetail($id);
+        $data = $this->service->getDetail($id);
         return view('pages.master.group.form', compact('is_editing', 'data'));
     }
 
@@ -121,7 +121,7 @@ class GroupController extends Controller
         DB::beginTransaction();
         try {
             $payload = $request->all();
-            $data = $this->groupService->getDetail($id);
+            $data = $this->service->getDetail($id);
             $data->update($payload);
             DB::commit();
             showSuccessToast('Data berhasil dibuah');
@@ -143,7 +143,7 @@ class GroupController extends Controller
     {
         DB::beginTransaction();
         try {
-            $data = $this->groupService->getDetail($id);
+            $data = $this->service->getDetail($id);
             $data->delete();
             DB::commit();
             showSuccessToast('Data berhasil dihapus');

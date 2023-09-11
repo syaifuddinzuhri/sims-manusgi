@@ -38,7 +38,6 @@
     <script src="{{ asset('library/fontawesome/js/all.min.js') }}"></script>
     <script src="{{ asset('js/stisla.js') }}"></script>
     <script src="{{ asset('js/scripts.js') }}"></script>
-    <script src="{{ asset('js/custom.js') }}"></script>
 </body>
 
 </html>

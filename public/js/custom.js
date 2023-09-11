@@ -72,4 +72,6 @@ $(function () {
             return m;
         }, {})
     };
+
+    $(".form-radio").checkboxradio();
 });
