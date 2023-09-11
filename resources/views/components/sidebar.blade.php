@@ -35,7 +35,7 @@
                                         <li class="{{ Request::segment(2) == $submenu['route_prefix'] ? 'active' : '' }}">
                                             <a class="nav-link"
                                                 href="{{ $submenu['route_name'] ? route($submenu['route_name']) : route('dashboard.index') }}"><i
-                                                    class="fas fa-circle-dot mr-2"></i><span>{{ $submenu['name'] }}</span></a>
+                                                    class="fas {{ Request::segment(2) == $submenu['route_prefix'] ? 'fa-circle-dot' : 'fa-circle' }} mr-2"></i><span>{{ $submenu['name'] }}</span></a>
                                         </li>
                                     @endcan
                                 @endforeach

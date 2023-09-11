@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\GroupRequest;
 use App\Services\GroupService;
+use App\Traits\GlobalTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
@@ -13,12 +14,13 @@ use Illuminate\Support\Str;
 
 class GroupController extends Controller
 {
+    use GlobalTrait;
 
-    private $groupService;
+    private $service;
 
     public function __construct()
     {
-        $this->groupService = new GroupService();
+        $this->service = new GroupService();
     }
 
     /**
@@ -69,18 +71,13 @@ class GroupController extends Controller
      */
     public function store(GroupRequest $request)
     {
-        DB::beginTransaction();
+        $this->startTransaction();
         try {
             $payload = $request->all();
-
-            Role::create($payload);
-            DB::commit();
-            showSuccessToast('Data berhasil ditambahkan');
-            return redirect()->route('grup.index');
+            $this->service->store($payload);
+            return $this->commitTransaction('Data berhasil ditambahkan', 'grup.index');
         } catch (\Throwable $th) {
-            DB::rollback();
-            showErrorToast($th->getMessage());
-            return redirect()->back();
+            return $this->rollbackTransaction($th->getMessage());
         }
     }
 
@@ -104,7 +101,7 @@ class GroupController extends Controller
     public function edit($id)
     {
         $is_editing = true;
-        $data = $this->groupService->getDetail($id);
+        $data = $this->service->getDetail($id);
         return view('pages.master.group.form', compact('is_editing', 'data'));
     }
 
@@ -117,19 +114,13 @@ class GroupController extends Controller
      */
     public function update(GroupRequest $request, $id)
     {
-
-        DB::beginTransaction();
+        $this->startTransaction();
         try {
             $payload = $request->all();
-            $data = $this->groupService->getDetail($id);
-            $data->update($payload);
-            DB::commit();
-            showSuccessToast('Data berhasil dibuah');
-            return redirect()->route('grup.index');
+            $this->service->update($payload, $id);
+            return $this->commitTransaction('Data berhasil diubah', 'grup.index');
         } catch (\Throwable $th) {
-            DB::rollback();
-            showErrorToast($th->getMessage());
-            return redirect()->back();
+            return $this->rollbackTransaction($th->getMessage());
         }
     }
 
@@ -141,17 +132,12 @@ class GroupController extends Controller
      */
     public function destroy($id)
     {
-        DB::beginTransaction();
+        $this->startTransaction();
         try {
-            $data = $this->groupService->getDetail($id);
-            $data->delete();
-            DB::commit();
-            showSuccessToast('Data berhasil dihapus');
-            return redirect()->back();
+            $this->service->delete($id);
+            return $this->commitTransaction('Data berhasil dihapus', 'group.index');
         } catch (\Throwable $th) {
-            DB::rollback();
-            showErrorToast($th->getMessage());
-            return redirect()->back();
+            return $this->rollbackTransaction($th->getMessage());
         }
     }
 }
