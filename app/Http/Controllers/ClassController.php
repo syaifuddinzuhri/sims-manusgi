@@ -2,18 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ClassRequest;
+use App\Services\ClassService;
+use App\Traits\GlobalTrait;
 use Illuminate\Http\Request;
 
 class ClassController extends Controller
 {
+    use GlobalTrait;
+
+    private $service;
+
+    public function __construct()
+    {
+        $this->service = new ClassService();
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            return $this->service->datatables($request->all());
+        }
+        return view('pages.master.kelas.index');
     }
 
     /**
@@ -23,7 +38,7 @@ class ClassController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.master.kelas.form');
     }
 
     /**
@@ -32,9 +47,16 @@ class ClassController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ClassRequest $request)
     {
-        //
+        $this->startTransaction();
+        try {
+            $payload = $request->all();
+            $this->service->store($payload);
+            return $this->commitTransaction('Data berhasil ditambahkan', 'kelas.index');
+        } catch (\Throwable $th) {
+            return $this->rollbackTransaction($th->getMessage());
+        }
     }
 
     /**
@@ -56,7 +78,9 @@ class ClassController extends Controller
      */
     public function edit($id)
     {
-        //
+        $is_editing = true;
+        $data = $this->service->getDetail($id);
+        return view('pages.master.kelas.form', compact('is_editing', 'data'));
     }
 
     /**
@@ -66,9 +90,16 @@ class ClassController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ClassRequest $request, $id)
     {
-        //
+        $this->startTransaction();
+        try {
+            $payload = $request->all();
+            $this->service->update($payload, $id);
+            return $this->commitTransaction('Data berhasil diubah', 'kelas.index');
+        } catch (\Throwable $th) {
+            return $this->rollbackTransaction($th->getMessage());
+        }
     }
 
     /**
@@ -79,6 +110,12 @@ class ClassController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->startTransaction();
+        try {
+            $this->service->delete($id);
+            return $this->commitTransaction('Data berhasil dihapus');
+        } catch (\Throwable $th) {
+            return $this->rollbackTransaction($th->getMessage());
+        }
     }
 }

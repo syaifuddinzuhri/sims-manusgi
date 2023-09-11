@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Classes;
+use App\Models\Department;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Schema\Blueprint;
@@ -117,5 +119,19 @@ if (!function_exists('yearOptions')) {
             ];
         }
         return $years;
+    }
+}
+
+if (!function_exists('departmentOptions')) {
+    function departmentOptions()
+    {
+        return Department::select('id', 'name as text')->get();
+    }
+}
+
+if (!function_exists('classOptions')) {
+    function classOptions()
+    {
+        return Classes::select('id', 'name as text')->get();
     }
 }
