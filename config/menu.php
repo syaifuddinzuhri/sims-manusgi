@@ -32,6 +32,12 @@ $masterMenu =  [
             'route_name' => 'tahun-ajaran.index',
         ],
         [
+            'name' => 'Jurusan',
+            'permission' => 'read-master-jurusan',
+            'route_prefix' => 'jurusan',
+            'route_name' => 'jurusan.index',
+        ],
+        [
             'name' => 'Kelas',
             'permission' => 'read-master-kelas',
             'route_prefix' => 'kelas',

@@ -17,6 +17,7 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+        User::where('username', 'superadmin')->forceDelete();
         $role = Role::where('name', 'Super Admin')->first();
         $user = User::create([
             'username' => 'superadmin',
