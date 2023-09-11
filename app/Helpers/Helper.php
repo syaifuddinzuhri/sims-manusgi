@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Schema;
@@ -89,5 +90,32 @@ if (!function_exists('apiException')) {
     function apiException($msg)
     {
         throw new Exception($msg, 400);
+    }
+}
+
+if (!function_exists('semesterBadge')) {
+    function semesterBadge($value)
+    {
+        if($value == 1){
+            return '<span class="badge badge-pill badge-primary">Ganjil</span>';
+        } else {
+            return '<span class="badge badge-pill badge-success">Genap</span>';
+        }
+    }
+}
+
+if (!function_exists('yearOptions')) {
+    function yearOptions($max = 1)
+    {
+        $startYear = Carbon::now()->subYear(50)->format('Y');
+        $endYear = Carbon::now()->addYear($max)->format('Y');
+        $years = [];
+        for ($i = $endYear; $i >= $startYear; $i--) {
+            $years[] = [
+                'id' => (string) $i,
+                'text' => (string) $i,
+            ];
+        }
+        return $years;
     }
 }

@@ -15,10 +15,7 @@ class GroupService
                 ->setRowAttr([
                     'url' => function ($data) {
                         return route('grup.destroy', encryptData($data->id));
-                    },
-                    'id' => function ($data) {
-                        return encryptData($data->id);
-                    },
+                    }
                 ])
                 ->addIndexColumn()
                 ->addColumn('action', function ($data) {

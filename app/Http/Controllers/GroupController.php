@@ -100,11 +100,8 @@ class GroupController extends Controller
         $this->startTransaction();
         try {
             $payload = $request->all();
-            $data = $this->groupService->getDetail($id);
-            $data->update($payload);
-            DB::commit();
-            showSuccessToast('Data berhasil dibuah');
-            return redirect()->route('grup.index');
+            $this->service->update($payload, $id);
+            return $this->commitTransaction('Data berhasil diubah', 'grup.index');
         } catch (\Throwable $th) {
             return $this->rollbackTransaction($th->getMessage());
         }
@@ -120,11 +117,8 @@ class GroupController extends Controller
     {
         $this->startTransaction();
         try {
-            $data = $this->groupService->getDetail($id);
-            $data->delete();
-            DB::commit();
-            showSuccessToast('Data berhasil dihapus');
-            return redirect()->back();
+            $this->service->delete($id);
+            return $this->commitTransaction('Data berhasil dihapus');
         } catch (\Throwable $th) {
             return $this->rollbackTransaction($th->getMessage());
         }

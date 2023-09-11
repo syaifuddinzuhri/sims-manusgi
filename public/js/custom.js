@@ -44,6 +44,10 @@ $(".datepicker").flatpickr({
     dateFormat: "Y-m-d",
 });
 
+$(".datepicker-year").flatpickr({
+    dateFormat: "Y",
+});
+
 $(".daterangepicker").flatpickr({
     dateFormat: "Y-m-d",
     mode: "range",
