@@ -23,7 +23,8 @@ class UserSeeder extends Seeder
             'username' => 'administrator',
             'name' => 'Administrator',
             'password' => 'admin1234',
-            'email' => 'administrator@gmail.com'
+            'email' => 'administrator@gmail.com',
+            'gender' => 'L'
         ]);
         $user->assignRole($role);
     }
