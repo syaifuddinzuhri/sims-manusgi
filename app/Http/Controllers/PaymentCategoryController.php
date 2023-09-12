@@ -2,18 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PaymentCategoryRequest;
+use App\Services\PaymentCategoryService;
+use App\Traits\GlobalTrait;
 use Illuminate\Http\Request;
 
 class PaymentCategoryController extends Controller
 {
+    use GlobalTrait;
+
+    private $service;
+
+    public function __construct()
+    {
+        $this->middleware('permission:read-pembayaran-jenis', ['only' => 'index', 'show']);
+        $this->middleware('permission:create-pembayaran-jenis', ['only' => ['create', 'store']]);
+        $this->middleware('permission:update-pembayaran-jenis', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:delete-pembayaran-jenis', ['only' => ['destroy']]);
+        $this->service = new PaymentCategoryService();
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            return $this->service->datatables($request);
+        }
+        return view('pages.pembayaran.jenis.index');
     }
 
     /**
@@ -23,7 +42,7 @@ class PaymentCategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.pembayaran.jenis.form');
     }
 
     /**
@@ -32,9 +51,16 @@ class PaymentCategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PaymentCategoryRequest $request)
     {
-        //
+        $this->startTransaction();
+        try {
+            $payload = $request->all();
+            $this->service->store($payload);
+            return $this->commitTransaction('Data berhasil ditambahkan', 'jenis.index');
+        } catch (\Throwable $th) {
+            return $this->rollbackTransaction($th->getMessage());
+        }
     }
 
     /**
@@ -56,7 +82,9 @@ class PaymentCategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        $is_editing = true;
+        $data = $this->service->getDetail($id);
+        return view('pages.pembayaran.jenis.form', compact('is_editing', 'data'));
     }
 
     /**
@@ -66,9 +94,16 @@ class PaymentCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PaymentCategoryRequest $request, $id)
     {
-        //
+        $this->startTransaction();
+        try {
+            $payload = $request->all();
+            $this->service->update($payload, $id);
+            return $this->commitTransaction('Data berhasil diubah', 'jenis.index');
+        } catch (\Throwable $th) {
+            return $this->rollbackTransaction($th->getMessage());
+        }
     }
 
     /**
@@ -79,6 +114,12 @@ class PaymentCategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->startTransaction();
+        try {
+            $this->service->delete($id);
+            return $this->commitTransaction('Data berhasil dihapus');
+        } catch (\Throwable $th) {
+            return $this->rollbackTransaction($th->getMessage());
+        }
     }
 }

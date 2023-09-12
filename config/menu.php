@@ -152,8 +152,8 @@ $manajemenPembayaranMenu =  [
         [
             'name' => 'Jenis Pembayaran',
             'permission' => 'read-pembayaran-jenis',
-            'route_prefix' => '',
-            'route_name' => '',
+            'route_prefix' => 'jenis',
+            'route_name' => 'jenis.index',
         ],
     ]
 ];

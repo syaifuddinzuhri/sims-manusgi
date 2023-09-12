@@ -6,6 +6,7 @@ use App\Http\Controllers\ClassController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\PaymentCategoryController;
 use App\Http\Controllers\PaymentTypeController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\StudentController;
@@ -62,6 +63,7 @@ Route::middleware('auth.web')->group(function () {
 
     Route::prefix('manajemen-pembayaran')->group(function () {
         Route::resource('tipe', PaymentTypeController::class);
+        Route::resource('jenis', PaymentCategoryController::class);
     });
 });
 

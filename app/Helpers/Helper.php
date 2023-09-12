@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\AcademicYear;
 use App\Models\Classes;
 use App\Models\Department;
+use App\Models\PaymentType;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Schema\Blueprint;
@@ -109,6 +111,17 @@ if (!function_exists('semesterBadge')) {
     }
 }
 
+if (!function_exists('paymentCategoryTypeBadge')) {
+    function paymentCategoryTypeBadge($value)
+    {
+        if ($value == 'month') {
+            return '<span class="badge badge-pill badge-primary">Bulanan</span>';
+        } else {
+            return '<span class="badge badge-pill badge-success">Bebas</span>';
+        }
+    }
+}
+
 if (!function_exists('genderBadger')) {
     function genderBadger($value)
     {
@@ -156,6 +169,27 @@ if (!function_exists('classOptions')) {
                 'text' => $data->name . ' - ' . $data->department->name,
             ];
         });
+        return $result;
+    }
+}
+
+if (!function_exists('academicYearOptions')) {
+    function academicYearOptions()
+    {
+        $result = AcademicYear::get()->map(function ($data) {
+            return [
+                'id' => $data->id,
+                'text' => $data->first_year . '/' . $data->last_year . ' - ' . ($data->semester == 1 ? 'Ganjil' : 'Genap')
+            ];
+        });
+        return $result;
+    }
+}
+
+if (!function_exists('paymentTypeOptions')) {
+    function paymentTypeOptions()
+    {
+        $result = PaymentType::select('id', 'name as text')->get();
         return $result;
     }
 }

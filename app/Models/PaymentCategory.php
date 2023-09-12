@@ -11,6 +11,10 @@ class PaymentCategory extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $appends = [
+        'name'
+    ];
+
     protected $fillable = [
         'payment_type_id',
         'academic_year_id',
@@ -23,7 +27,7 @@ class PaymentCategory extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function type(): BelongsTo
+    public function payment_type(): BelongsTo
     {
         return $this->belongsTo(PaymentType::class, 'payment_type_id');
     }
@@ -36,5 +40,16 @@ class PaymentCategory extends Model
     public function academic(): BelongsTo
     {
         return $this->belongsTo(AcademicYear::class, 'academic_year_id');
+    }
+
+    public function getNameAttribute()
+    {
+        $payment_type = $this->payment_type ? $this->payment_type->name : '';
+        $academic = $this->academic;
+        $year = " ";
+        if ($academic) {
+            $year = " (TA. " . $academic->first_year . '/' . $academic->last_year . ' - ' . ($academic->semester == 1 ? 'Ganjil' : 'Genap') . ")";
+        }
+        return $payment_type . $year;
     }
 }

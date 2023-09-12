@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
-use App\Models\PaymentType;
+use App\Models\PaymentCategory;
 use Yajra\DataTables\Facades\DataTables;
 
-class PaymentTypeService
+class PaymentCategoryService
 {
     /**
      * datatables
@@ -16,27 +16,36 @@ class PaymentTypeService
     public function datatables($request)
     {
         try {
-            $data = PaymentType::latest()->get();
+            $data = PaymentCategory::with(['payment_type', 'academic'])->latest()->get();
             return DataTables::of($data)
                 ->setRowAttr([
                     'url' => function ($data) {
-                        return route('tipe.destroy', encryptData($data->id));
+                        return route('jenis.destroy', encryptData($data->id));
                     }
                 ])
                 ->addIndexColumn()
+                ->editColumn('pos', function ($data) {
+                    return $data->payment_type ? $data->payment_type->name : "-";
+                })
+                ->editColumn('tahun', function ($data) {
+                    return $data->academic ?  $data->academic->first_year . '/' . $data->academic->last_year . ' - ' . ($data->academic->semester == 1 ? 'Ganjil' : 'Genap') : "-";
+                })
+                ->editColumn('type', function ($data) {
+                    return paymentCategoryTypeBadge($data->type);
+                })
                 ->addColumn('action', function ($data) {
                     $button = '<div class="btn-group" role="group">';
-                    if (permissionCheck('update-pembayaran-pos')) {
-                        $button .= '<a href="' . route('tipe.edit', encryptData($data->id)) . '" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                    if (permissionCheck('update-pembayaran-jenis')) {
+                        $button .= '<a href="' . route('jenis.edit', encryptData($data->id)) . '" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="bottom" title="Edit">
                                     <i class="fa fa-edit" aria-hidden="true"></i> </a>';
                     }
-                    if (permissionCheck('update-pembayaran-pos')) {
+                    if (permissionCheck('update-pembayaran-jenis')) {
                         $button .= '<button type="button" data-toggle="modal" data-target="#modal-delete" data-backdrop="static" data-keyboard="false" class="btn btn-sm btn-danger delete" data-toggle="tooltip" data-placement="bottom" title="Hapus"><i class="fa fa-trash-alt" aria-hidden="true"></i></button>';
                     }
                     $button .= '</div>';
                     return $button;
                 })
-                ->rawColumns(['action'])
+                ->rawColumns(['pos', 'type', 'tahun', 'action'])
                 ->make(true);
         } catch (\Exception $e) {
             throw $e;
@@ -54,7 +63,7 @@ class PaymentTypeService
     public function store($payload)
     {
         try {
-            $data = PaymentType::create($payload);
+            $data = PaymentCategory::create($payload);
             return $data;
         } catch (\Exception $e) {
             throw $e;
@@ -106,7 +115,7 @@ class PaymentTypeService
     {
         try {
             $dataId = decryptData($value);
-            $query = PaymentType::query();
+            $query = PaymentCategory::query();
             if (count($relations) > 0) {
                 $query->with($relations);
             }
