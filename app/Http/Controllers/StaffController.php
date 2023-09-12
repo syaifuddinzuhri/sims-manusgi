@@ -64,7 +64,7 @@ class StaffController extends Controller
             }
             $user = $this->service->store($payload);
             $role = $this->groupService->getDetail(encryptData($payload['grup']));
-            $user->assignRole($role);
+            $user->syncRoles($role);
             return $this->commitTransaction('Data berhasil ditambahkan', 'staff.index');
         } catch (\Throwable $th) {
             return $this->rollbackTransaction($th->getMessage());
@@ -116,6 +116,9 @@ class StaffController extends Controller
                 unset($payload['photo']);
             }
             $this->service->update($payload, $id);
+            $user = $this->service->getDetail($id);
+            $role = $this->groupService->getDetail(encryptData($payload['grup']));
+            $user->syncRoles($role);
             return $this->commitTransaction('Data berhasil diubah', 'staff.index');
         } catch (\Throwable $th) {
             return $this->rollbackTransaction($th->getMessage());

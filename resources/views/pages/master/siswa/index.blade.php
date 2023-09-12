@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Staff')
+@section('title', 'Siswa')
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('library/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
@@ -10,20 +10,20 @@
 @section('main')
     <div class="main-content">
         <section class="section">
-            @include('components.section-header', ['title' => 'Staff', 'index' => true])
+            @include('components.section-header', ['title' => 'Siswa', 'index' => true])
             <div class="row">
                 <div class="col-12">
                     @can('create-master-group')
-                        <a href="{{ route('staff.create') }}" class="btn btn-sm btn-primary mb-3"><i
+                        <a href="{{ route('siswa.create') }}" class="btn btn-sm btn-primary mb-3"><i
                                 class="fas fa-plus-circle"></i> Tambah
                         </a>
                     @endcan
-                    <button type="button" class="btn btn-sm btn-success mb-3" id="sync-table-staff"><i
+                    <button type="button" class="btn btn-sm btn-success mb-3" id="sync-table-siswa"><i
                             class="fas fa-sync"></i> Reload</button>
                     <div class="card">
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table id="table-staff" class="table table-bordered table-striped table-hover">
+                                <table id="table-siswa" class="table table-bordered table-striped table-hover">
                                     <thead>
                                         <tr>
                                             <th>#</th>
@@ -31,7 +31,7 @@
                                             <th>Nama</th>
                                             <th>Username</th>
                                             <th>Email</th>
-                                            <th>Grup</th>
+                                            <th>Kelas</th>
                                             <th>Phone</th>
                                             <th>Gender</th>
                                             <th>Login terakhir</th>
@@ -58,8 +58,8 @@
     <script src="{{ asset('library/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
 
     <script>
-        let table = $("#table-staff");
-        let btnSyncTable = $("#sync-table-staff");
+        let table = $("#table-siswa");
+        let btnSyncTable = $("#sync-table-siswa");
 
         table.DataTable({
             responsive: true,
@@ -67,7 +67,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "{{ route('staff.index') }}",
+                url: "{{ route('siswa.index') }}",
             },
             columns: [{
                     data: "DT_RowIndex",
@@ -88,7 +88,7 @@
                     data: "email",
                 },
                 {
-                    data: "roles",
+                    data: "class",
                 },
                 {
                     data: "phone",

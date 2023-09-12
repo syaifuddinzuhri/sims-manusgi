@@ -99,7 +99,17 @@ class User extends Authenticatable
 
     public function getRoleAttribute()
     {
-        $role = Auth::user()->roles;
+        $role = $this->roles;
         return count($role) > 0 ? $role[0]->id : NULL;
+    }
+
+    public function scopeIsNotStudent($query)
+    {
+        return $query->where('is_student', 0);
+    }
+
+    public function scopeIsStudent($query)
+    {
+        return $query->where('is_student', 1);
     }
 }

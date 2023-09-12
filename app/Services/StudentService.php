@@ -6,16 +6,16 @@ use App\Models\User;
 use Carbon\Carbon;
 use Yajra\DataTables\Facades\DataTables;
 
-class StaffService
+class StudentService
 {
     public function datatables($request)
     {
         try {
-            $data = User::IsNotStudent()->latest()->get();
+            $data = User::with(['class.department'])->IsStudent()->latest()->get();
             return DataTables::of($data)
                 ->setRowAttr([
                     'url' => function ($data) {
-                        return route('staff.destroy', encryptData($data->id));
+                        return route('siswa.destroy', encryptData($data->id));
                     }
                 ])
                 ->addIndexColumn()
@@ -27,21 +27,21 @@ class StaffService
                 ->editColumn('gender', function ($data) {
                     return genderBadger($data->gender);
                 })
-                ->editColumn('roles', function ($data) {
-                    return $data->roles[0]->name;
+                ->editColumn('class', function ($data) {
+                    return $data->class->name . ' - ' . $data->class->department->name;
                 })
                 ->editColumn('last_login', function ($data) {
                     return Carbon::parse($data->last_login)->format('d-m-Y H:i:s');
                 })
                 ->addColumn('action', function ($data) {
                     $button = '<div class="btn-group" role="group">';
-                    $button .= '<a href="' . route('staff.edit', encryptData($data->id)) . '" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                    $button .= '<a href="' . route('siswa.edit', encryptData($data->id)) . '" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="bottom" title="Edit">
                             <i class="fa fa-edit" aria-hidden="true"></i> </a>';
                     $button .= '<button type="button" data-toggle="modal" data-target="#modal-delete" data-backdrop="static" data-keyboard="false" class="btn btn-sm btn-danger delete" data-toggle="tooltip" data-placement="bottom" title="Hapus"><i class="fa fa-trash-alt" aria-hidden="true"></i></button>';
                     $button .= '</div>';
                     return $button;
                 })
-                ->rawColumns(['gender', 'action', 'last_login', 'photo', 'roles'])
+                ->rawColumns(['gender', 'action', 'last_login', 'photo', 'class'])
                 ->make(true);
         } catch (\Exception $e) {
             throw $e;
@@ -53,6 +53,7 @@ class StaffService
     public function store($payload)
     {
         try {
+            $payload['is_student'] = 1;
             $data = User::create($payload);
             return $data;
         } catch (\Exception $e) {

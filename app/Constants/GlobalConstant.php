@@ -19,4 +19,6 @@ class GlobalConstant
     const GENDER_MALE = 'L';
     const GENDER_FEMALE = 'P';
     const GENDER = [self::GENDER_MALE, self::GENDER_FEMALE];
+
+    const ROLE_STUDENT = 'Siswa';
 }

@@ -139,10 +139,23 @@ if (!function_exists('groupOptions')) {
     function groupOptions($is_student = false)
     {
         return Role::select('id', 'name as text')->where(function ($query) use ($is_student) {
-            if(!$is_student){
+            if (!$is_student) {
                 $query->where('name', '!=', 'Siswa');
             }
         })->get();
+    }
+}
+
+if (!function_exists('classOptions')) {
+    function classOptions()
+    {
+        $result = Classes::with('department')->get()->map(function ($data) {
+            return [
+                'id' => $data->id,
+                'text' => $data->name . ' - ' . $data->department->name,
+            ];
+        });
+        return $result;
     }
 }
 

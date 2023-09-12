@@ -162,4 +162,15 @@ class GroupService
             return $e;
         }
     }
+
+    public function getRoleByName($name)
+    {
+        try {
+            return Role::where('name', $name)->first();
+        } catch (\Exception $e) {
+            throw $e;
+            report($e);
+            return $e;
+        }
+    }
 }
