@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class GroupRequest extends FormRequest
+class ChangePasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,21 +23,17 @@ class GroupRequest extends FormRequest
      */
     public function rules()
     {
-        if ($this->isMethod('POST')) {
-            $rules['name'] = ['required', Rule::unique('roles')];
-        } else {
-            $id = decryptData($this->route()->staff);
-            $rules['name'] = ['required', Rule::unique('roles')->ignore($id, 'id')];
-        }
-
-        return $rules;
+        return [
+            'password' => 'required|confirmed|min:6',
+        ];
     }
 
     public function messages()
     {
         return [
-            'name.required' => 'Nama harus diisi',
-            'name.unique' => 'Nama sudah ada',
+            'password.required' => 'Password harus diisi',
+            'password.min' => 'Password minimal 6 karakter',
+            'password.confirmed' => 'Konfirmasi password tidak sama',
         ];
     }
 }

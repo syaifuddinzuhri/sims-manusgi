@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('password_encrypted')->nullable();
             $table->string('phone')->nullable();
             $table->enum('gender', GlobalConstant::GENDER)->nullable();
             $table->string('pob')->nullable();

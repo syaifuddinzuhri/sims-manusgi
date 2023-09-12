@@ -32,6 +32,7 @@ class User extends Authenticatable
         'password',
         'nisn',
         'nip',
+        'password_encrypted',
         'username',
         'email',
         'phone',
@@ -80,6 +81,11 @@ class User extends Authenticatable
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = Hash::make($value);
+    }
+
+    public function setPasswordEncryptedAttribute($value)
+    {
+        $this->attributes['password_encrypted'] = encryptData($value);
     }
 
     /**

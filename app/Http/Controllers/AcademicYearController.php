@@ -16,6 +16,10 @@ class AcademicYearController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:read-master-tahun-ajaran', ['only' => 'index', 'show']);
+        $this->middleware('permission:create-master-tahun-ajaran', ['only' => ['create', 'store']]);
+        $this->middleware('permission:update-master-tahun-ajaran', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:delete-master-tahun-ajaran', ['only' => ['destroy']]);
         $this->service = new AcademicYearService();
     }
 

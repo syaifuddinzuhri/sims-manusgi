@@ -5,6 +5,7 @@ use App\Models\Department;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\URL;
@@ -170,6 +171,25 @@ if (!function_exists('classOptions')) {
     function classOptions()
     {
         return Classes::select('id', 'name as text')->get();
+    }
+}
+
+if (!function_exists('isAdmin')) {
+    function isAdmin()
+    {
+        $role = Auth::user()->roles[0];
+        $roles = Role::find($role->id);
+        if ($roles->name == 'Administrator') {
+            return true;
+        }
+        return false;
+    }
+}
+
+if (!function_exists('permissionCheck')) {
+    function permissionCheck($name)
+    {
+        return Auth::user()->can($name);
     }
 }
 

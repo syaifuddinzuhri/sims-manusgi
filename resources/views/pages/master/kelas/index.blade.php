@@ -13,7 +13,7 @@
             @include('components.section-header', ['title' => 'Kelas', 'index' => true])
             <div class="row">
                 <div class="col-12">
-                    @can('create-master-group')
+                    @can('create-master-kelas')
                         <a href="{{ route('kelas.create') }}" class="btn btn-sm btn-primary mb-3"><i
                                 class="fas fa-plus-circle"></i> Tambah
                         </a>

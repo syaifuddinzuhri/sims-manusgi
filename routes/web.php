@@ -45,6 +45,10 @@ Route::middleware('auth.web')->group(function () {
     Route::prefix('master')->group(function () {
         Route::get('/grup/permission/{id}', [GroupController::class, 'permissionPage'])->name('permission.index');
         Route::put('/grup/permission/{id}', [GroupController::class, 'submitPermission'])->name('permission.submit');
+        Route::get('/staff/password/{id}', [StaffController::class, 'passwordPage'])->name('staff.password.index');
+        Route::put('/staff/password/{id}', [StaffController::class, 'changePassword'])->name('staff.password.submit');
+        Route::get('/siswa/password/{id}', [StudentController::class, 'passwordPage'])->name('siswa.password.index');
+        Route::put('/siswa/password/{id}', [StudentController::class, 'changePassword'])->name('siswa.password.submit');
         Route::resource('grup', GroupController::class);
         Route::resource('kelas', ClassController::class);
         Route::resource('tahun-ajaran', AcademicYearController::class);

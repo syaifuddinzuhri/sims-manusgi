@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Constants\GlobalConstant;
 use App\Constants\UploadPathConstant;
+use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\StudentRequest;
 use App\Models\Classes;
 use App\Services\GroupService;
@@ -20,6 +21,10 @@ class StudentController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:read-master-siswa', ['only' => 'index', 'show']);
+        $this->middleware('permission:create-master-siswa', ['only' => ['create', 'store']]);
+        $this->middleware('permission:update-master-siswa', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:delete-master-siswa', ['only' => ['destroy']]);
         $this->service = new StudentService();
         $this->groupService = new GroupService();
     }
@@ -64,6 +69,7 @@ class StudentController extends Controller
                 $file_name = $this->uploadFile($file, $upload_dir);
                 $payload['photo'] = $file_name;
             }
+            $payload['password_encrypted'] = $payload['password'];
             $user = $this->service->store($payload);
             $role = $this->groupService->getRoleByName(GlobalConstant::ROLE_STUDENT);
             $user->syncRoles($role);
@@ -136,6 +142,27 @@ class StudentController extends Controller
         try {
             $this->service->delete($id);
             return $this->commitTransaction('Data berhasil dihapus');
+        } catch (\Throwable $th) {
+            return $this->rollbackTransaction($th->getMessage());
+        }
+    }
+
+
+    public function passwordPage($id)
+    {
+        if (!isAdmin()) abort(403, 'You are not a administrator');
+        $data = $this->service->getDetail($id);
+        return view('pages.master.siswa.password', compact('data'));
+    }
+
+    public function changePassword(ChangePasswordRequest $request, $id)
+    {
+        $this->startTransaction();
+        try {
+            $payload = $request->only(['password']);
+            $payload['password_encrypted'] = $payload['password'];
+            $this->service->update($payload, $id);
+            return $this->commitTransaction('Data berhasil diubah');
         } catch (\Throwable $th) {
             return $this->rollbackTransaction($th->getMessage());
         }

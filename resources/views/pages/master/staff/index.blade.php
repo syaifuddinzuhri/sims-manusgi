@@ -13,7 +13,7 @@
             @include('components.section-header', ['title' => 'Staff', 'index' => true])
             <div class="row">
                 <div class="col-12">
-                    @can('create-master-group')
+                    @can('create-master-staff')
                         <a href="{{ route('staff.create') }}" class="btn btn-sm btn-primary mb-3"><i
                                 class="fas fa-plus-circle"></i> Tambah
                         </a>
@@ -32,8 +32,8 @@
                                             <th>Username</th>
                                             <th>Email</th>
                                             <th>Grup</th>
-                                            <th>Phone</th>
-                                            <th>Gender</th>
+                                            <th>Nomor HP</th>
+                                            <th>Jenis Kelamin</th>
                                             <th>Login terakhir</th>
                                             <th>Aksi</th>
                                         </tr>

@@ -26,9 +26,13 @@ class AcademicYearService
                 })
                 ->addColumn('action', function ($data) {
                     $button = '<div class="btn-group" role="group">';
-                    $button .= '<a href="' . route('tahun-ajaran.edit', encryptData($data->id)) . '" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                    <i class="fa fa-edit" aria-hidden="true"></i> </a>';
-                    $button .= '<button type="button" data-toggle="modal" data-target="#modal-delete" data-backdrop="static" data-keyboard="false" class="btn btn-sm btn-danger delete" data-toggle="tooltip" data-placement="bottom" title="Hapus"><i class="fa fa-trash-alt" aria-hidden="true"></i></button>';
+                    if (permissionCheck('update-master-tahun-ajaran')) {
+                        $button .= '<a href="' . route('tahun-ajaran.edit', encryptData($data->id)) . '" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                        <i class="fa fa-edit" aria-hidden="true"></i> </a>';
+                    }
+                    if (permissionCheck('delete-master-tahun-ajaran')) {
+                        $button .= '<button type="button" data-toggle="modal" data-target="#modal-delete" data-backdrop="static" data-keyboard="false" class="btn btn-sm btn-danger delete" data-toggle="tooltip" data-placement="bottom" title="Hapus"><i class="fa fa-trash-alt" aria-hidden="true"></i></button>';
+                    }
                     $button .= '</div>';
                     return $button;
                 })

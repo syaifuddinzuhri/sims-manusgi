@@ -21,6 +21,10 @@ class GroupController extends Controller
 
     public function __construct()
     {
+        $this->middleware('permission:read-master-group', ['only' => 'index', 'show']);
+        $this->middleware('permission:create-master-group', ['only' => ['create', 'store']]);
+        $this->middleware('permission:update-master-group', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:delete-master-group', ['only' => ['destroy']]);
         $this->service = new GroupService();
     }
 
