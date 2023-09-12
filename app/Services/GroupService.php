@@ -30,11 +30,11 @@ class GroupService
                     $button = '<div class="btn-group" role="group">';
                     $button .= '<a href="' . route('permission.index', encryptData($data->id)) . '" class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="bottom" title="Manajemen Akses">
                             <i class="fa fa-lock" aria-hidden="true"></i> </a>';
-                    if ($data->name != 'Administrator' && permissionCheck('update-master-group')) {
+                    if (!checkGroup($data->name) && permissionCheck('update-master-group')) {
                         $button .= '<a href="' . route('grup.edit', encryptData($data->id)) . '" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="bottom" title="Edit">
                                 <i class="fa fa-edit" aria-hidden="true"></i> </a>';
                     }
-                    if ($data->name != 'Administrator' && permissionCheck('delete-master-group')) {
+                    if (!checkGroup($data->name) && permissionCheck('delete-master-group')) {
                         $button .= '<button type="button" data-toggle="modal" data-target="#modal-delete" data-backdrop="static" data-keyboard="false" class="btn btn-sm btn-danger delete" data-toggle="tooltip" data-placement="bottom" title="Hapus"><i class="fa fa-trash-alt" aria-hidden="true"></i></button>';
                     }
                     $button .= '</div>';

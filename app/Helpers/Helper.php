@@ -210,3 +210,10 @@ if (!function_exists('fileUrl')) {
         return URL::to('/') . '/' . $path . '/' . $field;
     }
 }
+
+if (!function_exists('checkGroup')) {
+    function checkGroup($name)
+    {
+        return in_array($name, ['Administrator', 'Kepala Sekolah', 'Guru', 'Siswa', 'Bendahara', 'Wali Kelas']);
+    }
+}
