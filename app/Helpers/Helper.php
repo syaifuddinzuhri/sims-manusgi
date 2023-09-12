@@ -7,7 +7,9 @@ use Carbon\Carbon;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\URL;
 use RealRashid\SweetAlert\Facades\Alert;
+use Spatie\Permission\Models\Role;
 
 if (!function_exists('formatIDR')) {
     function formatIDR($value, $is_prefix = false)
@@ -98,10 +100,21 @@ if (!function_exists('apiException')) {
 if (!function_exists('semesterBadge')) {
     function semesterBadge($value)
     {
-        if($value == 1){
+        if ($value == 1) {
             return '<span class="badge badge-pill badge-primary">Ganjil</span>';
         } else {
             return '<span class="badge badge-pill badge-success">Genap</span>';
+        }
+    }
+}
+
+if (!function_exists('genderBadger')) {
+    function genderBadger($value)
+    {
+        if ($value == 'L') {
+            return '<span class="badge badge-pill badge-primary">Laki-laki</span>';
+        } else if ($value == 'P') {
+            return '<span class="badge badge-pill badge-info">Perempuan</span>';
         }
     }
 }
@@ -122,6 +135,17 @@ if (!function_exists('yearOptions')) {
     }
 }
 
+if (!function_exists('groupOptions')) {
+    function groupOptions($is_student = false)
+    {
+        return Role::select('id', 'name as text')->where(function ($query) use ($is_student) {
+            if(!$is_student){
+                $query->where('name', '!=', 'Siswa');
+            }
+        })->get();
+    }
+}
+
 if (!function_exists('departmentOptions')) {
     function departmentOptions()
     {
@@ -133,5 +157,12 @@ if (!function_exists('classOptions')) {
     function classOptions()
     {
         return Classes::select('id', 'name as text')->get();
+    }
+}
+
+if (!function_exists('fileUrl')) {
+    function fileUrl($path, $field)
+    {
+        return URL::to('/') . '/' . $path . '/' . $field;
     }
 }

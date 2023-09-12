@@ -66,14 +66,6 @@ trait GlobalTrait
         throw new \Exception($msg, $code);
     }
 
-    public static function uploadFile($file, $path, $rekursif = true)
-    {
-        if ($file) {
-            $name = Storage::disk('public_uploads')->put($path, $file);
-            return $name;
-        }
-    }
-
     public static function generateGuid()
     {
         if (function_exists('com_create_guid') === true)
@@ -169,5 +161,15 @@ trait GlobalTrait
             return redirect()->route($route);
         }
         return redirect()->back();
+    }
+
+    public static function uploadFile($file, $path, $rekursif = true)
+    {
+        if ($file) {
+            $name = Storage::disk('public_uploads')->put($path, $file);
+            chmod($path, 0777);
+            $exp = explode('/', $name);
+            return end($exp);
+        }
     }
 }

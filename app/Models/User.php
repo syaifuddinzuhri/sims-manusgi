@@ -3,10 +3,17 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Constants\UploadPathConstant;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\URL;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -38,8 +45,14 @@ class User extends Authenticatable
         'mother_name',
         'parent_phone',
         'is_active',
+        'is_student',
         'is_alumni',
-        'passed_year'
+        'passed_year',
+        'last_login'
+    ];
+
+    protected $appends = [
+        'role'
     ];
 
     /**
@@ -60,4 +73,33 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Hash the password on save/update.
+     */
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = Hash::make($value);
+    }
+
+    /**
+     * Get the class that owns the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function class(): BelongsTo
+    {
+        return $this->belongsTo(Classes::class, 'class_id');
+    }
+
+    public function getPhotoAttribute()
+    {
+        return $this->attributes['photo'] ? fileUrl(UploadPathConstant::USER_PHOTOS, $this->attributes['photo']) : null;
+    }
+
+    public function getRoleAttribute()
+    {
+        $role = Auth::user()->roles;
+        return count($role) > 0 ? $role[0]->id : NULL;
+    }
 }

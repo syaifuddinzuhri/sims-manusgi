@@ -2,18 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\UploadPathConstant;
+use App\Http\Requests\StaffRequest;
+use App\Services\GroupService;
+use App\Services\StaffService;
+use App\Traits\GlobalTrait;
 use Illuminate\Http\Request;
 
 class StaffController extends Controller
 {
+    use GlobalTrait;
+
+    private $service;
+    private $groupService;
+
+    public function __construct()
+    {
+        $this->service = new StaffService();
+        $this->groupService = new GroupService();
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            return $this->service->datatables($request->all());
+        }
+        return view('pages.master.staff.index');
     }
 
     /**
@@ -23,7 +42,7 @@ class StaffController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.master.staff.form');
     }
 
     /**
@@ -32,9 +51,24 @@ class StaffController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StaffRequest $request)
     {
-        //
+        $this->startTransaction();
+        try {
+            $payload = $request->all();
+            if ($request->hasFile('photo')) {
+                $file = $request->file('photo');
+                $upload_dir = UploadPathConstant::USER_PHOTOS;
+                $file_name = $this->uploadFile($file, $upload_dir);
+                $payload['photo'] = $file_name;
+            }
+            $user = $this->service->store($payload);
+            $role = $this->groupService->getDetail(encryptData($payload['grup']));
+            $user->assignRole($role);
+            return $this->commitTransaction('Data berhasil ditambahkan', 'staff.index');
+        } catch (\Throwable $th) {
+            return $this->rollbackTransaction($th->getMessage());
+        }
     }
 
     /**
@@ -56,7 +90,9 @@ class StaffController extends Controller
      */
     public function edit($id)
     {
-        //
+        $is_editing = true;
+        $data = $this->service->getDetail($id);
+        return view('pages.master.staff.form', compact('is_editing', 'data'));
     }
 
     /**
@@ -66,9 +102,24 @@ class StaffController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StaffRequest $request, $id)
     {
-        //
+        $this->startTransaction();
+        try {
+            $payload = $request->all();
+            if ($request->hasFile('photo')) {
+                $file = $request->file('photo');
+                $upload_dir = UploadPathConstant::USER_PHOTOS;
+                $file_name = $this->uploadFile($file, $upload_dir);
+                $payload['photo'] = $file_name;
+            } else {
+                unset($payload['photo']);
+            }
+            $this->service->update($payload, $id);
+            return $this->commitTransaction('Data berhasil diubah', 'staff.index');
+        } catch (\Throwable $th) {
+            return $this->rollbackTransaction($th->getMessage());
+        }
     }
 
     /**
@@ -79,6 +130,12 @@ class StaffController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->startTransaction();
+        try {
+            $this->service->delete($id);
+            return $this->commitTransaction('Data berhasil dihapus');
+        } catch (\Throwable $th) {
+            return $this->rollbackTransaction($th->getMessage());
+        }
     }
 }

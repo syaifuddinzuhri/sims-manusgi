@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class GroupRequest extends FormRequest
 {
@@ -23,15 +24,21 @@ class GroupRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' => 'required',
-        ];
+        if ($this->isMethod('POST')) {
+            $rules['name'] = ['required', Rule::unique('roles')->whereNull('deleted_at')];
+        } else {
+            $id = decryptData($this->route()->staff);
+            $rules['name'] = ['required', Rule::unique('roles')->ignore($id, 'id')->whereNull('deleted_at')];
+        }
+
+        return $rules;
     }
 
     public function messages()
     {
         return [
             'name.required' => 'Nama harus diisi',
+            'name.unique' => 'Nama sudah ada',
         ];
     }
 }

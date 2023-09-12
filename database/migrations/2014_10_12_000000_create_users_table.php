@@ -34,9 +34,11 @@ return new class extends Migration
             $table->string('mother_name')->nullable();
             $table->string('parent_phone')->nullable();
             $table->tinyInteger('is_active')->nullable()->default(1);
+            $table->tinyInteger('is_student')->nullable()->default(0);
             $table->tinyInteger('is_alumni')->nullable()->default(0);
             $table->integer('passed_year')->nullable();
             $table->rememberToken();
+            $table->timestamp('last_login')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
