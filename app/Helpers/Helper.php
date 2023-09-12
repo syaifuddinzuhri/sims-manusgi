@@ -133,6 +133,17 @@ if (!function_exists('genderBadger')) {
     }
 }
 
+if (!function_exists('journalTypeBadge')) {
+    function journalTypeBadge($value)
+    {
+        if ($value == 'in') {
+            return '<span class="badge badge-pill badge-success">Pemasukan</span>';
+        } else if ($value == 'out') {
+            return '<span class="badge badge-pill badge-danger">Pengeluaran</span>';
+        }
+    }
+}
+
 if (!function_exists('yearOptions')) {
     function yearOptions($max = 1)
     {
@@ -200,6 +211,17 @@ if (!function_exists('genderOptions')) {
         $result = [
             ['id' => 'L', 'text' => 'Laki-laki'],
             ['id' => 'P', 'text' => 'Perempuan'],
+        ];
+        return $result;
+    }
+}
+
+if (!function_exists('journalTypeOptions')) {
+    function journalTypeOptions()
+    {
+        $result = [
+            ['id' => 'in', 'text' => 'Pemasukan'],
+            ['id' => 'out', 'text' => 'Pengeluaran'],
         ];
         return $result;
     }

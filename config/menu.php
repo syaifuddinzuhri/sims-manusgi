@@ -77,15 +77,15 @@ $manajemenSiswaMenu =  [
 $journalMenu =  [
     'name' => 'Jurnal Umum',
     'permission' => 'read-journal',
-    'route_prefix' => '',
+    'route_prefix' => 'jurnal',
     'route_name' => '',
     'icon' => 'fas fa-book',
     'sub_menus' => [
         [
             'name' => 'Kategori',
             'permission' => 'read-journal-kategori',
-            'route_prefix' => '',
-            'route_name' => '',
+            'route_prefix' => 'kategori',
+            'route_name' => 'kategori.index',
         ],
         [
             'name' => 'Pemasukan',

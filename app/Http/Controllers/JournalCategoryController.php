@@ -2,18 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\JournalCategoryRequest;
+use App\Services\JournalCategoryService;
+use App\Traits\GlobalTrait;
 use Illuminate\Http\Request;
 
 class JournalCategoryController extends Controller
 {
+    use GlobalTrait;
+
+    private $service;
+
+    public function __construct()
+    {
+        $this->middleware('permission:read-journal-kategori', ['only' => 'index', 'show']);
+        $this->middleware('permission:create-journal-kategori', ['only' => ['create', 'store']]);
+        $this->middleware('permission:update-journal-kategori', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:delete-journal-kategori', ['only' => ['destroy']]);
+        $this->service = new JournalCategoryService();
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            return $this->service->datatables($request);
+        }
+        return view('pages.jurnal.kategori.index');
     }
 
     /**
@@ -23,7 +42,8 @@ class JournalCategoryController extends Controller
      */
     public function create()
     {
-        //
+
+        return view('pages.jurnal.kategori.form');
     }
 
     /**
@@ -32,9 +52,16 @@ class JournalCategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(JournalCategoryRequest $request)
     {
-        //
+        $this->startTransaction();
+        try {
+            $payload = $request->all();
+            $this->service->store($payload);
+            return $this->commitTransaction('Data berhasil ditambahkan', 'kategori.index');
+        } catch (\Throwable $th) {
+            return $this->rollbackTransaction($th->getMessage());
+        }
     }
 
     /**
@@ -56,7 +83,9 @@ class JournalCategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        $is_editing = true;
+        $data = $this->service->getDetail($id);
+        return view('pages.jurnal.kategori.form', compact('is_editing', 'data'));
     }
 
     /**
@@ -66,9 +95,16 @@ class JournalCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(JournalCategoryRequest $request, $id)
     {
-        //
+        $this->startTransaction();
+        try {
+            $payload = $request->all();
+            $this->service->update($payload, $id);
+            return $this->commitTransaction('Data berhasil diubah', 'kategori.index');
+        } catch (\Throwable $th) {
+            return $this->rollbackTransaction($th->getMessage());
+        }
     }
 
     /**
@@ -79,6 +115,12 @@ class JournalCategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->startTransaction();
+        try {
+            $this->service->delete($id);
+            return $this->commitTransaction('Data berhasil dihapus');
+        } catch (\Throwable $th) {
+            return $this->rollbackTransaction($th->getMessage());
+        }
     }
 }
