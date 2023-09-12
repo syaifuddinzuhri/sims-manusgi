@@ -12,10 +12,10 @@ class StudentService
     {
         try {
             $query = User::with(['class.department'])->IsStudent();
-            if($request->class){
+            if ($request->class) {
                 $query->where('class_id', $request->class);
             }
-            if($request->gender){
+            if ($request->gender) {
                 $query->where('gender', $request->gender);
             }
             $data = $query->latest()->get();
@@ -35,7 +35,7 @@ class StudentService
                     return genderBadger($data->gender);
                 })
                 ->editColumn('class', function ($data) {
-                    return $data->class->name . ' - ' . $data->class->department->name;
+                    return $data->class ? $data->class->name . ' - ' . $data->class->department->name : '-';
                 })
                 ->editColumn('last_login', function ($data) {
                     return Carbon::parse($data->last_login)->format('d-m-Y H:i:s');

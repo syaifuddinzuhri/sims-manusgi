@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('nisn')->nullable();
             $table->string('nip')->nullable();
             $table->string('username')->unique();
-            $table->string('email')->unique();
+            $table->string('email')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('password_encrypted')->nullable();

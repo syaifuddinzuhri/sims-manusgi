@@ -20,6 +20,8 @@
                     @endcan
                     <button type="button" class="btn btn-sm btn-success mb-3" id="sync-table-siswa"><i
                             class="fas fa-sync"></i> Reload</button>
+                    <a href="{{ route('siswa.import.index') }}" class="btn btn-sm btn-info mb-3" id="sync-table-siswa"><i
+                            class="fas fa-file-import"></i> Import Data Siswa</a>
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
@@ -93,12 +95,12 @@
         let classFilter = '';
         let genderFilter = '';
 
-        $("#class-filter").on("change", function(){
+        $("#class-filter").on("change", function() {
             classFilter = $(this).val();
             datatable.draw();
         })
 
-        $("#gender-filter").on("change", function(){
+        $("#gender-filter").on("change", function() {
             genderFilter = $(this).val();
             datatable.draw();
         })
@@ -110,7 +112,7 @@
             serverSide: true,
             ajax: {
                 url: "{{ route('siswa.index') }}",
-                data: function(data){
+                data: function(data) {
                     data.class = classFilter;
                     data.gender = genderFilter;
                 }

@@ -49,6 +49,8 @@ Route::middleware('auth.web')->group(function () {
         Route::put('/staff/password/{id}', [StaffController::class, 'changePassword'])->name('staff.password.submit');
         Route::get('/siswa/password/{id}', [StudentController::class, 'passwordPage'])->name('siswa.password.index');
         Route::put('/siswa/password/{id}', [StudentController::class, 'changePassword'])->name('siswa.password.submit');
+        Route::get('/siswa/import', [StudentController::class, 'importPage'])->name('siswa.import.index');
+        Route::post('/siswa/import', [StudentController::class, 'importSubmit'])->name('siswa.import.submit');
         Route::resource('grup', GroupController::class);
         Route::resource('kelas', ClassController::class);
         Route::resource('tahun-ajaran', AcademicYearController::class);
