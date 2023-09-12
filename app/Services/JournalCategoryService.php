@@ -30,11 +30,11 @@ class JournalCategoryService
                 })
                 ->addColumn('action', function ($data) {
                     $button = '<div class="btn-group" role="group">';
-                    if (permissionCheck('update-journal-kategori')) {
+                    if (!$data->is_lock && permissionCheck('update-journal-kategori')) {
                         $button .= '<a href="' . route('kategori.edit', encryptData($data->id)) . '" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="bottom" title="Edit">
                                 <i class="fa fa-edit" aria-hidden="true"></i> </a>';
                     }
-                    if (permissionCheck('delete-journal-kategori')) {
+                    if (!$data->is_lock && permissionCheck('delete-journal-kategori')) {
                         $button .= '<button type="button" data-toggle="modal" data-target="#modal-delete" data-backdrop="static" data-keyboard="false" class="btn btn-sm btn-danger delete" data-toggle="tooltip" data-placement="bottom" title="Hapus"><i class="fa fa-trash-alt" aria-hidden="true"></i></button>';
                     }
                     $button .= '</div>';

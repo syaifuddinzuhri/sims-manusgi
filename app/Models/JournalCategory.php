@@ -13,6 +13,7 @@ class JournalCategory extends Model
     protected $fillable = [
         'name',
         'type',
+        'is_lock',
         'notes',
         'is_active'
     ];

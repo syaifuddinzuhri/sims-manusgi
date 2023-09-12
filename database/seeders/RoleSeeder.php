@@ -27,24 +27,30 @@ class RoleSeeder extends Seeder
         }
 
         $admin = Role::create([
-            'name' => 'Administrator'
+            'name' => 'Administrator',
+            'is_lock' => 1
         ]);
         $admin->syncPermissions($arrPermission);
 
         Role::create([
-            'name' => 'Kepala Sekolah'
+            'name' => 'Kepala Sekolah',
+            'is_lock' => 1
         ]);
         Role::create([
-            'name' => 'Bendahara'
+            'name' => 'Bendahara',
+            'is_lock' => 1
         ]);
         Role::create([
-            'name' => 'Wali Kelas'
+            'name' => 'Wali Kelas',
+            'is_lock' => 1
         ]);
         Role::create([
-            'name' => 'Guru'
+            'name' => 'Guru',
+            'is_lock' => 1
         ]);
         Role::create([
-            'name' => 'Siswa'
+            'name' => 'Siswa',
+            'is_lock' => 1
         ]);
     }
 }
