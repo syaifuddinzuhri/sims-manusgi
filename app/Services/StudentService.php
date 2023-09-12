@@ -11,7 +11,14 @@ class StudentService
     public function datatables($request)
     {
         try {
-            $data = User::with(['class.department'])->IsStudent()->latest()->get();
+            $query = User::with(['class.department'])->IsStudent();
+            if($request->class){
+                $query->where('class_id', $request->class);
+            }
+            if($request->gender){
+                $query->where('gender', $request->gender);
+            }
+            $data = $query->latest()->get();
             return DataTables::of($data)
                 ->setRowAttr([
                     'url' => function ($data) {

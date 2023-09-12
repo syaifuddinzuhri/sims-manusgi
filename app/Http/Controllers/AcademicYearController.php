@@ -31,7 +31,7 @@ class AcademicYearController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            return $this->service->datatables($request->all());
+            return $this->service->datatables($request);
         }
         return view('pages.master.tahun-ajaran.index');
     }

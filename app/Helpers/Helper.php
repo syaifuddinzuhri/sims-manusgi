@@ -160,6 +160,17 @@ if (!function_exists('classOptions')) {
     }
 }
 
+if (!function_exists('genderOptions')) {
+    function genderOptions()
+    {
+        $result = [
+            ['id' => 'L', 'text' => 'Laki-laki'],
+            ['id' => 'P', 'text' => 'Perempuan'],
+        ];
+        return $result;
+    }
+}
+
 if (!function_exists('departmentOptions')) {
     function departmentOptions()
     {

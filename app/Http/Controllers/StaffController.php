@@ -35,7 +35,7 @@ class StaffController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            return $this->service->datatables($request->all());
+            return $this->service->datatables($request);
         }
         return view('pages.master.staff.index');
     }

@@ -36,7 +36,7 @@ class GroupController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            return $this->service->datatables($request->all());
+            return $this->service->datatables($request);
         }
         return view('pages.master.group.index');
     }

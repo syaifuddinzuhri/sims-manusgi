@@ -5,10 +5,10 @@
 <div class="main-sidebar sidebar-style-2">
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand text-center">
-            <div class="d-flex align-items-center justify-content-center my-2">
+            <div class="d-flex align-items-center justify-content-center my-2 px-3">
                 <img src="{{ asset('img/logo.png') }}" alt="app-logo" width="50px" height="50px">
                 <div class="text-left">
-                    <h5 class="mb-0 ml-2 text-primary">POS</h5>
+                    <h5 class="mb-0 ml-2 text-primary">SIMS</h5>
                     <h6 class="mb-0 ml-2">MA NU Sunan Giri</h6>
                 </div>
             </div>

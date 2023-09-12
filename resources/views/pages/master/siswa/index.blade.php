@@ -22,6 +22,36 @@
                             class="fas fa-sync"></i> Reload</button>
                     <div class="card">
                         <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group mb-0">
+                                        <label for="class-filter">Kelas</label>
+                                        <select id="class-filter" class="form-control select2">
+                                            <option value="">Semua</option>
+                                            @foreach (classOptions() as $item)
+                                                <option value="{{ $item['id'] }}">
+                                                    {{ $item['text'] }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group mb-0">
+                                        <label for="gender-filter">Jenis Kelamin</label>
+                                        <select id="gender-filter" class="form-control select2">
+                                            <option value="">Semua</option>
+                                            @foreach (genderOptions() as $item)
+                                                <option value="{{ $item['id'] }}">
+                                                    {{ $item['text'] }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
                             <div class="table-responsive">
                                 <table id="table-siswa" class="table table-bordered table-striped table-hover">
                                     <thead>
@@ -50,7 +80,6 @@
     </div>
 @endsection
 
-
 @section('scripts')
     <script src="{{ asset('library/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('library/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
@@ -61,13 +90,30 @@
         let table = $("#table-siswa");
         let btnSyncTable = $("#sync-table-siswa");
 
-        table.DataTable({
+        let classFilter = '';
+        let genderFilter = '';
+
+        $("#class-filter").on("change", function(){
+            classFilter = $(this).val();
+            datatable.draw();
+        })
+
+        $("#gender-filter").on("change", function(){
+            genderFilter = $(this).val();
+            datatable.draw();
+        })
+
+        var datatable = table.DataTable({
             responsive: true,
             autoWidth: false,
             processing: true,
             serverSide: true,
             ajax: {
                 url: "{{ route('siswa.index') }}",
+                data: function(data){
+                    data.class = classFilter;
+                    data.gender = genderFilter;
+                }
             },
             columns: [{
                     data: "DT_RowIndex",
