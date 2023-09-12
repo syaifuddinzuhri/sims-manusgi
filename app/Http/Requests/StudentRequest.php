@@ -36,7 +36,7 @@ class StudentRequest extends FormRequest
             $rules['username'] = ['required', Rule::unique('users')->whereNull('deleted_at')];
             $rules['password'] = 'required|confirmed|min:6';
         } else {
-            $id = decryptData($this->route()->staff);
+            $id = decryptData($this->route()->siswa);
             $rules['username'] = ['required', Rule::unique('users')->ignore($id, 'id')->whereNull('deleted_at')];
         }
 

@@ -69,8 +69,9 @@ class StudentController extends Controller
             if ($request->hasFile('photo')) {
                 $file = $request->file('photo');
                 $upload_dir = UploadPathConstant::USER_PHOTOS;
-                $file_name = $this->uploadFile($file, $upload_dir);
-                $payload['photo'] = $file_name;
+                $filename = $payload['username'];
+                $upload_filename = $this->uploadFile($file, $upload_dir, $filename);
+                $payload['photo'] = $upload_filename;
             }
             $payload['password_encrypted'] = $payload['password'];
             $user = $this->service->store($payload);
@@ -121,8 +122,9 @@ class StudentController extends Controller
             if ($request->hasFile('photo')) {
                 $file = $request->file('photo');
                 $upload_dir = UploadPathConstant::USER_PHOTOS;
-                $file_name = $this->uploadFile($file, $upload_dir);
-                $payload['photo'] = $file_name;
+                $filename = $payload['username'];
+                $upload_filename = $this->uploadFile($file, $upload_dir, $filename);
+                $payload['photo'] = $upload_filename;
             } else {
                 unset($payload['photo']);
             }
@@ -182,8 +184,9 @@ class StudentController extends Controller
         try {
             $file = $request->file('file');
             $upload_dir = UploadPathConstant::STUDENT_IMPORT;
-            $file_name = $this->uploadFile($file, $upload_dir);
-            $path = public_path('/' . $upload_dir . '/' . $file_name);
+            $filename = 'import-siswa';
+            $upload_filename = $this->uploadFile($file, $upload_dir, $filename);
+            $path = public_path('/' . $upload_dir . '/' . $upload_filename);
             Excel::import(new StudentImport, $path);
             return $this->commitTransaction('Import data berhasil', 'siswa.index');
         } catch (\Throwable $th) {

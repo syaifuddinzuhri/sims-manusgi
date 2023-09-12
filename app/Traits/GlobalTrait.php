@@ -165,13 +165,17 @@ trait GlobalTrait
         return redirect()->back();
     }
 
-    public static function uploadFile($file, $path, $rekursif = true)
+    public static function uploadFile($file, $path, $name)
     {
         if ($file) {
-            $name = Storage::disk('public_uploads')->put($path, $file);
+            // $name = Storage::disk('public_uploads')->put($path, $file);
+            $extension = $file->getClientOriginalExtension();
+            $filename = $name . '-' . time() . '.' .  $extension;
+
+            $result = $file->storeAs($path, $filename, ['disk' => 'public_uploads']);
             chmod(UploadPathConstant::UPLOAD_DIR, 0777);
             chmod($path, 0777);
-            $exp = explode('/', $name);
+            $exp = explode('/', $result);
             return end($exp);
         }
     }

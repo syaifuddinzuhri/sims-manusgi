@@ -64,8 +64,9 @@ class StaffController extends Controller
             if ($request->hasFile('photo')) {
                 $file = $request->file('photo');
                 $upload_dir = UploadPathConstant::USER_PHOTOS;
-                $file_name = $this->uploadFile($file, $upload_dir);
-                $payload['photo'] = $file_name;
+                $filename = $payload['username'];
+                $upload_filename = $this->uploadFile($file, $upload_dir, $filename);
+                $payload['photo'] = $upload_filename;
             }
             $payload['password_encrypted'] = $payload['password'];
             $user = $this->service->store($payload);
@@ -113,14 +114,17 @@ class StaffController extends Controller
         $this->startTransaction();
         try {
             $payload = $request->all();
+
             if ($request->hasFile('photo')) {
                 $file = $request->file('photo');
                 $upload_dir = UploadPathConstant::USER_PHOTOS;
-                $file_name = $this->uploadFile($file, $upload_dir);
-                $payload['photo'] = $file_name;
+                $filename = $payload['username'];
+                $upload_filename = $this->uploadFile($file, $upload_dir, $filename);
+                $payload['photo'] = $upload_filename;
             } else {
                 unset($payload['photo']);
             }
+
             $this->service->update($payload, $id);
             $user = $this->service->getDetail($id);
             $role = $this->groupService->getDetail(encryptData($payload['grup']));
