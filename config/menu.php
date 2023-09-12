@@ -139,15 +139,15 @@ $reportMenu =  [
 $manajemenPembayaranMenu =  [
     'name' => 'Manajemen Pembayaran',
     'permission' => 'read-pembayaran',
-    'route_prefix' => '',
+    'route_prefix' => 'manajemen-pembayaran',
     'route_name' => '',
     'icon' => 'fas fa-wallet',
     'sub_menus' => [
         [
             'name' => 'POS Pembayaran',
             'permission' => 'read-pembayaran-pos',
-            'route_prefix' => '',
-            'route_name' => '',
+            'route_prefix' => 'tipe',
+            'route_name' => 'tipe.index',
         ],
         [
             'name' => 'Jenis Pembayaran',

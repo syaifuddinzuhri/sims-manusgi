@@ -16,9 +16,9 @@
                 <div class="d-sm-none d-lg-inline-block">{{ authUser()->name }}</div>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
-                <a href="{{ route('profile.show') }}" class="dropdown-item has-icon">
+                {{-- <a href="{{ route('profile.show') }}" class="dropdown-item has-icon">
                     <i class="far fa-user"></i> Profil
-                </a>
+                </a> --}}
                 <a href="#" class="dropdown-item has-icon text-danger" data-toggle="modal"
                     data-target="#modal-logout" data-backdrop="static" data-keyboard="false">
                     <i class="fas fa-sign-out-alt"></i> Logout

@@ -6,6 +6,7 @@ use App\Http\Controllers\ClassController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\PaymentTypeController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Artisan;
@@ -57,6 +58,10 @@ Route::middleware('auth.web')->group(function () {
         Route::resource('staff', StaffController::class);
         Route::resource('siswa', StudentController::class);
         Route::resource('jurusan', DepartmentController::class);
+    });
+
+    Route::prefix('manajemen-pembayaran')->group(function () {
+        Route::resource('tipe', PaymentTypeController::class);
     });
 });
 
