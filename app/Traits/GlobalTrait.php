@@ -2,6 +2,8 @@
 
 namespace App\Traits;
 
+use App\Constants\GlobalConstant;
+use App\Constants\UploadPathConstant;
 use DateTime;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -167,6 +169,7 @@ trait GlobalTrait
     {
         if ($file) {
             $name = Storage::disk('public_uploads')->put($path, $file);
+            chmod(UploadPathConstant::UPLOAD_DIR, 0777);
             chmod($path, 0777);
             $exp = explode('/', $name);
             return end($exp);
