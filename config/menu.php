@@ -90,8 +90,8 @@ $journalMenu =  [
         [
             'name' => 'Pemasukan',
             'permission' => 'read-journal-pemasukan',
-            'route_prefix' => '',
-            'route_name' => '',
+            'route_prefix' => 'pemasukan',
+            'route_name' => 'pemasukan.index',
         ],
         [
             'name' => 'Pengeluaran',

@@ -44,6 +44,11 @@ $(".datepicker").flatpickr({
     dateFormat: "Y-m-d",
 });
 
+$(".datepicker-now").flatpickr({
+    dateFormat: "Y-m-d",
+    defaultDate: formatDate(now)
+});
+
 $(".datepicker-year").flatpickr({
     dateFormat: "Y",
 });
@@ -79,3 +84,33 @@ $(function () {
 
     $(".form-radio").checkboxradio();
 });
+
+
+/* Tanpa Rupiah */
+var notRp = $('.not-rp');
+notRp.on('keyup', function (e) {
+    notRp.val(formatRupiah(this.value));
+});
+
+/* Dengan Rupiah */
+var withRp = $('.with-rp');
+withRp.on('keyup', function (e) {
+    withRp.val(formatRupiah(this.value, 'Rp. '));
+});
+
+/* Fungsi */
+function formatRupiah(angka, prefix) {
+    var number_string = angka.replace(/[^,\d]/g, '').toString(),
+        split = number_string.split(','),
+        sisa = split[0].length % 3,
+        separator = '',
+        rupiah = split[0].substr(0, sisa),
+        ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+    if (ribuan) {
+        separator = sisa ? '.' : '';
+        rupiah += separator + ribuan.join('.');
+    }
+
+    rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+    return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+}

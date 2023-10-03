@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\JournalCategoryController;
+use App\Http\Controllers\JournalPemasukanController;
 use App\Http\Controllers\PaymentCategoryController;
 use App\Http\Controllers\PaymentTypeController;
 use App\Http\Controllers\SettingController;
@@ -70,6 +71,7 @@ Route::middleware('auth.web')->group(function () {
 
     Route::prefix('jurnal')->group(function () {
         Route::resource('kategori', JournalCategoryController::class);
+        Route::resource('pemasukan', JournalPemasukanController::class);
     });
 
     Route::prefix('pengaturan')->group(function () {

@@ -174,9 +174,9 @@ if (!function_exists('groupOptions')) {
 }
 
 if (!function_exists('journalCategoryOptions')) {
-    function journalCategoryOptions()
+    function journalCategoryOptions($type)
     {
-        return JournalCategory::select('id', 'name as text')->where('name', '!=', GlobalConstant::JOURNAL_CATEGORY_SISWA)->get();
+        return JournalCategory::select('id', 'name as text')->where('type', $type)->where('name', '!=', GlobalConstant::JOURNAL_CATEGORY_SISWA)->get();
     }
 }
 

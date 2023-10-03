@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('payment_category_id')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->timestamp('date')->nullable();
+            $table->date('date')->nullable();
             $table->float('amount')->nullable();
             $table->timestamps();
             $table->softDeletes();

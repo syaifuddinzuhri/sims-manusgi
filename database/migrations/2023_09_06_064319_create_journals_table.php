@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('journals', function (Blueprint $table) {
             $table->id();
-            $table->timestamp('date')->nullable();
+            $table->date('date')->nullable();
             $table->string('name')->nullable();
-            $table->float('amount')->nullable();
+            $table->float('amount', 16, 0)->nullable();
             $table->longText('notes')->nullable();
             $table->unsignedBigInteger('journal_category_id')->nullable();
             $table->timestamps();
