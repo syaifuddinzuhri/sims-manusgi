@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Constants\GlobalConstant;
 use App\Models\Journal;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -30,14 +31,24 @@ class JournalService
                 ->editColumn('amount', function ($data) {
                     return formatIDR($data->amount, true);
                 })
-                ->addColumn('action', function ($data) {
+                ->addColumn('action', function ($data) use($type) {
                     $button = '<div class="btn-group" role="group">';
-                    if (permissionCheck('update-journal-pemasukan')) {
-                        $button .= '<a href="' . route('pemasukan.edit', encryptData($data->id)) . '" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                                <i class="fa fa-edit" aria-hidden="true"></i> </a>';
-                    }
-                    if (permissionCheck('delete-journal-pemasukan')) {
-                        $button .= '<button type="button" data-toggle="modal" data-target="#modal-delete" data-backdrop="static" data-keyboard="false" class="btn btn-sm btn-danger delete" data-toggle="tooltip" data-placement="bottom" title="Hapus"><i class="fa fa-trash-alt" aria-hidden="true"></i></button>';
+                    if($type == GlobalConstant::JOURNAL_IN){
+                        if (permissionCheck('update-journal-pemasukan')) {
+                            $button .= '<a href="' . route('pemasukan.edit', encryptData($data->id)) . '" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                                    <i class="fa fa-edit" aria-hidden="true"></i> </a>';
+                        }
+                        if (permissionCheck('delete-journal-pemasukan')) {
+                            $button .= '<button type="button" data-toggle="modal" data-target="#modal-delete" data-backdrop="static" data-keyboard="false" class="btn btn-sm btn-danger delete" data-toggle="tooltip" data-placement="bottom" title="Hapus"><i class="fa fa-trash-alt" aria-hidden="true"></i></button>';
+                        }
+                    } else {
+                        if (permissionCheck('update-journal-pengeluaran')) {
+                            $button .= '<a href="' . route('pengeluaran.edit', encryptData($data->id)) . '" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                                    <i class="fa fa-edit" aria-hidden="true"></i> </a>';
+                        }
+                        if (permissionCheck('delete-journal-pengeluaran')) {
+                            $button .= '<button type="button" data-toggle="modal" data-target="#modal-delete" data-backdrop="static" data-keyboard="false" class="btn btn-sm btn-danger delete" data-toggle="tooltip" data-placement="bottom" title="Hapus"><i class="fa fa-trash-alt" aria-hidden="true"></i></button>';
+                        }
                     }
                     $button .= '</div>';
                     return $button;

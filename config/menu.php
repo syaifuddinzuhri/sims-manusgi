@@ -96,8 +96,8 @@ $journalMenu =  [
         [
             'name' => 'Pengeluaran',
             'permission' => 'read-journal-pengeluaran',
-            'route_prefix' => '',
-            'route_name' => '',
+            'route_prefix' => 'pengeluaran',
+            'route_name' => 'pengeluaran.index',
         ],
     ]
 ];
