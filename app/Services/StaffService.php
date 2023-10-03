@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Constants\GlobalConstant;
 use App\Models\User;
 use Carbon\Carbon;
 use Yajra\DataTables\Facades\DataTables;
@@ -42,7 +43,7 @@ class StaffService
                         $button .= '<a href="' . route('staff.edit', encryptData($data->id)) . '" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="bottom" title="Edit">
                         <i class="fa fa-edit" aria-hidden="true"></i> </a>';
                     }
-                    if (permissionCheck('delete-master-staff')) {
+                    if (permissionCheck('delete-master-staff') && $data->name != GlobalConstant::ADMIN) {
                         $button .= '<button type="button" data-toggle="modal" data-target="#modal-delete" data-backdrop="static" data-keyboard="false" class="btn btn-sm btn-danger delete" data-toggle="tooltip" data-placement="bottom" title="Hapus"><i class="fa fa-trash-alt" aria-hidden="true"></i></button>';
                     }
                     $button .= '</div>';

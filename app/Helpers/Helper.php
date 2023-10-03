@@ -262,7 +262,7 @@ if (!function_exists('isAdmin')) {
     {
         $role = Auth::user()->roles[0];
         $roles = Role::find($role->id);
-        if ($roles->name == 'Administrator') {
+        if ($roles->name == GlobalConstant::ADMIN) {
             return true;
         }
         return false;

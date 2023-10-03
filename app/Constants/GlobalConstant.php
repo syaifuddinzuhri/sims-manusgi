@@ -13,8 +13,8 @@ class GlobalConstant
     const PAYMENT_CATEGORY_ALL = 'all';
     const PAYMENT_CATEGORY_GROUP = 'group';
     const PAYMENT_CATEGORY_STUDENT = 'student';
-    const PAYMENT_CATEGORY_TYPE = [self::PAYMENT_CATEGORY_FREE, self:: PAYMENT_CATEGORY_MONTH];
-    const PAYMENT_CATEGORY_GROUPS = [self::PAYMENT_CATEGORY_ALL, self:: PAYMENT_CATEGORY_GROUP, self::PAYMENT_CATEGORY_STUDENT];
+    const PAYMENT_CATEGORY_TYPE = [self::PAYMENT_CATEGORY_FREE, self::PAYMENT_CATEGORY_MONTH];
+    const PAYMENT_CATEGORY_GROUPS = [self::PAYMENT_CATEGORY_ALL, self::PAYMENT_CATEGORY_GROUP, self::PAYMENT_CATEGORY_STUDENT];
 
     const GENDER_MALE = 'L';
     const GENDER_FEMALE = 'P';
@@ -22,4 +22,6 @@ class GlobalConstant
 
     const ROLE_STUDENT = 'Siswa';
     const JOURNAL_CATEGORY_SISWA = 'Pembayaran Siswa';
+
+    const ADMIN = 'Administrator';
 }

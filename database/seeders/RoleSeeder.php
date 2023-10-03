@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Constants\GlobalConstant;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Schema;
@@ -27,7 +28,7 @@ class RoleSeeder extends Seeder
         }
 
         $admin = Role::create([
-            'name' => 'Administrator',
+            'name' => GlobalConstant::ADMIN,
             'is_lock' => 1
         ]);
         $admin->syncPermissions($arrPermission);

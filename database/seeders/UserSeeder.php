@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Constants\GlobalConstant;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -18,7 +19,7 @@ class UserSeeder extends Seeder
     public function run()
     {
         User::where('username', 'administrator')->forceDelete();
-        $role = Role::where('name', 'Administrator')->first();
+        $role = Role::where('name', GlobalConstant::ADMIN)->first();
         $user = User::create([
             'username' => 'administrator',
             'name' => 'Administrator',
