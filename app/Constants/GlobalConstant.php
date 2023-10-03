@@ -21,4 +21,5 @@ class GlobalConstant
     const GENDER = [self::GENDER_MALE, self::GENDER_FEMALE];
 
     const ROLE_STUDENT = 'Siswa';
+    const JOURNAL_CATEGORY_SISWA = 'Pembayaran Siswa';
 }

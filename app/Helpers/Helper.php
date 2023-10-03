@@ -1,8 +1,10 @@
 <?php
 
+use App\Constants\GlobalConstant;
 use App\Models\AcademicYear;
 use App\Models\Classes;
 use App\Models\Department;
+use App\Models\JournalCategory;
 use App\Models\PaymentType;
 use App\Models\User;
 use Carbon\Carbon;
@@ -168,6 +170,20 @@ if (!function_exists('groupOptions')) {
                 $query->where('name', '!=', 'Siswa');
             }
         })->get();
+    }
+}
+
+if (!function_exists('journalCategoryOptions')) {
+    function journalCategoryOptions()
+    {
+        return JournalCategory::select('id', 'name as text')->where('name', '!=', GlobalConstant::JOURNAL_CATEGORY_SISWA)->get();
+    }
+}
+
+if (!function_exists('getCategoryPembayaranSiswa')) {
+    function getCategoryPembayaranSiswa()
+    {
+        return JournalCategory::where('name', GlobalConstant::JOURNAL_CATEGORY_SISWA)->first();
     }
 }
 

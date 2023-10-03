@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             DepartmentSeeder::class,
             JournalCategorySeeder::class,
+            SettingSeeder::class,
         ]);
     }
 }

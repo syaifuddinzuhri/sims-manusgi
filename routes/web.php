@@ -9,6 +9,7 @@ use App\Http\Controllers\GroupController;
 use App\Http\Controllers\JournalCategoryController;
 use App\Http\Controllers\PaymentCategoryController;
 use App\Http\Controllers\PaymentTypeController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Artisan;
@@ -69,6 +70,11 @@ Route::middleware('auth.web')->group(function () {
 
     Route::prefix('jurnal')->group(function () {
         Route::resource('kategori', JournalCategoryController::class);
+    });
+
+    Route::prefix('pengaturan')->group(function () {
+        Route::get('umum', [SettingController::class, 'index'])->name('umum.index');
+        Route::post('umum', [SettingController::class, 'update'])->name('umum.submit');
     });
 });
 

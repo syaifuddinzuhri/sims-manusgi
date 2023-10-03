@@ -183,15 +183,15 @@ $transaksiMenu = [
 $settingMenu = [
     'name' => 'Pengaturan',
     'permission' => 'read-pengaturan',
-    'route_prefix' => '',
+    'route_prefix' => 'pengaturan',
     'route_name' => '',
     'icon' => 'fas fa-gear',
     'sub_menus' => [
         [
             'name' => 'Umum',
             'permission' => 'read-pengaturan-umum',
-            'route_prefix' => '',
-            'route_name' => '',
+            'route_prefix' => 'umum',
+            'route_name' => 'umum.index',
         ],
         [
             'name' => 'Aplikasi & Backup',
