@@ -19,7 +19,6 @@ class PaymentCategory extends Model
         'payment_type_id',
         'academic_year_id',
         'type',
-        'group'
     ];
 
     /**

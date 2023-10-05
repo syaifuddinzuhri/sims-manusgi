@@ -30,7 +30,7 @@ class PaymentTypeService
                         $button .= '<a href="' . route('tipe.edit', encryptData($data->id)) . '" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="bottom" title="Edit">
                                     <i class="fa fa-edit" aria-hidden="true"></i> </a>';
                     }
-                    if (permissionCheck('update-pembayaran-pos')) {
+                    if (permissionCheck('delete-pembayaran-pos')) {
                         $button .= '<button type="button" data-toggle="modal" data-target="#modal-delete" data-backdrop="static" data-keyboard="false" class="btn btn-sm btn-danger delete" data-toggle="tooltip" data-placement="bottom" title="Hapus"><i class="fa fa-trash-alt" aria-hidden="true"></i></button>';
                     }
                     $button .= '</div>';

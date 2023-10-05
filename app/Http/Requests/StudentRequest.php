@@ -26,7 +26,7 @@ class StudentRequest extends FormRequest
     {
         $rules = [
             'name' => 'required',
-            'email' => 'required|email',
+            'email' => 'email',
             'username' => 'required',
             'gender' => 'required',
             'class_id' => 'required',
@@ -47,7 +47,7 @@ class StudentRequest extends FormRequest
     {
         return [
             'name.required' => 'Nama harus diisi',
-            'email.required' => 'Email harus diisi',
+            'email.email' => 'Email harus diisi',
             'username.required' => 'Username harus diisi',
             'username.unique' => 'Username sudah ada',
             'gender.required' => 'Jenis kelamin harus diisi',

@@ -20,7 +20,7 @@
                         @endif
 
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="name" class="required">Nama</label>
                                     <input type="text" name="name" id="name" class="form-control"
@@ -30,7 +30,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="email" class="required">Email</label>
+                                    <label for="email" class="">Email</label>
                                     <input type="email" name="email" id="email" class="form-control"
                                         placeholder="Masukkan email"
                                         value="{{ isset($is_editing) && $is_editing ? $data->email : '' }}">
@@ -94,7 +94,7 @@
                                 @endif
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="nisn" class="">NISN</label>
                                     <input type="text" name="nisn" id="nisn" class="form-control"
@@ -130,16 +130,43 @@
                                 <div class="form-group">
                                     <label for="photo" class="">Foto Profil</label>
                                     <input type="file" name="photo" id="photo" class="dropify"
-                                        data-max-file-size="3M" data-allowed-file-extensions="jpg png jpeg" data-default-file="{{ isset($is_editing) && $is_editing ? $data->photo : '' }}">
+                                        data-max-file-size="3M" data-allowed-file-extensions="jpg png jpeg"
+                                        data-default-file="{{ isset($is_editing) && $is_editing ? $data->photo : '' }}">
                                     @include('components.form.error', ['name' => 'photo'])
                                 </div>
 
-                                <button type="submit" class="btn btn-sm btn-primary float-right"><i
-                                        class="fas fa-save"></i>
-                                    Simpan</button>
                             </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="father_name" class="">Nama Ayah</label>
+                                    <input type="text" name="father_name" id="father_name" class="form-control"
+                                        placeholder="Masukkan nama ayah"
+                                        value="{{ isset($is_editing) && $is_editing ? $data->father_name : '' }}">
+                                    @include('components.form.error', ['name' => 'father_name'])
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="mother_name" class="">Nama Ibu</label>
+                                    <input type="text" name="mother_name" id="mother_name" class="form-control"
+                                        placeholder="Masukkan nama ibu"
+                                        value="{{ isset($is_editing) && $is_editing ? $data->mother_name : '' }}">
+                                    @include('components.form.error', ['name' => 'mother_name'])
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="parent_phone" class="">Nomor HP Orang Tua</label>
+                                    <input type="text" name="parent_phone" id="parent_phone" class="form-control"
+                                        placeholder="Masukkan nomor hp orang tua"
+                                        value="{{ isset($is_editing) && $is_editing ? $data->parent_phone : '' }}">
+                                    @include('components.form.error', ['name' => 'parent_phone'])
+                                </div>
+                            </div>
+
                         </div>
 
+                        <button type="submit" class="btn btn-sm btn-primary float-right"><i class="fas fa-save"></i>
+                            Simpan</button>
                     </form>
                 </div>
             </div>

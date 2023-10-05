@@ -19,7 +19,6 @@ return new class extends Migration
             $table->unsignedBigInteger('payment_type_id')->nullable();
             $table->unsignedBigInteger('academic_year_id')->nullable();
             $table->enum('type', GlobalConstant::PAYMENT_CATEGORY_TYPE)->nullable();
-            $table->enum('group', GlobalConstant::PAYMENT_CATEGORY_GROUPS)->nullable();
             $table->timestamps();
             $table->softDeletes();
 

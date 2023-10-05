@@ -74,6 +74,10 @@
                     name: "name",
                 },
                 {
+                    data: "notes",
+                    name: "notes",
+                },
+                {
                     data: "action",
                     name: "action",
                     className: "text-center",

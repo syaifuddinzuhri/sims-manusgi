@@ -31,6 +31,7 @@
                                             <th>POS Pembayaran</th>
                                             <th>Tahun Ajaran</th>
                                             <th>Tipe Bayar</th>
+                                            <th>Tarif Pembayaran</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -86,6 +87,10 @@
                 {
                     data: "type",
                     name: "type",
+                },
+                {
+                    data: "payment",
+                    name: "payment",
                 },
                 {
                     data: "action",

@@ -17,7 +17,7 @@ class PaymentCategoryController extends Controller
     {
         $this->middleware('permission:read-pembayaran-jenis', ['only' => 'index', 'show']);
         $this->middleware('permission:create-pembayaran-jenis', ['only' => ['create', 'store']]);
-        $this->middleware('permission:update-pembayaran-jenis', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:update-pembayaran-jenis', ['only' => ['edit', 'update', 'showPayment']]);
         $this->middleware('permission:delete-pembayaran-jenis', ['only' => ['destroy']]);
         $this->service = new PaymentCategoryService();
     }
@@ -121,5 +121,11 @@ class PaymentCategoryController extends Controller
         } catch (\Throwable $th) {
             return $this->rollbackTransaction($th->getMessage());
         }
+    }
+
+    public function showPayment($id)
+    {
+        $data = $this->service->getDetail($id);
+        return view('pages.pembayaran.jenis.payment', compact('data'));
     }
 }

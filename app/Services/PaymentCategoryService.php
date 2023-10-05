@@ -33,19 +33,28 @@ class PaymentCategoryService
                 ->editColumn('type', function ($data) {
                     return paymentCategoryTypeBadge($data->type);
                 })
+                ->addColumn('payment', function ($data) {
+                    $button = '<div class="btn-group" role="group">';
+                    if (permissionCheck('update-pembayaran-jenis')) {
+                        $button .= '<a href="' . route('jenis.payment.index', encryptData($data->id)) . '" class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                                    <i class="fa fa-money-bill-transfer" aria-hidden="true"></i> Atur Tarif Pembayaran</a>';
+                    }
+                    $button .= '</div>';
+                    return $button;
+                })
                 ->addColumn('action', function ($data) {
                     $button = '<div class="btn-group" role="group">';
                     if (permissionCheck('update-pembayaran-jenis')) {
                         $button .= '<a href="' . route('jenis.edit', encryptData($data->id)) . '" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="bottom" title="Edit">
                                     <i class="fa fa-edit" aria-hidden="true"></i> </a>';
                     }
-                    if (permissionCheck('update-pembayaran-jenis')) {
+                    if (permissionCheck('delete-pembayaran-jenis')) {
                         $button .= '<button type="button" data-toggle="modal" data-target="#modal-delete" data-backdrop="static" data-keyboard="false" class="btn btn-sm btn-danger delete" data-toggle="tooltip" data-placement="bottom" title="Hapus"><i class="fa fa-trash-alt" aria-hidden="true"></i></button>';
                     }
                     $button .= '</div>';
                     return $button;
                 })
-                ->rawColumns(['pos', 'type', 'tahun', 'action'])
+                ->rawColumns(['pos', 'type', 'tahun', 'action', 'payment'])
                 ->make(true);
         } catch (\Exception $e) {
             throw $e;

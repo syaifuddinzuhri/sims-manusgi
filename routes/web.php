@@ -67,6 +67,7 @@ Route::middleware('auth.web')->group(function () {
 
     Route::prefix('manajemen-pembayaran')->group(function () {
         Route::resource('tipe', PaymentTypeController::class);
+        Route::get('/jenis/payment/{id}', [PaymentCategoryController::class, 'showPayment'])->name('jenis.payment.index');
         Route::resource('jenis', PaymentCategoryController::class);
     });
 
