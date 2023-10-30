@@ -88,15 +88,34 @@ $(function () {
 
 /* Tanpa Rupiah */
 var notRp = $('.not-rp');
-notRp.on('keyup', function (e) {
-    notRp.val(formatRupiah(this.value));
+notRp.each(function () {
+    $(this).on('keyup', function () {
+        var value = $(this).val();
+        let element = $($(this));
+        if (element.length > 0) {
+            let attrId = element.attr("id");
+            var jml = $('#' + attrId).val();
+            let formattedRupiah = formatRupiah(jml);
+            $('#' + attrId).val(formattedRupiah);
+        }
+    });
 });
 
 /* Dengan Rupiah */
 var withRp = $('.with-rp');
-withRp.on('keyup', function (e) {
-    withRp.val(formatRupiah(this.value, 'Rp. '));
+withRp.each(function () {
+    $(this).on('keyup', function () {
+        var value = $(this).val();
+        let element = $($(this));
+        if (element.length > 0) {
+            let attrId = element.attr("id");
+            var jml = $('#' + attrId).val();
+            let formattedRupiah = formatRupiah(jml, 'Rp. ');
+            $('#' + attrId).val(formattedRupiah);
+        }
+    });
 });
+
 
 /* Fungsi */
 function formatRupiah(angka, prefix) {
@@ -118,24 +137,18 @@ function formatRupiah(angka, prefix) {
 
 function getMonthsPayment() {
     const months = [
-        "january",
-        "february",
-        "march",
-        "april",
-        "may",
-        "june",
-        "july",
-        "august",
-        "september",
-        "october",
-        "november",
-        "december"
+        "january_amount",
+        "february_amount",
+        "march_amount",
+        "april_amount",
+        "may_amount",
+        "june_amount",
+        "july_amount",
+        "august_amount",
+        "september_amount",
+        "october_amount",
+        "november_amount",
+        "december_amount"
     ];
-    // var array = [];
-    // months.forEach(element => {
-    //     array.push({
-    //         label: element,
-    //         name:
-    //     })
-    // });
+    return months;
 }

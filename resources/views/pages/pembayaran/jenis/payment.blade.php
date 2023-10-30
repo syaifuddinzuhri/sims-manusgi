@@ -74,7 +74,7 @@
                                                 <div class="form-group">
                                                     <label for="{{ $item->name }}"
                                                         class="">{{ $item->label }}</label>
-                                                    <input id="{{ $item->name }}" type="number"
+                                                    <input id="{{ $item->name }}" type="text"
                                                         class="form-control not-rp" name="{{ $item->name }}"
                                                         placeholder="Masukkan jumlah"
                                                         value="{{ isset($payment) ? $payment[$item->name] : '' }}">
@@ -85,7 +85,7 @@
                                 @else
                                     <div class="form-group">
                                         <label for="free_amount" class="">Jumlah</label>
-                                        <input id="free_amount" type="number" class="form-control not-rp"
+                                        <input id="free_amount" type="text" class="form-control not-rp"
                                             name="free_amount" placeholder="Masukkan jumlah"
                                             value="{{ isset($payment) ? $payment->free_amount : '' }}">
                                     </div>
@@ -116,11 +116,12 @@
     <script>
         var isPayment = "{{ isset($payment) }}";
         var isMonth = "{{ $data->type == 'month' }}";
-        var getMonth = "{{ getMonthPayment() }}";
+
         if (isPayment) {
             if (isMonth) {
-                getMonth.forEach(element => {
-                    console.log(element)
+                getMonthsPayment().forEach(element => {
+                    var jml = $('#' + element).val();
+                    $('#' + element).val(formatRupiah(jml));
                 });
             } else {
                 var amount = $('#free_amount').val();
