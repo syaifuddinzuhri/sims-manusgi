@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             DepartmentSeeder::class,
             JournalCategorySeeder::class,
             SettingSeeder::class,
+            PaymentTypeSeeder::class
         ]);
     }
 }

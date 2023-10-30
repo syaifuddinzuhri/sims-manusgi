@@ -309,3 +309,29 @@ if (!function_exists('getMonthPayment')) {
         return (object) $form;
     }
 }
+
+if (!function_exists('getClass')) {
+    function getClass()
+    {
+        $result = Classes::with(['department']);
+        return $result->get()->map(function ($data) {
+            return [
+                'id' => $data->id,
+                'text' => $data->name . " - " . $data->department->name,
+            ];
+        });
+    }
+}
+
+if (!function_exists('getStudent')) {
+    function getStudent()
+    {
+        $result = User::with(['class.department'])->where('is_student', 1);
+        return $result->get()->map(function ($data) {
+            return [
+                'id' => $data->id,
+                'text' => $data->name . " | " . $data->class->name . " - " . $data->class->department->name,
+            ];
+        });
+    }
+}

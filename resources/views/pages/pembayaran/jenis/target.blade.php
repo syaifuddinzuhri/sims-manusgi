@@ -6,33 +6,41 @@
                 <div class="mb-3">
                     <label class="">Target</label>
                     <div>
-                        <label for="all">Semua</label>
+                        <label for="all">Semua Siswa</label>
                         <input type="radio" class="form-radio" value="all" name="type" id="all"
                             {{ isset($payment) && $payment->type == 'all' ? 'checked' : '' }}>
                         <label for="class">Kelas</label>
                         <input type="radio" class="form-radio" value="class" name="type" id="class"
                             {{ isset($payment) && $payment->type == 'class' ? 'checked' : '' }}>
-                        <label for="custom">Kustom</label>
+                        <label for="custom">Siswa Pilihan</label>
                         <input type="radio" class="form-radio" value="custom" name="type" id="custom"
                             {{ isset($payment) && $payment->type == 'custom' ? 'checked' : '' }}>
                     </div>
                     @include('components.form.error', ['name' => 'type'])
                 </div>
 
-                <div class="mb-3" style="display: none;" id="class-form">
+                <div class="mb-3" style="display: none;" id="class-form-box">
                     <label for="class-form">Kelas</label>
-                    <select class="class-select" name="class_form[]" data-placeholder="Pilih kelas">
-                        @if (isset($payment_detail) && count($payment_detail) > 0)
-                            @foreach ($payment_detail as $item)
-                                <option value="{{ $item['id'] }}" selected>{{ $item['text'] }}</option>
-                            @endforeach
-                        @endif
+                    <select class="class-select select2" multiple id="class-form" name="class_form[]"
+                        placeholder="Pilih kelas">
+                        @foreach (getClass() as $item)
+                            <option
+                                {{ isset($payment) && $payment->type == 'class' ? (array_key_exists($item['id'], $selected) == 1 ? 'selected' : '') : '' }}
+                                value="{{ $item['id'] }}">
+                                {{ $item['text'] }}</option>
+                        @endforeach
                     </select>
                 </div>
 
-                <div class="mb-3" style="display: none;" id="custom-form">
-                    <label for="search-form">Nama Siswa</label>
-                    <select class="student-select" name="student_form[]" data-placeholder="Pilih siswa">
+                <div class="mb-3" style="display: none;" id="student-form-box">
+                    <label for="student-form">Nama Siswa</label>
+                    <select class="student-select select2" multiple id="student-form" name="student_form[]">
+                        @foreach (getStudent() as $item)
+                            <option
+                                {{ isset($payment) && $payment->type == 'custom' ? (array_key_exists($item['id'], $selected) == 1 ? 'selected' : '') : '' }}
+                                value="{{ $item['id'] }}">
+                                {{ $item['text'] }}</option>
+                        @endforeach
                     </select>
                 </div>
 
@@ -43,85 +51,3 @@
         </div>
     </div>
 </div>
-
-@section('scripts')
-    <script>
-        var paymentTypeAll = "{{ isset($payment) && $payment->type == 'all' }}"
-        var paymentTypeClass = "{{ isset($payment) && $payment->type == 'class' }}"
-        var paymentTypeCustom = "{{ isset($payment) && $payment->type == 'custom' }}"
-
-        // if (paymentTypeClass) {
-        //     $('#class-form').show();
-        //     $('#custom-form').hide();
-        //     getClass();
-        // }
-
-        $("input[name='type']").change(function() {
-            var selectedValue = $("input[name='type']:checked").val();
-            if (selectedValue == 'class') {
-                $('#class-form').show();
-                $('#custom-form').hide();
-                getClass();
-            } else if (selectedValue == 'custom') {
-                $('#custom-form').show();
-                $('#class-form').hide();
-                getStudent();
-            } else {
-                $('#custom-form').hide();
-                $('#class-form').hide();
-            }
-        });
-
-        function getClass() {
-            $('.class-select').select2({
-                minimumInputLength: 1,
-                allowClear: true,
-                multiple: true,
-                ajax: {
-                    url: `{{ route('api.class.index') }}`,
-                    dataType: 'json',
-                    type: "GET",
-                    headers: {
-                        'Authorization': 'Bearer ' + API_TOKEN
-                    },
-                    data: function(params) {
-                        return {
-                            keyword: params.term
-                        };
-                    },
-                    processResults: function(data) {
-                        return {
-                            results: data.data
-                        };
-                    }
-                }
-            });
-        }
-
-        function getStudent() {
-            $('.student-select').select2({
-                minimumInputLength: 1,
-                allowClear: true,
-                multiple: true,
-                ajax: {
-                    url: `{{ route('api.student.index') }}`,
-                    dataType: 'json',
-                    type: "GET",
-                    headers: {
-                        'Authorization': 'Bearer ' + API_TOKEN
-                    },
-                    data: function(params) {
-                        return {
-                            keyword: params.term
-                        };
-                    },
-                    processResults: function(data) {
-                        return {
-                            results: data.data
-                        };
-                    }
-                }
-            });
-        }
-    </script>
-@endsection

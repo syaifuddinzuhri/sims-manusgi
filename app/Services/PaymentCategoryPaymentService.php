@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Constants\GlobalConstant;
 use App\Models\Classes;
+use App\Models\Journal;
 use App\Models\PaymentCategoryDetail;
 use App\Models\PaymentCategoryPayment;
 use App\Models\User;
@@ -42,19 +43,18 @@ class PaymentCategoryPaymentService
                     }
                     $uniqueArray = array_values(array_flip(array_flip(array_unique($array))));
                     $classes = Classes::with(['department'])->whereIn('id', $uniqueArray);
-                    $result = $classes->get()->map(function ($data) {
-                        return [
-                            'id' => $data->id,
-                            'text' => $data->name . " - " . $data->department->name,
+                    $result = $classes->get()->map(function ($item) {
+                        return (object) [
+                            'id' => $item->id,
+                            'text' => $item->name . " - " . $item->department->name,
                         ];
                     });
                     return $result;
                 } else {
-
-                    $result = $data->map(function ($data) {
-                        return [
-                            'id' => $data->id,
-                            'text' => $data->user->name . " | " . $data->user->class->name . " - " . $data->user->class->department->name,
+                    $result = $data->map(function ($item) {
+                        return (object) [
+                            'id' => $item->user_id,
+                            'text' => $item->user->name . " | " . $item->user->class->name . " - " . $item->user->class->department->name,
                         ];
                     });
                 }
@@ -126,6 +126,7 @@ class PaymentCategoryPaymentService
                     'user_id' => $value
                 ]);
             }
+            return true;
         } catch (\Exception $e) {
             throw $e;
             report($e);

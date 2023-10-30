@@ -97,29 +97,108 @@
                     </div>
                 </div>
                 @if (isset($payment))
-                  @include('pages.pembayaran.jenis.target')
+                    @include('pages.pembayaran.jenis.target')
                 @endif
             </div>
         </section>
-    </div>
-@endsection
+    @endsection
 
 
-@section('scripts')
-    <script>
-        var isPayment = "{{ isset($payment) }}";
-        var isMonth = "{{ $data->type == 'month' }}";
-
-        if (isPayment) {
-            if (isMonth) {
-                getMonthsPayment().forEach(element => {
-                    var jml = $('#' + element).val();
-                    $('#' + element).val(formatRupiah(jml));
-                });
-            } else {
-                var amount = $('#free_amount').val();
-                $('#free_amount').val(formatRupiah(amount));
+    @section('scripts')
+        <script>
+            var isPayment = "{{ isset($payment) }}";
+            var isMonth = "{{ $data->type == 'month' }}";
+            if (isPayment) {
+                if (isMonth) {
+                    getMonthsPayment().forEach(element => {
+                        var jml = $('#' + element).val();
+                        $('#' + element).val(formatRupiah(jml));
+                    });
+                } else {
+                    var amount = $('#free_amount').val();
+                    $('#free_amount').val(formatRupiah(amount));
+                }
             }
-        }
-    </script>
-@endsection
+
+
+
+            // TARGET BLADE SCRIPTS
+            var paymentTypeAll = "{{ isset($payment) && $payment->type == 'all' }}"
+            var paymentTypeClass = "{{ isset($payment) && $payment->type == 'class' }}"
+            var paymentTypeCustom = "{{ isset($payment) && $payment->type == 'custom' }}"
+
+            if (paymentTypeClass) {
+                $('#class-form-box').show();
+                $('#student-form-box').hide();
+            } else if (paymentTypeCustom) {
+                $('#class-form-box').hide();
+                $('#student-form-box').show();
+            }
+
+            $("input[name='type']").change(function() {
+                var selectedValue = $("input[name='type']:checked").val();
+                if (selectedValue == 'class') {
+                    $('#class-form-box').show();
+                    $('#student-form-box').hide();
+                } else if (selectedValue == 'custom') {
+                    $('#student-form-box').show();
+                    $('#class-form-box').hide();
+                } else {
+                    $('#student-form-box').hide();
+                    $('#class-form-box').hide();
+                }
+            });
+
+            // function getClass() {
+            //     $('.class-select').select2({
+            //         minimumInputLength: 1,
+            //         allowClear: true,
+            //         multiple: true,
+            //         ajax: {
+            //             url: `{{ route('api.class.index') }}`,
+            //             dataType: 'json',
+            //             type: "GET",
+            //             headers: {
+            //                 'Authorization': 'Bearer ' + API_TOKEN
+            //             },
+            //             data: function(params) {
+            //                 return {
+            //                     keyword: params.term
+            //                 };
+            //             },
+            //             processResults: function(data) {
+            //                 return {
+            //                     results: data.data
+            //                 };
+            //             }
+            //         }
+            //     });
+            // }
+
+            // function getStudent() {
+            //     $('.student-select').select2({
+            //         minimumInputLength: 1,
+            //         allowClear: true,
+            //         multiple: true,
+            //         ajax: {
+            //             url: `{{ route('api.student.index') }}`,
+            //             dataType: 'json',
+            //             type: "GET",
+            //             headers: {
+            //                 'Authorization': 'Bearer ' + API_TOKEN
+            //             },
+            //             data: function(params) {
+            //                 return {
+            //                     keyword: params.term
+            //                 };
+            //             },
+            //             processResults: function(data) {
+            //                 return {
+            //                     results: data.data
+            //                 };
+            //             }
+            //         }
+            //     });
+            // }
+        </script>
+    @endsection
