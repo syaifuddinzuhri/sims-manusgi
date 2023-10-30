@@ -16,16 +16,20 @@ class ApiMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $token = $request->token;
-        if (empty($token)) {
+        if ($request->header('Authorization')) {
+            $explode = explode(' ', $request->header('Authorization'));
+            if (end($explode) == $this->token()) {
+                if ($this->checkToken(end($explode))) {
+                    return $next($request);
+                } else {
+                    return response()->error('Token invalid', 401);
+                }
+            } else {
+                return response()->error('Token invalid', 401);
+            }
+        } else {
             return response()->error('Unauthorized.', 401);
         }
-
-        if (!$this->checkToken($token)) {
-            return response()->error('Invalid token', 401);
-        }
-
-        return $next($request);
     }
 
     /**

@@ -2,7 +2,11 @@
 
 namespace App\Services;
 
+use App\Constants\GlobalConstant;
+use App\Models\Classes;
+use App\Models\PaymentCategoryDetail;
 use App\Models\PaymentCategoryPayment;
+use App\Models\User;
 
 class PaymentCategoryPaymentService
 {
@@ -19,6 +23,44 @@ class PaymentCategoryPaymentService
             $dataId = decryptData($category_id);
             $data = PaymentCategoryPayment::where('payment_category_id', $dataId)->first();
             return $data;
+        } catch (\Exception $e) {
+            throw $e;
+            report($e);
+            return $e;
+        }
+    }
+
+    public function getPaymentCategory($payment)
+    {
+        try {
+            if ($payment) {
+                $data = PaymentCategoryDetail::with(['user.class.department'])->where('payment_category_payment_id', $payment->id)->get();
+                if ($payment->type == 'class') {
+                    $array = [];
+                    foreach ($data as $key => $value) {
+                        $array[] = $value->user->class_id;
+                    }
+                    $uniqueArray = array_values(array_flip(array_flip(array_unique($array))));
+                    $classes = Classes::with(['department'])->whereIn('id', $uniqueArray);
+                    $result = $classes->get()->map(function ($data) {
+                        return [
+                            'id' => $data->id,
+                            'text' => $data->name . " - " . $data->department->name,
+                        ];
+                    });
+                    return $result;
+                } else {
+
+                    $result = $data->map(function ($data) {
+                        return [
+                            'id' => $data->id,
+                            'text' => $data->user->name . " | " . $data->user->class->name . " - " . $data->user->class->department->name,
+                        ];
+                    });
+                }
+                return $result;
+            }
+            return NULL;
         } catch (\Exception $e) {
             throw $e;
             report($e);
@@ -47,6 +89,43 @@ class PaymentCategoryPaymentService
                 $data = PaymentCategoryPayment::create($payload);
             }
             return $data;
+        } catch (\Exception $e) {
+            throw $e;
+            report($e);
+            return $e;
+        }
+    }
+
+    public function storeStudent($request, $category_id)
+    {
+        try {
+            $dataId = decryptData($category_id);
+            if (!isset($request['type'])) apiException('Target harus dipilih salah satu');
+            if ($request['type'] === GlobalConstant::PAYMENT_CATEGORY_PAYMENTS_CLASS) {
+                if (!isset($request['class_form']) || count($request['class_form']) == 0) apiException('Kelas harus diisi');
+            } else if ($request['type'] === GlobalConstant::PAYMENT_CATEGORY_PAYMENTS_CUSTOM) {
+                if (!isset($request['student_form']) || count($request['student_form']) == 0) apiException('Siswa harus diisi');
+            }
+            PaymentCategoryPayment::find($dataId)->update([
+                'type' => $request['type']
+            ]);
+            PaymentCategoryDetail::where('payment_category_payment_id', $dataId)->forceDelete();
+            $dataArray = [];
+            if ($request['type'] === GlobalConstant::PAYMENT_CATEGORY_PAYMENTS_CLASS) {
+                $student = User::where('is_student', 1)->whereIn('class_id', $request['class_form'])->pluck('id')->toArray();
+                $dataArray = $student;
+            } else if ($request['type'] === GlobalConstant::PAYMENT_CATEGORY_PAYMENTS_CUSTOM) {
+                $dataArray = $request['student_form'];
+            } else {
+                $student = User::where('is_student', 1)->pluck('id')->toArray();
+                $dataArray = $student;
+            }
+            foreach ($dataArray as $key => $value) {
+                PaymentCategoryDetail::create([
+                    'payment_category_payment_id' => $dataId,
+                    'user_id' => $value
+                ]);
+            }
         } catch (\Exception $e) {
             throw $e;
             report($e);

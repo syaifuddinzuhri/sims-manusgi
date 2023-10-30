@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('payment_category_details', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('payment_category_id')->nullable();
             $table->unsignedBigInteger('payment_category_payment_id')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->timestamps();
@@ -23,8 +22,6 @@ return new class extends Migration
 
             $table->foreign('payment_category_payment_id')->references('id')->on('payment_category_payments')->onDelete('set null')->onUpdate('cascade');
             $table->index('payment_category_payment_id');
-            $table->foreign('payment_category_id')->references('id')->on('payment_categories')->onDelete('set null')->onUpdate('cascade');
-            $table->index('payment_category_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null')->onUpdate('cascade');
             $table->index('user_id');
         });

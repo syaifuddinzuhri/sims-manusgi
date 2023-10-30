@@ -12,7 +12,7 @@ class PaymentCategoryDetail extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'payment_category_id',
+        'payment_category_payment_id',
         'user_id',
         'class_id'
     ];
@@ -22,9 +22,9 @@ class PaymentCategoryDetail extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function category(): BelongsTo
+    public function category_payment(): BelongsTo
     {
-        return $this->belongsTo(PaymentCategory::class, 'payment_category_id');
+        return $this->belongsTo(PaymentCategoryPayment::class, 'payment_category_payment_id');
     }
 
     /**

@@ -130,7 +130,8 @@ class PaymentCategoryController extends Controller
     {
         $data = $this->service->getDetail($id);
         $payment = $this->paymentCategoryPaymentService->getByPaymentCategoryId($id);
-        return view('pages.pembayaran.jenis.payment', compact('data', 'payment', 'id'));
+        $payment_detail = $this->paymentCategoryPaymentService->getPaymentCategory($payment);
+        return view('pages.pembayaran.jenis.payment', compact('data', 'payment', 'id', 'payment_detail'));
     }
 
     public function submitPayment(Request $request, $id)
@@ -139,6 +140,18 @@ class PaymentCategoryController extends Controller
         try {
             $payload = $request->all();
             $this->paymentCategoryPaymentService->store($payload, $id);
+            return $this->commitTransaction('Data berhasil ditambahkan');
+        } catch (\Throwable $th) {
+            return $this->rollbackTransaction($th->getMessage());
+        }
+    }
+
+    public function submitTargetStudent(Request $request, $id)
+    {
+        $this->startTransaction();
+        try {
+            $payload = $request->all();
+            $this->paymentCategoryPaymentService->storeStudent($payload, $id);
             return $this->commitTransaction('Data berhasil ditambahkan');
         } catch (\Throwable $th) {
             return $this->rollbackTransaction($th->getMessage());
