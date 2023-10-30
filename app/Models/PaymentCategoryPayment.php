@@ -13,6 +13,7 @@ class PaymentCategoryPayment extends Model
 
     protected $fillable = [
         'payment_category_id',
+        'type',
         'free_amount',
         'january_amount',
         'february_amount',

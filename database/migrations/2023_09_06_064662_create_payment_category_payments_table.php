@@ -17,6 +17,7 @@ return new class extends Migration
         Schema::create('payment_category_payments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('payment_category_id')->nullable();
+            $table->enum('type', GlobalConstant::PAYMENT_CATEGORY_PAYMENTS)->nullable();
             $table->float('free_amount', 16, 0)->nullable()->default(0);
             $table->float('january_amount', 16, 0)->nullable()->default(0);
             $table->float('february_amount', 16, 0)->nullable()->default(0);

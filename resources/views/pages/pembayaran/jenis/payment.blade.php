@@ -61,7 +61,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="card">
                         <div class="card-header">Tarif Pembayaran</div>
                         <div class="card-body">
@@ -97,7 +97,7 @@
                     </div>
                 </div>
                 @if (isset($payment))
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <div class="card">
                             <div class="card-header">Atur Siswa</div>
                             <div class="card-body">
