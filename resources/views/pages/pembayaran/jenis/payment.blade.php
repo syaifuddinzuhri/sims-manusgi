@@ -48,10 +48,10 @@
                                 <label class="">Tipe Bayar</label>
                                 <div>
                                     <label for="bulanan">Bulanan</label>
-                                    <input type="radio" class="form-radio" value="month" name="type" id="bulanan"
+                                    <input type="radio" class="form-radio" value="month" id="bulanan"
                                         {{ $data->type == 'month' ? 'checked' : '' }} disabled>
                                     <label for="bebas">Bebas</label>
-                                    <input type="radio" class="form-radio" value="free" name="type" id="bebas"
+                                    <input type="radio" class="form-radio" value="free" id="bebas"
                                         {{ $data->type == 'free' ? 'checked' : '' }} disabled>
                                 </div>
                                 @include('components.form.error', ['name' => 'type'])
@@ -99,9 +99,17 @@
                 @if (isset($payment))
                     <div class="col-md-8">
                         <div class="card">
-                            <div class="card-header">Atur Siswa</div>
                             <div class="card-body">
-
+                                <label class="">Tipe Bayar</label>
+                                <div>
+                                    <label for="all">Semua</label>
+                                    <input type="radio" class="form-radio" value="all" name="type" id="all">
+                                    <label for="class">Kelas</label>
+                                    <input type="radio" class="form-radio" value="class" name="type" id="class">
+                                    <label for="custom">Kustom</label>
+                                    <input type="radio" class="form-radio" value="custom" name="type" id="custom">
+                                </div>
+                                @include('components.form.error', ['name' => 'type'])
                             </div>
                         </div>
                     </div>

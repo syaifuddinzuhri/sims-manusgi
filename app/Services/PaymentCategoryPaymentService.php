@@ -37,7 +37,7 @@ class PaymentCategoryPaymentService
             }
 
             foreach ($request as $key => $value) {
-                $request[$key] = dbIDR($value);
+                $request[$key] = $value != "" ? dbIDR($value) : $value;
             }
 
             if ($data) {
