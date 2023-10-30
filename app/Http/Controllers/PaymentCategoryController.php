@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PaymentCategoryRequest;
+use App\Services\PaymentCategoryPaymentService;
 use App\Services\PaymentCategoryService;
 use App\Traits\GlobalTrait;
 use Illuminate\Http\Request;
@@ -12,6 +13,7 @@ class PaymentCategoryController extends Controller
     use GlobalTrait;
 
     private $service;
+    private $paymentCategoryPaymentService;
 
     public function __construct()
     {
@@ -20,6 +22,7 @@ class PaymentCategoryController extends Controller
         $this->middleware('permission:update-pembayaran-jenis', ['only' => ['edit', 'update', 'showPayment']]);
         $this->middleware('permission:delete-pembayaran-jenis', ['only' => ['destroy']]);
         $this->service = new PaymentCategoryService();
+        $this->paymentCategoryPaymentService = new PaymentCategoryPaymentService();
     }
 
     /**
@@ -126,6 +129,19 @@ class PaymentCategoryController extends Controller
     public function showPayment($id)
     {
         $data = $this->service->getDetail($id);
-        return view('pages.pembayaran.jenis.payment', compact('data'));
+        $payment = $this->paymentCategoryPaymentService->getByPaymentCategoryId($id);
+        return view('pages.pembayaran.jenis.payment', compact('data', 'payment', 'id'));
+    }
+
+    public function submitPayment(Request $request, $id)
+    {
+        $this->startTransaction();
+        try {
+            $payload = $request->all();
+            $this->paymentCategoryPaymentService->store($payload, $id);
+            return $this->commitTransaction('Data berhasil ditambahkan');
+        } catch (\Throwable $th) {
+            return $this->rollbackTransaction($th->getMessage());
+        }
     }
 }

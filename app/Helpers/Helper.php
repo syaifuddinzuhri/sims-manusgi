@@ -289,3 +289,23 @@ if (!function_exists('checkGroup')) {
         return in_array($name, ['Administrator', 'Kepala Sekolah', 'Guru', 'Siswa', 'Bendahara', 'Wali Kelas']);
     }
 }
+
+if (!function_exists('getMonthPayment')) {
+    function getMonthPayment()
+    {
+        $months = array();
+
+        for ($month = 1; $month <= 12; $month++) {
+            $monthName = strftime('%B', mktime(0, 0, 0, $month, 1));
+            $months[] = $monthName;
+        }
+        $form = [];
+        foreach ($months as $key => $value) {
+            $form[] = (object) [
+                'label' => $value,
+                'name' => \Str::lower($value) . '_amount'
+            ];
+        }
+        return (object) $form;
+    }
+}

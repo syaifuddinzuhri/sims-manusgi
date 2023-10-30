@@ -38,7 +38,7 @@ class StudentService
                     return $data->class ? $data->class->name . ' - ' . $data->class->department->name : '-';
                 })
                 ->editColumn('last_login', function ($data) {
-                    return Carbon::parse($data->last_login)->format('d-m-Y H:i:s');
+                    return $data->last_login ? Carbon::parse($data->last_login)->format('d-m-Y H:i:s') : NULL;
                 })
                 ->addColumn('action', function ($data) {
                     $button = '<div class="btn-group" role="group">';

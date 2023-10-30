@@ -193,12 +193,12 @@ $settingMenu = [
             'route_prefix' => 'umum',
             'route_name' => 'umum.index',
         ],
-        [
-            'name' => 'Aplikasi & Backup',
-            'permission' => 'read-pengaturan-aplikasi',
-            'route_prefix' => '',
-            'route_name' => '',
-        ],
+        // [
+        //     'name' => 'Aplikasi & Backup',
+        //     'permission' => 'read-pengaturan-aplikasi',
+        //     'route_prefix' => '',
+        //     'route_name' => '',
+        // ],
     ]
 ];
 

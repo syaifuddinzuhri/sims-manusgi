@@ -114,3 +114,28 @@ function formatRupiah(angka, prefix) {
     rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
     return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
 }
+
+
+function getMonthsPayment() {
+    const months = [
+        "january",
+        "february",
+        "march",
+        "april",
+        "may",
+        "june",
+        "july",
+        "august",
+        "september",
+        "october",
+        "november",
+        "december"
+    ];
+    // var array = [];
+    // months.forEach(element => {
+    //     array.push({
+    //         label: element,
+    //         name:
+    //     })
+    // });
+}

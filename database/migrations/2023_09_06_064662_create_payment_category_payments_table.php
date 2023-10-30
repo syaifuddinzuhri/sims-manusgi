@@ -23,9 +23,9 @@ return new class extends Migration
             $table->float('march_amount', 16, 0)->nullable()->default(0);
             $table->float('april_amount', 16, 0)->nullable()->default(0);
             $table->float('may_amount', 16, 0)->nullable()->default(0);
-            $table->float('juny_amount', 16, 0)->nullable()->default(0);
+            $table->float('june_amount', 16, 0)->nullable()->default(0);
             $table->float('july_amount', 16, 0)->nullable()->default(0);
-            $table->float('augustus_amount', 16, 0)->nullable()->default(0);
+            $table->float('august_amount', 16, 0)->nullable()->default(0);
             $table->float('september_amount', 16, 0)->nullable()->default(0);
             $table->float('october_amount', 16, 0)->nullable()->default(0);
             $table->float('november_amount', 16, 0)->nullable()->default(0);

@@ -15,15 +15,15 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('payment_category_id')->nullable();
+            $table->unsignedBigInteger('payment_category_detail_id')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->date('date')->nullable();
             $table->float('amount')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('payment_category_id')->references('id')->on('payment_categories')->onDelete('set null')->onUpdate('cascade');
-            $table->index('payment_category_id');
+            $table->foreign('payment_category_detail_id')->references('id')->on('payment_category_details')->onDelete('set null')->onUpdate('cascade');
+            $table->index('payment_category_detail_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null')->onUpdate('cascade');
             $table->index('user_id');
         });

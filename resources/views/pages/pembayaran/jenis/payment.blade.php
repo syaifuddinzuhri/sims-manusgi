@@ -10,10 +10,10 @@
                     class="fas fa-arrow-circle-left"></i>
                 Kembali</a>
 
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label for="payment_type_id" class="">POS Pembayaran</label>
                                 <select name="payment_type_id" id="payment_type_id" class="form-control select2" disabled>
@@ -27,6 +27,9 @@
                                 @include('components.form.error', ['name' => 'payment_type_id'])
                             </div>
 
+                        </div>
+                        <div class="col-md-4">
+
                             <div class="form-group">
                                 <label for="academic_year_id" class="">Tahun Ajaran</label>
                                 <select name="academic_year_id" id="academic_year_id" class="form-control select2" disabled>
@@ -39,7 +42,8 @@
                                 </select>
                                 @include('components.form.error', ['name' => 'academic_year_id'])
                             </div>
-
+                        </div>
+                        <div class="col-md-4">
                             <div class="mb-3">
                                 <label class="">Tipe Bayar</label>
                                 <div>
@@ -55,26 +59,73 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-8">
+            </div>
+            <div class="row">
+                <div class="col-md-6">
                     <div class="card">
+                        <div class="card-header">Tarif Pembayaran</div>
                         <div class="card-body">
-                            <form action="" method="POST">
+                            <form action="{{ route('jenis.payment.store', $id) }}" method="POST">
                                 @csrf
+                                @if ($data->type == 'month')
+                                    <div class="row">
+                                        @foreach (getMonthPayment() as $item)
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="{{ $item->name }}"
+                                                        class="">{{ $item->label }}</label>
+                                                    <input id="{{ $item->name }}" type="number"
+                                                        class="form-control not-rp" name="{{ $item->name }}"
+                                                        placeholder="Masukkan jumlah"
+                                                        value="{{ isset($payment) ? $payment[$item->name] : '' }}">
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <div class="form-group">
+                                        <label for="free_amount" class="">Jumlah</label>
+                                        <input id="free_amount" type="number" class="form-control not-rp"
+                                            name="free_amount" placeholder="Masukkan jumlah"
+                                            value="{{ isset($payment) ? $payment->free_amount : '' }}">
+                                    </div>
+                                @endif
                                 <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-save"></i>
                                     Simpan</button>
                             </form>
                         </div>
                     </div>
                 </div>
-            </div>
+                @if (isset($payment))
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">Atur Siswa</div>
+                            <div class="card-body">
 
-            <div class="card">
-
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </div>
         </section>
     </div>
 @endsection
 
+
 @section('scripts')
-    <script></script>
+    <script>
+        var isPayment = "{{ isset($payment) }}";
+        var isMonth = "{{ $data->type == 'month' }}";
+        var getMonth = "{{ getMonthPayment() }}";
+        if (isPayment) {
+            if (isMonth) {
+                getMonth.forEach(element => {
+                    console.log(element)
+                });
+            } else {
+                var amount = $('#free_amount').val();
+                $('#free_amount').val(formatRupiah(amount));
+            }
+        }
+    </script>
 @endsection

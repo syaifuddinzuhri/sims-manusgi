@@ -17,7 +17,7 @@
                         <a href="{{ route('siswa.create') }}" class="btn btn-sm btn-primary mb-3"><i
                                 class="fas fa-plus-circle"></i> Tambah
                         </a>
-                        <a href="{{ route('siswa.import.index') }}" class="btn btn-sm btn-info mb-3" id="sync-table-siswa"><i
+                        <a href="{{ route('siswa.import.index') }}" class="btn btn-sm btn-info mb-3"><i
                                 class="fas fa-file-import"></i> Import Data Siswa</a>
                     @endcan
                     <button type="button" class="btn btn-sm btn-success mb-3" id="sync-table-siswa"><i
