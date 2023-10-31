@@ -17,7 +17,7 @@ class PaymentService
     public function datatables($request)
     {
         try {
-            $data = Journal::with(['category', 'payment.user.class.department', 'payment.category_payment.payment_category'])
+            $data = Journal::with(['category', 'payment.user.class.department', 'payment.list.payment_category'])
                 ->whereHas('category', function ($q) {
                     $q->where('type', GlobalConstant::JOURNAL_IN);
                 })
@@ -36,10 +36,32 @@ class PaymentService
                 ->editColumn('student', function ($data) {
                     return $data->payment->user->name;
                 })
+                ->editColumn('type', function ($data) {
+                    $div = '';
+                    $div .= paymentCategoryTypeBadge($data->payment->list->payment_category->type);
+                    if ($data->payment->list->payment_category->type == 'month') {
+                        $div .= '<span class="badge badge-pill badge-warning ml-2">' . ucfirst($data->payment->list->name) . '</span>';
+                    }
+                    return $div;
+                })
+                ->editColumn('class', function ($data) {
+                    return $data->payment->user->class ? $data->payment->user->class->name . ' - ' . $data->payment->user->class->department->name : '-';
+                })
                 ->addColumn('action', function ($data) {
                 })
-                ->rawColumns(['action', 'amount', 'student'])
+                ->rawColumns(['action', 'amount', 'student', 'class', 'type'])
                 ->make(true);
+        } catch (\Exception $e) {
+            throw $e;
+            report($e);
+            return $e;
+        }
+    }
+
+    public function store($payload)
+    {
+        try {
+            return Journal::create($payload);
         } catch (\Exception $e) {
             throw $e;
             report($e);

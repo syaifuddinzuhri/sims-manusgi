@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PaymentRequest;
+use App\Services\PaymentListService;
 use App\Services\PaymentService;
 use App\Traits\GlobalTrait;
 use Illuminate\Http\Request;
@@ -11,6 +13,7 @@ class PaymentController extends Controller
     use GlobalTrait;
 
     private $service;
+    private $paymentListService;
 
     public function __construct()
     {
@@ -19,6 +22,7 @@ class PaymentController extends Controller
         $this->middleware('permission:update-transaksi-pembayaran', ['only' => ['edit', 'update']]);
         $this->middleware('permission:delete-transaksi-pembayaran', ['only' => ['destroy']]);
         $this->service = new PaymentService();
+        $this->paymentListService = new PaymentListService();
     }
 
     /**
@@ -39,9 +43,13 @@ class PaymentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        if (!$request->payment_list_id) {
+            return redirect()->back();
+        }
+        $data = $this->paymentListService->getById($request->payment_list_id);
+        return view('pages.transaksi.pembayaran.form', compact('data'));
     }
 
     /**
@@ -50,9 +58,18 @@ class PaymentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PaymentRequest $request)
     {
-        //
+        $this->startTransaction();
+        try {
+            $payload = $request->all();
+            $payload['journal_category_id'] = 1;
+            $payload['amount'] = dbIDR($payload['amount']);
+            $this->service->store($payload);
+            return $this->commitTransaction('Data berhasil ditambahkan', 'pembayaran.index');
+        } catch (\Throwable $th) {
+            return $this->rollbackTransaction($th->getMessage());
+        }
     }
 
     /**

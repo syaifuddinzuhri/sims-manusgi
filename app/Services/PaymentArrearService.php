@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Payment;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -85,8 +86,9 @@ class PaymentArrearService
                 })
                 ->where('user_id', $dataId)->get();
             $paymentCategory = $this->paymentCategoryService->getDetail($category_id, ['payment_type']);
-
+            $user = User::with(['class.department'])->find($dataId);
             return [
+                'user' => $user,
                 'data' => $data,
                 'category' => $paymentCategory
             ];

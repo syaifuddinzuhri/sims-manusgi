@@ -58,6 +58,7 @@ class JournalPemasukanController extends Controller
         $this->startTransaction();
         try {
             $payload = $request->all();
+            dd($payload);
             $payload['amount'] = dbIDR($payload['amount']);
             $this->service->store($payload);
             return $this->commitTransaction('Data berhasil ditambahkan', 'pemasukan.index');

@@ -152,4 +152,17 @@ class PaymentListService
             return $e;
         }
     }
+
+    public function getById($id)
+    {
+        try {
+            $dataId = decryptData($id);
+            $data = Payment::with(['user.class.department', 'list.payment_category'])->find($dataId);
+            return $data;
+        } catch (\Exception $e) {
+            throw $e;
+            report($e);
+            return $e;
+        }
+    }
 }

@@ -28,8 +28,10 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Tanggal</th>
+                                            <th>Nama Pembayaran</th>
                                             <th>Jenis Pembayaran</th>
                                             <th>Siswa</th>
+                                            <th>Kelas - Jurusan</th>
                                             <th>Jumlah</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -78,7 +80,13 @@
                     data: "name",
                 },
                 {
+                    data: "type",
+                },
+                {
                     data: "student",
+                },
+                {
+                    data: "class",
                 },
                 {
                     data: "amount",
