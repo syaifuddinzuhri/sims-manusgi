@@ -8,6 +8,13 @@ use Yajra\DataTables\Facades\DataTables;
 
 class PaymentArrearService
 {
+    private $paymentCategoryService;
+
+    public function __construct()
+    {
+        $this->paymentCategoryService = new PaymentCategoryService();
+    }
+
     /**
      * datatables
      *
@@ -44,7 +51,8 @@ class PaymentArrearService
                     return $button;
                 })
                 ->editColumn('payment_name', function ($data) {
-                    return $data->payment_type_name . " (" . $data->first_year . '/' . $data->last_year . ' - ' . ($data->semester == 1 ? 'Ganjil' : 'Genap') . ")";
+                    $year = " (TA. " . $data->first_year . '/' . $data->last_year . ' - ' . ($data->semester == 1 ? 'Ganjil' : 'Genap') . ")";
+                    return $data->payment_type_name . $year;
                 })
                 ->editColumn('type', function ($data) {
                     return paymentCategoryTypeBadge($data->type);
@@ -67,12 +75,21 @@ class PaymentArrearService
         }
     }
 
-    public function getDetail($user_id)
+    public function getDetail($user_id, $category_id)
     {
         try {
             $dataId = decryptData($user_id);
-            $data = Payment::where('user_id', $dataId)->get();
-            return $data;
+            $data = Payment::with(['list'])
+                ->whereHas('list', function ($q) use ($category_id) {
+                    $q->where('payment_category_id', decryptData($category_id));
+                })
+                ->where('user_id', $dataId)->get();
+            $paymentCategory = $this->paymentCategoryService->getDetail($category_id, ['payment_type']);
+
+            return [
+                'data' => $data,
+                'category' => $paymentCategory
+            ];
         } catch (\Exception $e) {
             throw $e;
             report($e);
