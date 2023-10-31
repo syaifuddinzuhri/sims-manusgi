@@ -25,9 +25,15 @@
                                     <label for="name" class="required">Kelas</label>
                                     <select name="name" id="name" class="form-control select2">
                                         <option value="" disabled selected>-- Pilih Tingkat Kelas --</option>
-                                        <option value="X"  {{ isset($is_editing) && $is_editing && $data->name == "X" ? 'selected' : '' }}>X</option>
-                                        <option value="XI"  {{ isset($is_editing) && $is_editing && $data->name == "XI" ? 'selected' : '' }}>XI</option>
-                                        <option value="XII"  {{ isset($is_editing) && $is_editing && $data->name =="XII" ? 'selected' : '' }}>XII</option>
+                                        <option value="X"
+                                            {{ isset($is_editing) && $is_editing && $data->name == 'X' ? 'selected' : '' }}>
+                                            X</option>
+                                        <option value="XI"
+                                            {{ isset($is_editing) && $is_editing && $data->name == 'XI' ? 'selected' : '' }}>
+                                            XI</option>
+                                        <option value="XII"
+                                            {{ isset($is_editing) && $is_editing && $data->name == 'XII' ? 'selected' : '' }}>
+                                            XII</option>
                                     </select>
                                     @include('components.form.error', ['name' => 'department_id'])
                                 </div>

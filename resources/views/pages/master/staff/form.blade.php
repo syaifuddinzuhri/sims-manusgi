@@ -130,7 +130,8 @@
                                 <div class="form-group">
                                     <label for="photo" class="">Foto Profil</label>
                                     <input type="file" name="photo" id="photo" class="dropify"
-                                        data-max-file-size="3M" data-allowed-file-extensions="jpg png jpeg" data-default-file="{{ isset($is_editing) && $is_editing ? $data->photo : '' }}">
+                                        data-max-file-size="3M" data-allowed-file-extensions="jpg png jpeg"
+                                        data-default-file="{{ isset($is_editing) && $is_editing ? $data->photo : '' }}">
                                     @include('components.form.error', ['name' => 'photo'])
                                 </div>
 

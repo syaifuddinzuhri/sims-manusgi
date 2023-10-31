@@ -83,6 +83,7 @@ Route::middleware('auth.web')->group(function () {
 
     Route::prefix('transaksi')->group(function () {
         Route::resource('pembayaran', PaymentController::class);
+        Route::get('tunggakan/detail/{id}/{category_id}', [PaymentArrearController::class, 'detail'])->name('tunggakan.detail');
         Route::resource('tunggakan', PaymentArrearController::class);
     });
 

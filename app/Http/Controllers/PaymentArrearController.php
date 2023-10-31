@@ -65,7 +65,16 @@ class PaymentArrearController extends Controller
      */
     public function show($id)
     {
-        //
+        $data = $this->service->getDetail($id);
+        return $data;
+        return view('pages.transaksi.tunggakan.detail', compact('data'));
+    }
+
+    public function detail($id, $category_id)
+    {
+        $data = $this->service->getDetail($id);
+        return $data;
+        return view('pages.transaksi.tunggakan.detail', compact('data'));
     }
 
     /**

@@ -29,6 +29,7 @@
                                             <th>#</th>
                                             <th>Nama Pembayaran</th>
                                             <th>Nama Siswa</th>
+                                            <th>Kelas - Jurusan</th>
                                             <th>Jenis Pembayaran</th>
                                             <th>Total Tagihan</th>
                                             <th>Tagihan Sudah Dibayar</th>
@@ -77,6 +78,9 @@
                 },
                 {
                     data: "student",
+                },
+                {
+                    data: "class",
                 },
                 {
                     data: "type",

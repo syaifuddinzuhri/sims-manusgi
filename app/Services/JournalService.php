@@ -31,9 +31,9 @@ class JournalService
                 ->editColumn('amount', function ($data) {
                     return formatIDR($data->amount, true);
                 })
-                ->addColumn('action', function ($data) use($type) {
+                ->addColumn('action', function ($data) use ($type) {
                     $button = '<div class="btn-group" role="group">';
-                    if($type == GlobalConstant::JOURNAL_IN){
+                    if ($type == GlobalConstant::JOURNAL_IN) {
                         if (permissionCheck('update-journal-pemasukan')) {
                             $button .= '<a href="' . route('pemasukan.edit', encryptData($data->id)) . '" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="bottom" title="Edit">
                                     <i class="fa fa-edit" aria-hidden="true"></i> </a>';

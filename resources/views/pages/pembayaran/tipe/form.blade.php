@@ -31,7 +31,8 @@
 
                                 <div class="form-group">
                                     <label for="notes" class="required">Keterangan</label>
-                                    <textarea name="notes" id="notes" class="form-control" style="min-height: 100px" placeholder="Masukkan keterangan">{{ isset($is_editing) && $is_editing ? $data->notes : '' }}</textarea>
+                                    <textarea name="notes" id="notes" class="form-control" style="min-height: 100px"
+                                        placeholder="Masukkan keterangan">{{ isset($is_editing) && $is_editing ? $data->notes : '' }}</textarea>
                                     @include('components.form.error', ['name' => 'notes'])
                                 </div>
 

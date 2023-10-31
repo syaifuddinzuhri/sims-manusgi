@@ -86,7 +86,8 @@
                                     <div class="form-group">
                                         <label for="free" class="">Jumlah</label>
                                         <input id="free" type="text" class="form-control not-rp" name="free"
-                                            placeholder="Masukkan jumlah" value="">
+                                            placeholder="Masukkan jumlah"
+                                            value="{{ getPaymentListByName('free') ? getPaymentListByName('free')->amount : '' }}">
                                     </div>
                                 @endif
                                 <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-save"></i>
