@@ -27,10 +27,10 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Nama Siswa</th>
                                             <th>Nama Pembayaran</th>
+                                            <th>Nama Siswa</th>
                                             <th>Jenis Pembayaran</th>
-                                            <th>Jumlah Tagihan</th>
+                                            <th>Total Tagihan</th>
                                             <th>Tagihan Sudah Dibayar</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -73,19 +73,19 @@
                     width: "4%",
                 },
                 {
-                    data: "student",
+                    data: "payment_name",
                 },
                 {
-                    data: "payment_name",
+                    data: "student",
                 },
                 {
                     data: "type",
                 },
                 {
-                    data: "payment_count",
+                    data: "payment_list_amount",
                 },
                 {
-                    data: "payment_finish",
+                    data: "journal_amount",
                 },
                 {
                     data: "action",

@@ -19,8 +19,8 @@ class PaymentArrearService
         try {
             $data = DB::table('payments as p')
                 ->select('p.user_id', 'u.name as student', 'pc.type', 'pc.target_type', 'pt.name as payment_type_name', 'ay.first_year', 'ay.last_year', 'ay.semester')
-                ->selectRaw('COUNT(p.id) as payment_count')
-                ->selectRaw('COUNT(j.id) as payment_finish')
+                ->selectRaw('COALESCE(SUM(pl.amount), 0) as payment_list_amount')
+                ->selectRaw('COALESCE(SUM(j.amount), 0) as journal_amount')
                 ->leftJoin('users as u', 'p.user_id', '=', 'u.id')
                 ->leftJoin('payment_lists as pl', 'p.payment_list_id', '=', 'pl.id')
                 ->leftJoin('payment_categories as pc', 'pl.payment_category_id', '=', 'pc.id')
@@ -28,7 +28,7 @@ class PaymentArrearService
                 ->leftJoin('academic_years as ay', 'pc.academic_year_id', '=', 'ay.id')
                 ->leftJoin('journals as j', 'p.id', '=', 'j.payment_id')
                 ->groupBy('p.user_id', 'u.name', 'pc.type', 'pc.target_type', 'pt.name', 'ay.first_year', 'ay.last_year', 'ay.semester')
-                ->havingRaw('payment_finish != payment_count')
+                ->havingRaw('payment_list_amount != journal_amount')
                 ->get();
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -47,7 +47,13 @@ class PaymentArrearService
                 ->editColumn('type', function ($data) {
                     return paymentCategoryTypeBadge($data->type);
                 })
-                ->rawColumns(['action', 'type', 'payment_name'],)
+                ->editColumn('payment_list_amount', function ($data) {
+                    return formatIDR($data->payment_list_amount);
+                })
+                ->editColumn('journal_amount', function ($data) {
+                    return formatIDR($data->journal_amount);
+                })
+                ->rawColumns(['action', 'type', 'payment_name', 'payment_list_amount', 'journal_amount'],)
                 ->make(true);
         } catch (\Exception $e) {
             throw $e;
