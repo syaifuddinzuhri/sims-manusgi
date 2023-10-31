@@ -11,15 +11,10 @@ class GlobalConstant
     const PAYMENT_CATEGORY_MONTH = 'month';
     const PAYMENT_CATEGORY_FREE = 'free';
     const PAYMENT_CATEGORY_ALL = 'all';
-    const PAYMENT_CATEGORY_GROUP = 'group';
-    const PAYMENT_CATEGORY_STUDENT = 'student';
+    const PAYMENT_CATEGORY_CLASS = 'class';
+    const PAYMENT_CATEGORY_CUSTOM = 'custom';
     const PAYMENT_CATEGORY_TYPE = [self::PAYMENT_CATEGORY_FREE, self::PAYMENT_CATEGORY_MONTH];
-    const PAYMENT_CATEGORY_GROUPS = [self::PAYMENT_CATEGORY_ALL, self::PAYMENT_CATEGORY_GROUP, self::PAYMENT_CATEGORY_STUDENT];
-
-    const PAYMENT_CATEGORY_PAYMENTS_ALL = 'all';
-    const PAYMENT_CATEGORY_PAYMENTS_CLASS = 'class';
-    const PAYMENT_CATEGORY_PAYMENTS_CUSTOM = 'custom';
-    const PAYMENT_CATEGORY_PAYMENTS = [self::PAYMENT_CATEGORY_PAYMENTS_ALL, self::PAYMENT_CATEGORY_PAYMENTS_CLASS, self::PAYMENT_CATEGORY_PAYMENTS_CUSTOM];
+    const PAYMENT_CATEGORY_GROUPS = [self::PAYMENT_CATEGORY_ALL, self::PAYMENT_CATEGORY_CLASS, self::PAYMENT_CATEGORY_CUSTOM];
 
     const GENDER_MALE = 'L';
     const GENDER_FEMALE = 'P';
@@ -29,4 +24,21 @@ class GlobalConstant
     const JOURNAL_CATEGORY_SISWA = 'Pembayaran Siswa';
 
     const ADMIN = 'Administrator';
+
+    const PAYMENT_MONTHS = [
+        'january',
+        'february',
+        'march',
+        'april',
+        'may',
+        'june',
+        'july',
+        'august',
+        'september',
+        'october',
+        'november',
+        'december'
+    ];
+
+    const PAYMENT_LISTS = ['free', ...self::PAYMENT_MONTHS];
 }

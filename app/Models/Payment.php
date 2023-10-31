@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class PaymentCategoryDetail extends Model
+class Payment extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'payment_category_payment_id',
+        'payment_list_id',
         'user_id',
-        'class_id'
     ];
 
     /**
@@ -22,9 +22,9 @@ class PaymentCategoryDetail extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function category_payment(): BelongsTo
+    public function list(): BelongsTo
     {
-        return $this->belongsTo(PaymentCategoryPayment::class, 'payment_category_payment_id');
+        return $this->belongsTo(PaymentList::class, 'payment_list_id');
     }
 
     /**
@@ -38,12 +38,12 @@ class PaymentCategoryDetail extends Model
     }
 
     /**
-     * Get the class that owns the PaymentCategoryDetail
+     * Get the journal associated with the PaymentCategoryDetail
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function class(): BelongsTo
+    public function journal(): HasOne
     {
-        return $this->belongsTo(Classes::class, 'class_id');
+        return $this->hasOne(Journal::class, 'payment_id');
     }
 }

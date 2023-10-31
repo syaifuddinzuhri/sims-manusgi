@@ -5,6 +5,7 @@ use App\Models\AcademicYear;
 use App\Models\Classes;
 use App\Models\Department;
 use App\Models\JournalCategory;
+use App\Models\PaymentList;
 use App\Models\PaymentType;
 use App\Models\User;
 use Carbon\Carbon;
@@ -293,20 +294,8 @@ if (!function_exists('checkGroup')) {
 if (!function_exists('getMonthPayment')) {
     function getMonthPayment()
     {
-        $months = array();
-
-        for ($month = 1; $month <= 12; $month++) {
-            $monthName = strftime('%B', mktime(0, 0, 0, $month, 1));
-            $months[] = $monthName;
-        }
-        $form = [];
-        foreach ($months as $key => $value) {
-            $form[] = (object) [
-                'label' => $value,
-                'name' => \Str::lower($value) . '_amount'
-            ];
-        }
-        return (object) $form;
+        $months = GlobalConstant::PAYMENT_MONTHS;
+        return $months;
     }
 }
 
@@ -333,5 +322,12 @@ if (!function_exists('getStudent')) {
                 'text' => $data->name . " | " . $data->class->name . " - " . $data->class->department->name,
             ];
         });
+    }
+}
+
+if (!function_exists('getPaymentListByName')) {
+    function getPaymentListByName($name)
+    {
+        return PaymentList::where('name', $name)->first();
     }
 }

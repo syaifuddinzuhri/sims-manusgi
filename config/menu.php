@@ -161,21 +161,21 @@ $manajemenPembayaranMenu =  [
 $transaksiMenu = [
     'name' => 'Transaksi Pembayaran',
     'permission' => 'read-transaksi',
-    'route_prefix' => '',
+    'route_prefix' => 'transaksi',
     'route_name' => '',
     'icon' => 'fas fa-money-bill-transfer',
     'sub_menus' => [
         [
-            'name' => 'Data Pembayaran',
-            'permission' => 'read-transaksi-pembayaran',
-            'route_prefix' => '',
-            'route_name' => '',
-        ],
-        [
             'name' => 'Tunggakan Pembayaran',
             'permission' => 'read-transaksi-tunggakan',
-            'route_prefix' => '',
-            'route_name' => '',
+            'route_prefix' => 'tunggakan',
+            'route_name' => 'tunggakan.index',
+        ],
+        [
+            'name' => 'Data Pembayaran',
+            'permission' => 'read-transaksi-pembayaran',
+            'route_prefix' => 'pembayaran',
+            'route_name' => 'pembayaran.index',
         ],
     ]
 ];

@@ -7,26 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class PaymentCategoryPayment extends Model
+class PaymentList extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'payment_category_id',
-        'type',
-        'free_amount',
-        'january_amount',
-        'february_amount',
-        'march_amount',
-        'april_amount',
-        'may_amount',
-        'june_amount',
-        'july_amount',
-        'august_amount',
-        'september_amount',
-        'october_amount',
-        'november_amount',
-        'december_amount',
+        'name',
+        'amount'
     ];
 
     /**

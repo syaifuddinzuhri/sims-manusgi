@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PaymentCategoryRequest;
-use App\Services\PaymentCategoryPaymentService;
 use App\Services\PaymentCategoryService;
+use App\Services\PaymentListService;
 use App\Traits\GlobalTrait;
 use Illuminate\Http\Request;
 
@@ -13,16 +13,16 @@ class PaymentCategoryController extends Controller
     use GlobalTrait;
 
     private $service;
-    private $paymentCategoryPaymentService;
+    private $paymentListService;
 
     public function __construct()
     {
         $this->middleware('permission:read-pembayaran-jenis', ['only' => 'index', 'show']);
         $this->middleware('permission:create-pembayaran-jenis', ['only' => ['create', 'store']]);
-        $this->middleware('permission:update-pembayaran-jenis', ['only' => ['edit', 'update', 'showPayment']]);
+        $this->middleware('permission:update-pembayaran-jenis', ['only' => ['edit', 'update', 'showPayment', 'submitPayment', 'submitTargetStudent']]);
         $this->middleware('permission:delete-pembayaran-jenis', ['only' => ['destroy']]);
         $this->service = new PaymentCategoryService();
-        $this->paymentCategoryPaymentService = new PaymentCategoryPaymentService();
+        $this->paymentListService = new PaymentListService();
     }
 
     /**
@@ -129,13 +129,13 @@ class PaymentCategoryController extends Controller
     public function showPayment($id)
     {
         $data = $this->service->getDetail($id);
-        $payment = $this->paymentCategoryPaymentService->getByPaymentCategoryId($id);
-        $payment_detail = $this->paymentCategoryPaymentService->getPaymentCategory($payment);
+        $payment = $this->paymentListService->getByPaymentCategoryId($id);
+        $paymentLists = $this->paymentListService->getPaymentTarget($payment, $id);
         $selected = [];
-        foreach ($payment_detail as $key => $item) {
+        foreach ($paymentLists as $key => $item) {
             $selected[$item->id] = $item->id;
         }
-        return view('pages.pembayaran.jenis.payment', compact('data', 'selected', 'payment', 'id', 'payment_detail'));
+        return view('pages.pembayaran.jenis.payment', compact('selected', 'data', 'payment', 'id',));
     }
 
     public function submitPayment(Request $request, $id)
@@ -143,7 +143,7 @@ class PaymentCategoryController extends Controller
         $this->startTransaction();
         try {
             $payload = $request->all();
-            $this->paymentCategoryPaymentService->store($payload, $id);
+            $this->paymentListService->store($payload, $id);
             return $this->commitTransaction('Data berhasil ditambahkan');
         } catch (\Throwable $th) {
             return $this->rollbackTransaction($th->getMessage());
@@ -155,7 +155,7 @@ class PaymentCategoryController extends Controller
         $this->startTransaction();
         try {
             $payload = $request->all();
-            $this->paymentCategoryPaymentService->storeStudent($payload, $id);
+            $this->paymentListService->storeStudent($payload, $id);
             return $this->commitTransaction('Data berhasil ditambahkan');
         } catch (\Throwable $th) {
             return $this->rollbackTransaction($th->getMessage());

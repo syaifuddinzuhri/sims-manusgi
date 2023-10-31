@@ -9,7 +9,9 @@ use App\Http\Controllers\GroupController;
 use App\Http\Controllers\JournalCategoryController;
 use App\Http\Controllers\JournalPemasukanController;
 use App\Http\Controllers\JournalPengeluaranController;
+use App\Http\Controllers\PaymentArrearController;
 use App\Http\Controllers\PaymentCategoryController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentTypeController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StaffController;
@@ -77,6 +79,11 @@ Route::middleware('auth.web')->group(function () {
         Route::resource('kategori', JournalCategoryController::class);
         Route::resource('pemasukan', JournalPemasukanController::class);
         Route::resource('pengeluaran', JournalPengeluaranController::class);
+    });
+
+    Route::prefix('transaksi')->group(function () {
+        Route::resource('pembayaran', PaymentController::class);
+        Route::resource('tunggakan', PaymentArrearController::class);
     });
 
     Route::prefix('pengaturan')->group(function () {

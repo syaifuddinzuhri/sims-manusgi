@@ -137,18 +137,18 @@ function formatRupiah(angka, prefix) {
 
 function getMonthsPayment() {
     const months = [
-        "january_amount",
-        "february_amount",
-        "march_amount",
-        "april_amount",
-        "may_amount",
-        "june_amount",
-        "july_amount",
-        "august_amount",
-        "september_amount",
-        "october_amount",
-        "november_amount",
-        "december_amount"
+        "january",
+        "february",
+        "march",
+        "april",
+        "may",
+        "june",
+        "july",
+        "august",
+        "september",
+        "october",
+        "november",
+        "december"
     ];
     return months;
 }

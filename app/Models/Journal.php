@@ -17,7 +17,7 @@ class Journal extends Model
         'amount',
         'notes',
         'journal_category_id',
-        'payment_category_detail_id'
+        'payment_id'
     ];
 
     /**
@@ -31,12 +31,12 @@ class Journal extends Model
     }
 
     /**
-     * Get the payment_category_detail that owns the Journal
+     * Get the payment that owns the Journal
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function payment_category_detail(): BelongsTo
+    public function payment(): BelongsTo
     {
-        return $this->belongsTo(PaymentCategoryDetail::class, 'payment_category_detail_id');
+        return $this->belongsTo(Payment::class, 'payment_id');
     }
 }

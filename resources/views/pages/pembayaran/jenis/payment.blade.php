@@ -72,22 +72,21 @@
                                         @foreach (getMonthPayment() as $item)
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="{{ $item->name }}"
-                                                        class="">{{ $item->label }}</label>
-                                                    <input id="{{ $item->name }}" type="text"
-                                                        class="form-control not-rp" name="{{ $item->name }}"
+                                                    <label for="{{ $item }}"
+                                                        class="">{{ ucfirst($item) }}</label>
+                                                    <input id="{{ $item }}" type="text"
+                                                        class="form-control not-rp" name="{{ $item }}"
                                                         placeholder="Masukkan jumlah"
-                                                        value="{{ isset($payment) ? $payment[$item->name] : '' }}">
+                                                        value="{{ getPaymentListByName($item) ? getPaymentListByName($item)->amount : '' }}">
                                                 </div>
                                             </div>
                                         @endforeach
                                     </div>
                                 @else
                                     <div class="form-group">
-                                        <label for="free_amount" class="">Jumlah</label>
-                                        <input id="free_amount" type="text" class="form-control not-rp"
-                                            name="free_amount" placeholder="Masukkan jumlah"
-                                            value="{{ isset($payment) ? $payment->free_amount : '' }}">
+                                        <label for="free" class="">Jumlah</label>
+                                        <input id="free" type="text" class="form-control not-rp" name="free"
+                                            placeholder="Masukkan jumlah" value="">
                                     </div>
                                 @endif
                                 <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-save"></i>
@@ -96,7 +95,7 @@
                         </div>
                     </div>
                 </div>
-                @if (isset($payment))
+                @if (isset($payment) && count($payment) > 0)
                     @include('pages.pembayaran.jenis.target')
                 @endif
             </div>
@@ -108,6 +107,7 @@
         <script>
             var isPayment = "{{ isset($payment) }}";
             var isMonth = "{{ $data->type == 'month' }}";
+            var targetType = "{{ $data->target_type }}";
             if (isPayment) {
                 if (isMonth) {
                     getMonthsPayment().forEach(element => {
@@ -115,25 +115,22 @@
                         $('#' + element).val(formatRupiah(jml));
                     });
                 } else {
-                    var amount = $('#free_amount').val();
-                    $('#free_amount').val(formatRupiah(amount));
+                    var amount = $('#free').val();
+                    $('#free').val(formatRupiah(amount));
+                }
+
+                if (targetType == 'class') {
+                    $('#class-form-box').show();
+                    $('#student-form-box').hide();
+                } else if (targetType == 'custom') {
+                    $('#student-form-box').show();
+                    $('#class-form-box').hide();
                 }
             }
 
 
 
             // TARGET BLADE SCRIPTS
-            var paymentTypeAll = "{{ isset($payment) && $payment->type == 'all' }}"
-            var paymentTypeClass = "{{ isset($payment) && $payment->type == 'class' }}"
-            var paymentTypeCustom = "{{ isset($payment) && $payment->type == 'custom' }}"
-
-            if (paymentTypeClass) {
-                $('#class-form-box').show();
-                $('#student-form-box').hide();
-            } else if (paymentTypeCustom) {
-                $('#class-form-box').hide();
-                $('#student-form-box').show();
-            }
 
             $("input[name='type']").change(function() {
                 var selectedValue = $("input[name='type']:checked").val();
