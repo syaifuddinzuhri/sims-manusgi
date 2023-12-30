@@ -2,10 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\KelulusanService;
+use App\Services\KenaikanKelasService;
+use App\Traits\GlobalTrait;
 use Illuminate\Http\Request;
 
-class KenaikanSiswaController extends Controller
+class KelulusanController extends Controller
 {
+    use GlobalTrait;
+
+    private $service;
+
+    public function __construct()
+    {
+        $this->middleware('permission:read-siswa-kelulusan', ['only' => 'index', 'show']);
+        $this->middleware('permission:create-siswa-kelulusan', ['only' => ['create', 'store']]);
+        $this->middleware('permission:update-siswa-kelulusan', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:delete-siswa-kelulusan', ['only' => ['destroy']]);
+        $this->service = new KelulusanService();
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +30,7 @@ class KenaikanSiswaController extends Controller
      */
     public function index()
     {
-        //
+        return view('pages.manajemen-siswa.kelulusan.index');
     }
 
     /**
@@ -34,7 +51,14 @@ class KenaikanSiswaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->startTransaction();
+        try {
+            $payload = $request->all();
+            $this->service->store($payload);
+            return $this->commitTransaction('Data berhasil ditambahkan');
+        } catch (\Throwable $th) {
+            return $this->rollbackTransaction($th->getMessage());
+        }
     }
 
     /**

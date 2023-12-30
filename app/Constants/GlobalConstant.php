@@ -41,4 +41,8 @@ class GlobalConstant
     ];
 
     const PAYMENT_LISTS = ['free', ...self::PAYMENT_MONTHS];
+
+    const PAID = 'Lunas';
+    const NOT_PAID = 'Belum Lunas';
+    const PAYMENT_STATUS = [self::PAID, self::NOT_PAID];
 }

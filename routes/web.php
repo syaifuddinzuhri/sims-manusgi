@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AcademicYearController;
+use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\DashboardController;
@@ -9,6 +10,8 @@ use App\Http\Controllers\GroupController;
 use App\Http\Controllers\JournalCategoryController;
 use App\Http\Controllers\JournalPemasukanController;
 use App\Http\Controllers\JournalPengeluaranController;
+use App\Http\Controllers\KelulusanController;
+use App\Http\Controllers\KenaikanKelasController;
 use App\Http\Controllers\PaymentArrearController;
 use App\Http\Controllers\PaymentCategoryController;
 use App\Http\Controllers\PaymentController;
@@ -90,6 +93,12 @@ Route::middleware('auth.web')->group(function () {
     Route::prefix('pengaturan')->group(function () {
         Route::get('umum', [SettingController::class, 'index'])->name('umum.index');
         Route::post('umum', [SettingController::class, 'update'])->name('umum.submit');
+    });
+
+    Route::prefix('manajemen-siswa')->group(function () {
+        Route::resource('kenaikan-kelas', KenaikanKelasController::class);
+        Route::resource('kelulusan', KelulusanController::class);
+        Route::resource('alumni', AlumniController::class);
     });
 });
 

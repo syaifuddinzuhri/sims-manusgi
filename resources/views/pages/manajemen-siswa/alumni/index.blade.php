@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Tunggakan')
+@section('title', 'Alumni')
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('library/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
@@ -10,30 +10,26 @@
 @section('main')
     <div class="main-content">
         <section class="section">
-            @include('components.section-header', ['title' => 'Tunggakan', 'index' => true])
+            @include('components.section-header', ['title' => 'Alumni', 'index' => true])
             <div class="row">
                 <div class="col-12">
-                    {{-- @can('create-transaksi-tunggakan')
-                        <a href="{{ route('tunggakan.create') }}" class="btn btn-sm btn-primary mb-3"><i
-                                class="fas fa-plus-circle"></i> Tambah
-                        </a>
-                    @endcan --}}
-                    <button type="button" class="btn btn-sm btn-success mb-3" id="sync-table-tunggakan"><i
+                    <button type="button" class="btn btn-sm btn-success mb-3" id="sync-table-alumni"><i
                             class="fas fa-sync"></i> Reload</button>
                     <div class="card">
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table id="table-tunggakan" class="table table-bordered table-striped table-hover">
+                                <table id="table-alumni" class="table table-bordered table-striped table-hover">
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Nama Pembayaran</th>
-                                            <th>Nama Siswa</th>
-                                            <th>Kelas - Jurusan</th>
-                                            <th>Jenis Pembayaran</th>
-                                            {{-- <th>Total Tagihan</th>
-                                            <th>Tagihan Sudah Dibayar</th> --}}
-                                            <th>Aksi</th>
+                                            <th>Foto Profil</th>
+                                            <th>Nama</th>
+                                            <th>Username</th>
+                                            <th>Email</th>
+                                            <th>Nomor HP</th>
+                                            <th>Jenis Kelamin</th>
+                                            <th>Tahun Lulus</th>
+                                            <th>Login terakhir</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -48,7 +44,6 @@
     </div>
 @endsection
 
-
 @section('scripts')
     <script src="{{ asset('library/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('library/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
@@ -56,16 +51,33 @@
     <script src="{{ asset('library/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
 
     <script>
-        let table = $("#table-tunggakan");
-        let btnSyncTable = $("#sync-table-tunggakan");
+        let table = $("#table-alumni");
+        let btnSyncTable = $("#sync-table-alumni");
 
-        table.DataTable({
+        let classFilter = '';
+        let genderFilter = '';
+
+        $("#class-filter").on("change", function() {
+            classFilter = $(this).val();
+            datatable.draw();
+        })
+
+        $("#gender-filter").on("change", function() {
+            genderFilter = $(this).val();
+            datatable.draw();
+        })
+
+        var datatable = table.DataTable({
             responsive: true,
             autoWidth: false,
             processing: true,
             serverSide: true,
             ajax: {
-                url: "{{ route('tunggakan.index') }}",
+                url: "{{ route('alumni.index') }}",
+                data: function(data) {
+                    data.class = classFilter;
+                    data.gender = genderFilter;
+                }
             },
             columns: [{
                     data: "DT_RowIndex",
@@ -74,29 +86,28 @@
                     width: "4%",
                 },
                 {
-                    data: "payment_name",
+                    data: "photo",
                 },
                 {
-                    data: "student",
+                    data: "name",
                 },
                 {
-                    data: "class",
+                    data: "username",
                 },
                 {
-                    data: "type",
+                    data: "email",
                 },
-                // {
-                //     data: "total_amount",
-                // },
-                // {
-                //     data: "journal_amount",
-                // },
                 {
-                    data: "action",
-                    name: "action",
-                    className: "text-center",
-                    orderable: false,
-                    searchable: false,
+                    data: "phone",
+                },
+                {
+                    data: "gender",
+                },
+                {
+                    data: "passed_year",
+                },
+                {
+                    data: "last_login",
                 },
             ],
         });

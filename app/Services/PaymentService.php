@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Constants\GlobalConstant;
 use App\Models\Journal;
+use App\Models\Payment;
 use Yajra\DataTables\Facades\DataTables;
 
 class PaymentService
@@ -40,7 +41,7 @@ class PaymentService
                     $div = '';
                     $div .= paymentCategoryTypeBadge($data->payment->list->payment_category->type);
                     if ($data->payment->list->payment_category->type == 'month') {
-                        $div .= '<span class="badge badge-pill badge-warning ml-2">' . ucfirst($data->payment->list->name) . '</span>';
+                        $div .= '<span class="badge badge-pill badge-info ml-2">' . ucfirst($data->payment->list->name) . '</span>';
                     }
                     return $div;
                 })
@@ -61,7 +62,53 @@ class PaymentService
     public function store($payload)
     {
         try {
-            return Journal::create($payload);
+            $payment = $this->getTotalPayment($payload['payment_id']);
+            if ($payload['amount'] > $payment->tagihan) apiException('Jumlah tagihan baru melebihi jumlah kekurangan tagihan');
+            $payment = $this->getTotalPayment($payload['payment_id']);
+            if ($payment->is_lunas === true) {
+                $payment->data->update([
+                    'status' =>  GlobalConstant::PAID
+                ]);
+            } else {
+                $journal = Journal::create($payload);
+            }
+
+            $this->updateStatus($payload['payment_id']);
+        } catch (\Exception $e) {
+            throw $e;
+            report($e);
+            return $e;
+        }
+    }
+
+    public function updateStatus($payment_id)
+    {
+        try {
+            $payment = $this->getTotalPayment($payment_id);
+            if ($payment->is_lunas === true) {
+                $payment->data->update([
+                    'status' =>  GlobalConstant::PAID
+                ]);
+            }
+        } catch (\Exception $e) {
+            throw $e;
+            report($e);
+            return $e;
+        }
+    }
+
+    public function getTotalPayment($payment_id)
+    {
+        try {
+            $data = Payment::with(['user.class.department', 'list.payment_category'])->find($payment_id);
+            $totalPayment = Journal::where('payment_id', $payment_id)->sum('amount');
+            $tagihan = $data->list->amount - $totalPayment;
+            return (object)[
+                'data' => $data,
+                'totalPayment' => $totalPayment,
+                'tagihan' => $tagihan,
+                'is_lunas' => $totalPayment < $data->list->amount ? false : true
+            ];
         } catch (\Exception $e) {
             throw $e;
             report($e);

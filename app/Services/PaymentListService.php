@@ -126,7 +126,7 @@ class PaymentListService
             }
 
             $paymentListIds = PaymentList::where('payment_category_id', $dataId)->pluck('id')->toArray();
-            Payment::whereIn('payment_list_id', $paymentListIds)->forceDelete();
+            // Payment::whereIn('payment_list_id', $paymentListIds)->forceDelete();
             $dataArray = [];
             if ($request['type'] === GlobalConstant::PAYMENT_CATEGORY_CLASS) {
                 $student = User::where('is_student', 1)->whereIn('class_id', $request['class_form'])->pluck('id')->toArray();
@@ -139,10 +139,13 @@ class PaymentListService
             }
             foreach ($paymentListIds as $key1 => $paymentList) {
                 foreach ($dataArray as $key => $value) {
-                    Payment::create([
-                        'payment_list_id' => $paymentList,
-                        'user_id' => $value
-                    ]);
+                    $check = Payment::where('payment_list_id', $paymentList)->where('user_id', $value)->first();
+                    if(!$check){
+                        Payment::create([
+                            'payment_list_id' => $paymentList,
+                            'user_id' => $value
+                        ]);
+                    }
                 }
             }
             return true;
@@ -158,7 +161,12 @@ class PaymentListService
         try {
             $dataId = decryptData($id);
             $data = Payment::with(['user.class.department', 'list.payment_category'])->find($dataId);
-            return $data;
+            $totalPayment = Journal::where('payment_id', $dataId)->sum('amount');
+            return (object) [
+                'data' => $data,
+                'tagihan' => $data->list->amount - $totalPayment,
+                'total' => $totalPayment
+            ];
         } catch (\Exception $e) {
             throw $e;
             report($e);

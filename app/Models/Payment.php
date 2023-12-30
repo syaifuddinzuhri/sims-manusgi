@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Payment extends Model
@@ -15,6 +15,7 @@ class Payment extends Model
     protected $fillable = [
         'payment_list_id',
         'user_id',
+        'status'
     ];
 
     /**
@@ -38,12 +39,12 @@ class Payment extends Model
     }
 
     /**
-     * Get the journal associated with the PaymentCategoryDetail
+     * Get all of the journals for the Payment
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function journal(): HasOne
+    public function journals(): HasMany
     {
-        return $this->hasOne(Journal::class, 'payment_id');
+        return $this->hasMany(Journal::class);
     }
 }

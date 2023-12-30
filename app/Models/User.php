@@ -114,8 +114,18 @@ class User extends Authenticatable
         return $query->where('is_student', 0);
     }
 
+    public function scopeIsNotAlumni($query)
+    {
+        return $query->where('is_alumni', 0);
+    }
+
     public function scopeIsStudent($query)
     {
         return $query->where('is_student', 1);
+    }
+
+    public function scopeIsAlumni($query)
+    {
+        return $query->where('is_alumni', 1);
     }
 }

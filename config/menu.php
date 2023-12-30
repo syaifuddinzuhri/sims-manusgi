@@ -49,27 +49,27 @@ $masterMenu =  [
 $manajemenSiswaMenu =  [
     'name' => 'Manajemen Siswa',
     'permission' => 'read-siswa',
-    'route_prefix' => '',
+    'route_prefix' => 'manajemen-siswa',
     'route_name' => '',
     'icon' => 'fas fa-users',
     'sub_menus' => [
         [
             'name' => 'Kenaikan Kelas',
             'permission' => 'read-siswa-kenaikan',
-            'route_prefix' => '',
-            'route_name' => '',
+            'route_prefix' => 'kenaikan-kelas',
+            'route_name' => 'kenaikan-kelas.index',
         ],
         [
             'name' => 'Kelulusan',
             'permission' => 'read-siswa-kelulusan',
-            'route_prefix' => '',
-            'route_name' => '',
+            'route_prefix' => 'kelulusan',
+            'route_name' => 'kelulusan.index',
         ],
         [
             'name' => 'Alumni',
             'permission' => 'read-siswa-alumni',
-            'route_prefix' => '',
-            'route_name' => '',
+            'route_prefix' => 'alumni',
+            'route_name' => 'alumni.index',
         ],
     ]
 ];

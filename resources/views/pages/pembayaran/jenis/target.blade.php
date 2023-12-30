@@ -1,6 +1,10 @@
 <div class="col-md-8">
     <div class="card">
         <div class="card-body">
+            <div class="alert alert-warning" role="alert">
+                <b>Perhatian!</b>
+                <p>- Jika Anda ingin mengubah data target yang telah disimpan, maka semua data pembayaran sebelumnya akan terhapus dan diubah oleh target baru.</p>
+            </div>
             <form action="{{ route('jenis.student.store', $id) }}" method="POST">
                 @csrf
                 <div class="mb-3">

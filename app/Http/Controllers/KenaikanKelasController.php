@@ -2,40 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PaymentRequest;
-use App\Services\PaymentListService;
-use App\Services\PaymentService;
+use App\Services\KenaikanKelasService;
 use App\Traits\GlobalTrait;
 use Illuminate\Http\Request;
 
-class PaymentController extends Controller
+class KenaikanKelasController extends Controller
 {
     use GlobalTrait;
 
     private $service;
-    private $paymentListService;
 
     public function __construct()
     {
-        $this->middleware('permission:read-transaksi-pembayaran', ['only' => 'index', 'show']);
-        $this->middleware('permission:create-transaksi-pembayaran', ['only' => ['create', 'store']]);
-        $this->middleware('permission:update-transaksi-pembayaran', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:delete-transaksi-pembayaran', ['only' => ['destroy']]);
-        $this->service = new PaymentService();
-        $this->paymentListService = new PaymentListService();
+        $this->middleware('permission:read-siswa-kenaikan', ['only' => 'index', 'show']);
+        $this->middleware('permission:create-siswa-kenaikan', ['only' => ['create', 'store']]);
+        $this->middleware('permission:update-siswa-kenaikan', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:delete-siswa-kenaikan', ['only' => ['destroy']]);
+        $this->service = new KenaikanKelasService();
     }
+
 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        if ($request->ajax()) {
-            return $this->service->datatables($request);
-        }
-        return view('pages.transaksi.pembayaran.index');
+        return view('pages.manajemen-siswa.kenaikan-kelas.index');
     }
 
     /**
@@ -43,13 +37,9 @@ class PaymentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create()
     {
-        if (!$request->payment) {
-            return redirect()->back();
-        }
-        $data = $this->paymentListService->getById($request->payment);
-        return view('pages.transaksi.pembayaran.form', compact('data'));
+        //
     }
 
     /**
@@ -58,15 +48,13 @@ class PaymentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(PaymentRequest $request)
+    public function store(Request $request)
     {
         $this->startTransaction();
         try {
             $payload = $request->all();
-            $payload['journal_category_id'] = 1;
-            $payload['amount'] = dbIDR($payload['amount']);
             $this->service->store($payload);
-            return $this->commitTransaction('Data berhasil ditambahkan', 'pembayaran.index');
+            return $this->commitTransaction('Data berhasil ditambahkan');
         } catch (\Throwable $th) {
             return $this->rollbackTransaction($th->getMessage());
         }

@@ -2,18 +2,36 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\AlumniService;
+use App\Traits\GlobalTrait;
 use Illuminate\Http\Request;
 
 class AlumniController extends Controller
 {
+    use GlobalTrait;
+
+    private $service;
+
+    public function __construct()
+    {
+        $this->middleware('permission:read-siswa-alumni', ['only' => 'index', 'show']);
+        $this->middleware('permission:create-siswa-alumni', ['only' => ['create', 'store']]);
+        $this->middleware('permission:update-siswa-alumni', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:delete-siswa-alumni', ['only' => ['destroy']]);
+        $this->service = new AlumniService();
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            return $this->service->datatables($request);
+        }
+        return view('pages.manajemen-siswa.alumni.index');
     }
 
     /**

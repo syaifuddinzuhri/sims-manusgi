@@ -12,7 +12,7 @@ class StaffService
     public function datatables($request)
     {
         try {
-            $data = User::IsNotStudent()->latest()->get();
+            $data = User::IsNotStudent()->IsNotAlumni()->latest()->get();
             return DataTables::of($data)
                 ->setRowAttr([
                     'url' => function ($data) {
