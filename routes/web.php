@@ -86,8 +86,10 @@ Route::middleware('auth.web')->group(function () {
     });
 
     Route::prefix('transaksi')->group(function () {
+        Route::delete('pembayaran/delete-all', [PaymentController::class, 'destroyAll'])->name('payment.delete-all');
         Route::resource('pembayaran', PaymentController::class);
         Route::get('tunggakan/detail/{id}/{category_id}', [PaymentArrearController::class, 'detail'])->name('tunggakan.detail');
+        Route::delete('tunggakan/delete-all', [PaymentArrearController::class, 'destroyAll'])->name('tunggakan.delete-all');
         Route::delete('tunggakan/delete/{id}/{category_id}', [PaymentArrearController::class, 'delete'])->name('tunggakan.delete');
         Route::resource('tunggakan', PaymentArrearController::class);
     });

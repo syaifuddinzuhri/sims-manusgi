@@ -118,4 +118,20 @@ class PaymentService
             return $e;
         }
     }
+
+    public function destroyAll()
+    {
+        try {
+            $data = Journal::with(['category', 'payment.user.class.department', 'payment.list.payment_category'])
+                ->whereHas('category', function ($q) {
+                    $q->where('type', GlobalConstant::JOURNAL_IN);
+                })
+                ->where('journal_category_id', 1)
+                ->delete();
+        } catch (\Exception $e) {
+            throw $e;
+            report($e);
+            return $e;
+        }
+    }
 }

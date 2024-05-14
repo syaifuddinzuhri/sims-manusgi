@@ -183,4 +183,18 @@ class PaymentArrearService
             return $e;
         }
     }
+
+    public function destroyAll()
+    {
+        try {
+            $data = Payment::get();
+            foreach ($data as $key => $value) {
+                $value->delete();
+            }
+        } catch (\Exception $e) {
+            throw $e;
+            report($e);
+            return $e;
+        }
+    }
 }

@@ -20,6 +20,13 @@
                     @endcan --}}
                     <button type="button" class="btn btn-sm btn-success mb-3" id="sync-table-tunggakan"><i
                             class="fas fa-sync"></i> Reload</button>
+                    @can('delete-transaksi-tunggakan')
+                        <form action="{{ route('tunggakan.delete-all') }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-sm btn-danger mb-2" type="submit">Hapus Semua Data</button>
+                        </form>
+                    @endcan
                     <div class="card">
                         <div class="card-body">
                             <div class="table-responsive">

@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Constants\GlobalConstant;
+use App\Models\Journal;
 use App\Models\Payment;
 use App\Models\User;
 use Carbon\Carbon;
@@ -55,7 +57,7 @@ class StudentService
                     }
                     if (permissionCheck('delete-master-siswa')) {
                         $button .= '<button type="button" data-toggle="modal" data-target="#modal-delete" data-backdrop="static" data-keyboard="false" class="btn btn-sm btn-danger delete" data-toggle="tooltip" data-placement="bottom" title="Hapus"><i class="fa fa-trash-alt" aria-hidden="true"></i>Hapus Siswa</button>';
-                        $button .= '<button type="button" data-toggle="modal" data-target="#modal-delete" data-backdrop="static" data-keyboard="false" class="btn btn-sm btn-dark delete-payment" data-toggle="tooltip" data-placement="bottom" title="Hapus Pembayaran"><i class="fa fa-trash-alt" aria-hidden="true"></i> Hapus Pembayaran</button>';
+                        $button .= '<button type="button" data-toggle="modal" data-target="#modal-delete" data-backdrop="static" data-keyboard="false" class="btn btn-sm btn-dark delete-payment" data-toggle="tooltip" data-placement="bottom" title="Hapus Semua Pembayaran"><i class="fa fa-trash-alt" aria-hidden="true"></i> Hapus Pembayaran</button>';
                     }
                     $button .= '</div>';
                     return $button;
@@ -113,6 +115,15 @@ class StudentService
         try {
             $dataId = decryptData($id);
             $payment = Payment::where('user_id', $dataId)->delete();
+            $data = Journal::with(['category', 'payment'])
+                ->whereHas('category', function ($q) {
+                    $q->where('type', GlobalConstant::JOURNAL_IN);
+                })
+                ->whereHas('payment', function ($q) use ($dataId) {
+                    $q->where('user_id', $dataId);
+                })
+                ->where('journal_category_id', 1)
+                ->delete();
         } catch (\Exception $e) {
             throw $e;
             report($e);

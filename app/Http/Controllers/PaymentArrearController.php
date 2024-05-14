@@ -118,4 +118,15 @@ class PaymentArrearController extends Controller
             return $this->rollbackTransaction($th->getMessage());
         }
     }
+
+    public function destroyAll()
+    {
+        $this->startTransaction();
+        try {
+            $this->service->destroyAll();
+            return $this->commitTransaction('Data berhasil dihapus');
+        } catch (\Throwable $th) {
+            return $this->rollbackTransaction($th->getMessage());
+        }
+    }
 }
