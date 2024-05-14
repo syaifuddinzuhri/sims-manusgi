@@ -107,4 +107,15 @@ class PaymentArrearController extends Controller
     {
         //
     }
+
+    public function delete($user_id, $category_id)
+    {
+        $this->startTransaction();
+        try {
+            $this->service->delete($user_id, $category_id);
+            return $this->commitTransaction('Data berhasil dihapus');
+        } catch (\Throwable $th) {
+            return $this->rollbackTransaction($th->getMessage());
+        }
+    }
 }

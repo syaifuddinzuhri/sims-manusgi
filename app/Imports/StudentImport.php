@@ -31,7 +31,7 @@ class StudentImport implements ToCollection, WithStartRow
                     $departmentData = Department::where('name', $department)->first();
 
                     $class_id = NULL;
-                    if($departmentData){
+                    if ($departmentData) {
                         $classData = Classes::where('name', $class)->where('department_id', $departmentData->id)->first();
                         $class_id = $classData ? $classData->id : NULL;
                     }
@@ -53,6 +53,7 @@ class StudentImport implements ToCollection, WithStartRow
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
+            dd($e->getMessage());
             throw new Exception("Server Error: Pastikan format data sudah sesuai.");
         }
     }

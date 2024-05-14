@@ -22,7 +22,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('payment_category_id')->references('id')->on('payment_categories')->onDelete('set null')->onUpdate('cascade');
+            $table->foreign('payment_category_id')->references('id')->on('payment_categories')->onDelete('cascade')->onUpdate('cascade');
             $table->index('payment_category_id');
         });
     }

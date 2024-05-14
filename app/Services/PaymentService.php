@@ -39,9 +39,12 @@ class PaymentService
                 })
                 ->editColumn('type', function ($data) {
                     $div = '';
-                    $div .= paymentCategoryTypeBadge($data->payment->list->payment_category->type);
-                    if ($data->payment->list->payment_category->type == 'month') {
-                        $div .= '<span class="badge badge-pill badge-info ml-2">' . ucfirst($data->payment->list->name) . '</span>';
+                    $type = $data->payment->list->payment_category->type ?? "";
+                    if ($type) {
+                        $div .= paymentCategoryTypeBadge($data->payment->list->payment_category->type);
+                        if ($data->payment->list->payment_category->type == 'month') {
+                            $div .= '<span class="badge badge-pill badge-info ml-2">' . ucfirst($data->payment->list->name) . '</span>';
+                        }
                     }
                     return $div;
                 })

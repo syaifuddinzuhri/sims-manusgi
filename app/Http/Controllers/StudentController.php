@@ -27,7 +27,7 @@ class StudentController extends Controller
         $this->middleware('permission:read-master-siswa', ['only' => 'index', 'show']);
         $this->middleware('permission:create-master-siswa', ['only' => ['create', 'store', 'importPage', 'importSubmit']]);
         $this->middleware('permission:update-master-siswa', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:delete-master-siswa', ['only' => ['destroy']]);
+        $this->middleware('permission:delete-master-siswa', ['only' => ['destroy', 'destroyPayment']]);
         $this->service = new StudentService();
         $this->groupService = new GroupService();
     }
@@ -146,6 +146,17 @@ class StudentController extends Controller
         $this->startTransaction();
         try {
             $this->service->delete($id);
+            return $this->commitTransaction('Data berhasil dihapus');
+        } catch (\Throwable $th) {
+            return $this->rollbackTransaction($th->getMessage());
+        }
+    }
+
+    public function destroyPayment($id)
+    {
+        $this->startTransaction();
+        try {
+            $this->service->deletePayment($id);
             return $this->commitTransaction('Data berhasil dihapus');
         } catch (\Throwable $th) {
             return $this->rollbackTransaction($th->getMessage());

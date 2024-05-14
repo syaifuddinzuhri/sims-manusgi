@@ -18,7 +18,7 @@ return new class extends Migration
         dropColumnIfExist($this->table, 'department_id', function (Blueprint $table, $column) {
             $table->unsignedBigInteger($column)->nullable()->after('name');
 
-            $table->foreign('department_id')->references('id')->on('departments')->onDelete('set null')->onUpdate('cascade');
+            $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade')->onUpdate('cascade');
             $table->index('department_id');
         });
     }

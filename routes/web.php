@@ -62,6 +62,7 @@ Route::middleware('auth.web')->group(function () {
         Route::put('/siswa/password/{id}', [StudentController::class, 'changePassword'])->name('siswa.password.submit');
         Route::get('/siswa/import', [StudentController::class, 'importPage'])->name('siswa.import.index');
         Route::post('/siswa/import', [StudentController::class, 'importSubmit'])->name('siswa.import.submit');
+        Route::delete('/siswa/delete-payment/{id}', [StudentController::class, 'destroyPayment'])->name('siswa.delete.payment');
         Route::resource('grup', GroupController::class);
         Route::resource('kelas', ClassController::class);
         Route::resource('tahun-ajaran', AcademicYearController::class);
@@ -87,6 +88,7 @@ Route::middleware('auth.web')->group(function () {
     Route::prefix('transaksi')->group(function () {
         Route::resource('pembayaran', PaymentController::class);
         Route::get('tunggakan/detail/{id}/{category_id}', [PaymentArrearController::class, 'detail'])->name('tunggakan.detail');
+        Route::delete('tunggakan/delete/{id}/{category_id}', [PaymentArrearController::class, 'delete'])->name('tunggakan.delete');
         Route::resource('tunggakan', PaymentArrearController::class);
     });
 

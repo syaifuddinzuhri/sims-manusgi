@@ -20,9 +20,9 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('payment_list_id')->references('id')->on('payment_lists')->onDelete('set null')->onUpdate('cascade');
+            $table->foreign('payment_list_id')->references('id')->on('payment_lists')->onDelete('cascade')->onUpdate('cascade');
             $table->index('payment_list_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null')->onUpdate('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->index('user_id');
         });
     }

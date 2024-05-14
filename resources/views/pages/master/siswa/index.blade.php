@@ -166,5 +166,11 @@
             var form_delete = $('#form-delete');
             form_delete.attr('action', delete_url);
         });
+
+        table.on("click", ".delete-payment", function(e) {
+            var delete_url = $(this).closest("tr").attr("url-delete-payment");
+            var form_delete = $('#form-delete');
+            form_delete.attr('action', delete_url);
+        });
     </script>
 @endsection

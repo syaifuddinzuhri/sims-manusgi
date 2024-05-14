@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Payment;
 use App\Models\User;
 use Carbon\Carbon;
 use Yajra\DataTables\Facades\DataTables;
@@ -23,7 +24,10 @@ class StudentService
                 ->setRowAttr([
                     'url' => function ($data) {
                         return route('siswa.destroy', encryptData($data->id));
-                    }
+                    },
+                    'url-delete-payment' => function ($data) {
+                        return route('siswa.delete.payment', encryptData($data->id));
+                    },
                 ])
                 ->addIndexColumn()
                 ->editColumn('photo', function ($data) {
@@ -50,7 +54,8 @@ class StudentService
                         <i class="fa fa-edit" aria-hidden="true"></i> </a>';
                     }
                     if (permissionCheck('delete-master-siswa')) {
-                        $button .= '<button type="button" data-toggle="modal" data-target="#modal-delete" data-backdrop="static" data-keyboard="false" class="btn btn-sm btn-danger delete" data-toggle="tooltip" data-placement="bottom" title="Hapus"><i class="fa fa-trash-alt" aria-hidden="true"></i></button>';
+                        $button .= '<button type="button" data-toggle="modal" data-target="#modal-delete" data-backdrop="static" data-keyboard="false" class="btn btn-sm btn-danger delete" data-toggle="tooltip" data-placement="bottom" title="Hapus"><i class="fa fa-trash-alt" aria-hidden="true"></i>Hapus Siswa</button>';
+                        $button .= '<button type="button" data-toggle="modal" data-target="#modal-delete" data-backdrop="static" data-keyboard="false" class="btn btn-sm btn-dark delete-payment" data-toggle="tooltip" data-placement="bottom" title="Hapus Pembayaran"><i class="fa fa-trash-alt" aria-hidden="true"></i> Hapus Pembayaran</button>';
                     }
                     $button .= '</div>';
                     return $button;
@@ -96,6 +101,18 @@ class StudentService
             $data = $this->getDetail($id);
             $data->delete();
             return $data;
+        } catch (\Exception $e) {
+            throw $e;
+            report($e);
+            return $e;
+        }
+    }
+
+    public function deletePayment($id)
+    {
+        try {
+            $dataId = decryptData($id);
+            $payment = Payment::where('user_id', $dataId)->delete();
         } catch (\Exception $e) {
             throw $e;
             report($e);

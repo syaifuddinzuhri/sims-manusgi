@@ -23,9 +23,9 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('payment_type_id')->references('id')->on('payment_types')->onDelete('set null')->onUpdate('cascade');
+            $table->foreign('payment_type_id')->references('id')->on('payment_types')->onDelete('cascade')->onUpdate('cascade');
             $table->index('payment_type_id');
-            $table->foreign('academic_year_id')->references('id')->on('academic_years')->onDelete('set null')->onUpdate('cascade');
+            $table->foreign('academic_year_id')->references('id')->on('academic_years')->onDelete('cascade')->onUpdate('cascade');
             $table->index('academic_year_id');
         });
     }

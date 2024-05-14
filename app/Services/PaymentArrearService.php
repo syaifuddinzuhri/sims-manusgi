@@ -34,6 +34,7 @@ class PaymentArrearService
                 ->leftJoin('payment_types as pt', 'pc.payment_type_id', '=', 'pt.id')
                 ->leftJoin('academic_years as ay', 'pc.academic_year_id', '=', 'ay.id')
                 ->leftJoin('journals as j', 'p.id', '=', 'j.payment_id')
+                ->whereNull('p.deleted_at')
                 ->groupBy(
                     'p.user_id',
                     'c.name',
@@ -100,11 +101,19 @@ class PaymentArrearService
 
             return DataTables::of($data)
                 ->addIndexColumn()
+                ->setRowAttr([
+                    'url' => function ($data) {
+                        return route('tunggakan.delete', ['id' => encryptData($data->user_id), 'category_id' => encryptData($data->category_id)]);
+                    },
+                ])
                 ->addColumn('action', function ($data) {
                     $button = '<div class="btn-group" role="group">';
                     if (permissionCheck('update-transaksi-tunggakan')) {
                         $button .= '<a href="' . route('tunggakan.detail', ['id' => encryptData($data->user_id), 'category_id' => encryptData($data->category_id)]) . '" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="bottom" title="Bayar">
                                 <i class="fas fa-list" aria-hidden="true"></i> </a>';
+                    }
+                    if (permissionCheck('delete-transaksi-tunggakan')) {
+                        $button .= '<button type="button" data-toggle="modal" data-target="#modal-delete" data-backdrop="static" data-keyboard="false" class="btn btn-sm btn-danger delete" data-toggle="tooltip" data-placement="bottom" title="Hapus"><i class="fa fa-trash-alt" aria-hidden="true"></i></button>';
                     }
                     $button .= '</div>';
                     return $button;
@@ -151,6 +160,23 @@ class PaymentArrearService
                 'data' => $data,
                 'category' => $paymentCategory
             ];
+        } catch (\Exception $e) {
+            throw $e;
+            report($e);
+            return $e;
+        }
+    }
+
+    public function delete($user_id, $category_id)
+    {
+        try {
+            $dataId = decryptData($user_id);
+            $data = Payment::with(['list', 'journals'])
+                ->whereHas('list', function ($q) use ($category_id) {
+                    $q->where('payment_category_id', decryptData($category_id));
+                })
+                ->where('user_id', $dataId)
+                ->delete();
         } catch (\Exception $e) {
             throw $e;
             report($e);

@@ -43,7 +43,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('class_id')->references('id')->on('classes')->onDelete('set null')->onUpdate('cascade');
+            $table->foreign('class_id')->references('id')->on('classes')->onDelete('cascade')->onUpdate('cascade');
             $table->index('class_id');
         });
     }
