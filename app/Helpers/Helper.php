@@ -319,7 +319,7 @@ if (!function_exists('getStudent')) {
         return $result->get()->map(function ($data) {
             return [
                 'id' => $data->id,
-                'text' => $data->name . " | " . $data->class->name ?? '' . " - " . $data->class->department->name ?? '',
+                'text' => $data->name ?? '' . " | " . $data->class->name ?? '' . " - " . $data->class->department->name ?? '',
             ];
         });
     }
