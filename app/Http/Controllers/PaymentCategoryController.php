@@ -128,6 +128,7 @@ class PaymentCategoryController extends Controller
 
     public function showPayment($id)
     {
+        $dataId = decryptData($id);
         $data = $this->service->getDetail($id);
         $payment = $this->paymentListService->getByPaymentCategoryId($id);
         $paymentLists = $this->paymentListService->getPaymentTarget($payment, $id);
@@ -135,7 +136,7 @@ class PaymentCategoryController extends Controller
         foreach ($paymentLists as $key => $item) {
             $selected[$item->id] = $item->id;
         }
-        return view('pages.pembayaran.jenis.payment', compact('selected', 'data', 'payment', 'id',));
+        return view('pages.pembayaran.jenis.payment', compact('selected', 'data', 'payment', 'id','dataId'));
     }
 
     public function submitPayment(Request $request, $id)

@@ -326,8 +326,8 @@ if (!function_exists('getStudent')) {
 }
 
 if (!function_exists('getPaymentListByName')) {
-    function getPaymentListByName($name)
+    function getPaymentListByName($name, $dataId)
     {
-        return PaymentList::where('name', $name)->first();
+        return PaymentList::where('name', $name)->where('payment_category_id', $dataId)->first();
     }
 }

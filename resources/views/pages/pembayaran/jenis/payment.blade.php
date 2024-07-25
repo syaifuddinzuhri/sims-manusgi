@@ -77,7 +77,7 @@
                                                     <input id="{{ $item }}" type="text"
                                                         class="form-control not-rp" name="{{ $item }}"
                                                         placeholder="Masukkan jumlah"
-                                                        value="{{ getPaymentListByName($item) ? getPaymentListByName($item)->amount : '' }}">
+                                                        value="{{ getPaymentListByName($item, $dataId) ? getPaymentListByName($item, $dataId)->amount : '' }}">
                                                 </div>
                                             </div>
                                         @endforeach
@@ -87,7 +87,7 @@
                                         <label for="free" class="">Jumlah</label>
                                         <input id="free" type="text" class="form-control not-rp" name="free"
                                             placeholder="Masukkan jumlah"
-                                            value="{{ getPaymentListByName('free') ? getPaymentListByName('free')->amount : '' }}">
+                                            value="{{ getPaymentListByName('free', $dataId) ? getPaymentListByName('free', $dataId)->amount : '' }}">
                                     </div>
                                 @endif
                                 <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-save"></i>
